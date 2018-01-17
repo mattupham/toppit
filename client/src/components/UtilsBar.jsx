@@ -20,7 +20,7 @@ class UtilsBar extends React.Component {
   onSortChange(sortBy) {
     //where to select current sort?
     //CHANGED, creates sort value by getting current state for sort
-    let sort = store.getState().utilsBar.sortBy;
+    let sort = store.getState().utilsBar.utilsBar.sortBy;
 
     // this.state.sortBy = sortBy;
 
@@ -30,7 +30,7 @@ class UtilsBar extends React.Component {
 
   onFilterChange(filterBy) {
     //CHANGED, creates filter value by getting current state for filter
-    let filter = store.getState().utilsBar.filterBy;
+    let filter = store.getState().utilsBar.utilsBar.filterBy;
     // this.state.filterBy = filterBy;
 
     //CHANGED, onDropdownChange accesses filter value
