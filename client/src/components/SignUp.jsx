@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { 
   setUsername, setUserPassword, setUserPwStrength, 
   setUserPwStrengthColor, setUserPwStrengthPhrase, 
-  setUsernameError, setUserPwError, setUserConfirm, fetchUser
+  setUsernameError, setUserPwError, setUserConfirm
 } from '../js/actions/userActions.js';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
@@ -24,9 +24,9 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
     // Wish I could make owasp colors work without state :(
-    this.state = {
-      pwStrengthColor: 'grey'
-    };
+    // this.state = {
+    //   pwStrengthColor: 'grey'
+    // };
     // this.state = {
     //   username: '',
     //   password: '',
@@ -78,7 +78,7 @@ class SignUp extends React.Component {
   }
 
   onEnterPassword(e, { value }) {
-    console.log('Entering password', value);
+    // console.log('Entering password', value);
     var strength = owasp.test(value);
     let color = colors[strength.passedTests.length][0];
     console.log(strength.passedTests);
@@ -86,14 +86,15 @@ class SignUp extends React.Component {
 
     this.props.setUserPwStrength(strength.passedTests.length / 6 * 100);
     this.props.setUserPwStrengthColor(color);
+    console.log(store.getState().user.user.pwStrengthColor);
     this.props.setUserPwStrengthPhrase(phrase);
     this.props.setUserPwError(false);
     this.props.setUsernameError(false);
     this.props.setUserPassword(value);
     // console.log(store.getState().user.user.password);
-    this.setState({
-      pwStrengthColor: color
-    });
+    // this.setState({
+    //   pwStrengthColor: color
+    // });
     // this.setState({
     //   confirmPasswordError: false,
     //   passwordError: false,
@@ -111,10 +112,11 @@ class SignUp extends React.Component {
 
   render() {
     let user = store.getState().user.user;
+    console.log(user);
     return (
       <Card raised centered>
         <Segment padded size='large'>
-          <Form error={this.props.error ? true : false} onClick={this.onSignUp}>
+          <Form onSubmit={this.onSignUp} error={this.props.error ? true : false}>
             <Header as='h1'>Sign Up</Header>
             <Form.Input 
               label='username' 
@@ -136,7 +138,7 @@ class SignUp extends React.Component {
             />
             <Progress 
               percent={user.pwStrength} 
-              color={this.state.pwStrengthColor} 
+              color={user.pwStrengthColor} 
               size='tiny'
             >
               {user.pwStrengthPhrase}
@@ -156,7 +158,7 @@ class SignUp extends React.Component {
               error 
               content={this.props.error}
             />
-            <Form.Button primary type='submit' onClick={this.onSignUp}>Sign Up</Form.Button>
+            <Form.Button primary type='submit'>Sign Up</Form.Button>
           </Form>
         </Segment>
       </Card>
@@ -166,13 +168,20 @@ class SignUp extends React.Component {
 
 const mapStateToProps = (state) => ({
   username: state.user.username,
-  password: state.user.password
+  password: state.user.password,
+  confirm: state.user.confirm,
+  pwStrength: state.user.pwStrength,
+  pwStrengthColor: state.user.pwStrengthColor,
+  pwStrengthPhrase: state.user.pwStrengthPhrase,
+  usernameError: state.user.usernameError,
+  pwError: state.user.pwError
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setUsername, setUserPassword, setUserPwStrength, 
+  return bindActionCreators({ 
+    setUsername, setUserPassword, setUserPwStrength, 
     setUserPwStrengthColor, setUserPwStrengthPhrase, 
-    setUsernameError, setUserPwError, setUserConfirm, fetchUser }, dispatch);
+    setUsernameError, setUserPwError, setUserConfirm }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

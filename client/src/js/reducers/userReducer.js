@@ -6,7 +6,7 @@ export default function reducer(state = {
     confirm: 1234,
     pwStrength: 0,
     pwStrengthColor: 'grey',
-    pwStrengthPhase: 'password strength',
+    pwStrengthPhrase: 'password strength',
     pwError: false,
     usernameError: false,
     signInError: '',
