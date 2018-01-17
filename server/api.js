@@ -43,7 +43,6 @@ api.get('/topic/:topicId', (req, res) => {
 
 // Create a new topic
 api.post('/topic', (req, res) => {
-
   db.saveTopic(req.body, (error, result) => {
     if (error) {
       res.status(503).end();

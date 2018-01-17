@@ -7,6 +7,13 @@ import anonPhoto2 from '../images/anonPhoto2.png';
 import anonPhoto3 from '../images/anonPhoto3.png';
 import anonPhoto4 from '../images/anonPhoto4.png';
 import defaultPhoto from '../images/defaultPhoto.jpg';
+import { 
+  displayNewTopic, setHeadline, setDescription,
+  setEmotion, setCommentText, setAnon, setUpvoteStateColor
+} from '../js/actions/topicActions.js';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import store from '../js/store.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -18,67 +25,76 @@ const anonPhotos = [
 class NewTopic extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      headline: '',
-      description: '',
-      emotion: '',
-      anonymous: false
-    };
-
-    this.onChange = this.onChange.bind(this);
+    // this.state = {
+    //   headline: '',
+    //   description: '',
+    //   emotion: '',
+    //   anonymous: false
+    // };
+    this.onHeadlineChange = this.onHeadlineChange.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onEmotion = this.onEmotion.bind(this);
     this.toggleAnonymous = this.toggleAnonymous.bind(this);
   }
 
-  onChange(e, { value }) {
+  onHeadlineChange(e, { value }) {
+    // const name = e.target.name;
+    this.props.setHeadline(value);
+    // this.setState({
+    //   [name]: value
+    // });
+  }
 
-    const name = e.target.name;
-
-    this.setState({
-      [name]: value
-    });
+  onDescriptionChange(e, { value }) {
+    this.props.setDescription(value);
   }
 
   onEmotion(e, {value}) {
-    this.setState({
-      emotion: value
-    });
+    // this.setState({
+    //   emotion: value
+    // });
+    this.props.setEmotion(value);
   }
 
   toggleAnonymous() {
-    this.setState({
-      anonymous: !this.state.anonymous
-    });
+    console.log('Toggling anon');
+    let topic = store.getState().topic.topic;
+    // this.setState({
+    //   anonymous: !this.state.anonymous
+    // });
+    this.props.setAnon(!topic.anon);
   }
 
   onSubmit(e, { value }) {
-
-    if (this.state.headline.length > 0 && this.state.description.length > 0) {
+    let topic = store.getState().topic.topic;
+    let user = store.getState().user.user;
+    console.log(topic);
+    if (topic.headline.length > 0 && topic.description.length > 0) {
       this.props.history.push('/');
-      let topic = {
-        headline: this.state.headline,
-        description: this.state.description,
-        emotion: this.state.emotion,
+      let topicObj = {
+        headline: topic.headline,
+        description: topic.description,
+        emotion: topic.emotion,
         timeStamp: Date.now(),
         upvotes: 0
       };
 
-      if (!this.state.anonymous) {
-        topic.authorId = this.props.currentUser._id
-      }
+      topicObj.authorId = (!topic.anon) ? user.id : null;
 
-      this.props.onNewTopic(topic);
+      console.log(topicObj);
+      this.props.onNewTopic(topicObj);
     }
   }
-    
+  
 
   render() {
     const anonText = 'Post Anonymously';
-
+    let topic = store.getState().topic.topic;
+    console.log(topic);
     let photoUrl;
-
-    if (this.state.anonymous) {
+    console.log(this.props);
+    if (topic.anonymous) {
       photoUrl = anonPhotos[Math.floor(Math.random() * anonPhotos.length)];
     } else {
       photoUrl = (this.props.currentUser && this.props.currentUser.photo) || defaultPhoto;
@@ -113,12 +129,22 @@ class NewTopic extends React.Component {
                 </Grid.Column>
                 <Grid.Column width={12}>
                   <Form onSubmit={this.onSubmit}>
-                    <Form.Input label='Topic Headline' name='headline' onChange={this.onChange} value={this.state.headline} placeholder='Enter the headline of your topic' />
-                    <Form.TextArea label='Short Description' name='description' onChange={this.onChange} value={this.state.description} placeholder='Tell us a little more about your idea' />
+                    <Form.Input 
+                      label='Topic Headline' 
+                      name='headline' 
+                      onChange={this.onHeadlineChange} 
+                      // value={topic.headline} 
+                      placeholder='Enter the headline of your topic' />
+                    <Form.TextArea 
+                      label='Short Description' 
+                      name='description' 
+                      onChange={this.onDescriptionChange} 
+                      // value={topic.description} 
+                      placeholder='Tell us a little more about your idea' />
                     <Form.Group inline>
                       <Form.Select label="I'm feeling ..." name='emotion' onChange={this.onEmotion} options={emojis} placeholder='Emotion' />
-                      <Form.Button>Submit</Form.Button>
-                      <Form.Button onClick={this.toggleAnonymous}>{anonText}</Form.Button>
+                      <Form.Button type="submit">Submit</Form.Button>
+                      <Form.Button type="submit" onClick={this.toggleAnonymous}>{anonText}</Form.Button>
                     </Form.Group>
                   </Form>
                 </Grid.Column>
@@ -132,4 +158,22 @@ class NewTopic extends React.Component {
     );
   }
 }
-export default NewTopic;
+
+const mapStateToProps = (state) => ({
+  displayNewTopic: state.topic.displayNewTopic,
+  headline: state.topic.headline,
+  description: state.topic.description,
+  emotion: state.topic.emotion,
+  anon: state.topic.anon,
+  commentText: state.topic.commentText,
+  upvoteStateColor: state.topic.upvoteStateColor
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ 
+    displayNewTopic, setHeadline, setDescription,
+    setEmotion, setCommentText, setAnon, setUpvoteStateColor 
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewTopic);
