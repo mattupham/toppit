@@ -14,9 +14,9 @@ export default class NavBar extends React.Component {
     //   activeItem: 'home',
     // };
 
-    this.handleItemClick = (e, { name }) => {
-      // this.setState({ activeItem: name });
-    };
+    // this.handleItemClick = (e, { name }) => {
+    //   this.setState({ activeItem: name });
+    // };
 
     this.onHome = this.onHome.bind(this);
     this.onNewTopic = this.onNewTopic.bind(this);

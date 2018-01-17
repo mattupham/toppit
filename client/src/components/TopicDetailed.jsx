@@ -12,6 +12,7 @@ import anonPhoto2 from '../images/anonPhoto2.png';
 import anonPhoto3 from '../images/anonPhoto3.png';
 import anonPhoto4 from '../images/anonPhoto4.png';
 
+
 const anonPhotos = [
   anonPhoto1,
   anonPhoto2,
@@ -23,12 +24,12 @@ class TopicDetailed extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      currentUser: this.props.currentUser,
-      topic: null,
-      commentText: '',
-      upvoteStateColor: 'grey'
-    };
+    // this.state = {
+    //   currentUser: this.props.currentUser,
+    //   topic: null,
+    //   commentText: '',
+    //   upvoteStateColor: 'grey'
+    // };
   }
 
   componentDidMount() {
@@ -36,12 +37,13 @@ class TopicDetailed extends React.Component {
 
       .then(({data}) => {
         console.log('getting topic', data);
-        this.setState({
-          topic: data,
-          commentText: '',
-          comments: data.commentId          
+        // this.setState({
+        //   topic: data,
+        //   commentText: '',
+        //   comments: data.commentId          
 
-        });
+        // });
+
       })
 
       .catch((err) => {
@@ -74,12 +76,12 @@ class TopicDetailed extends React.Component {
         console.log(error)
       })
 
-      var allComments = this.state.comments;
-      allComments.push(newComment);
-      this.setState({
-        comments: allComments,
-        commentText: ''
-      })
+    var allComments = this.state.comments;
+    allComments.push(newComment);
+    this.setState({
+      comments: allComments,
+      commentText: ''
+    })
   }  
   
   render() {
@@ -121,7 +123,7 @@ class TopicDetailed extends React.Component {
                   <Card.Content header={topic.headline} meta={meta}/>
                   <Card.Content description={topic.description} />
                   <Card.Content extra>
-                  <UpvoteButton topic={topic} upvote={this.props.upvote} currentUser={this.state.currentUser}/>            
+                    <UpvoteButton topic={topic} upvote={this.props.upvote} currentUser={this.state.currentUser}/>            
                     <Icon name='comments' />
                     {this.state.comments.length || 0} comments
                     &nbsp;&nbsp;

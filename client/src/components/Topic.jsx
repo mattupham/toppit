@@ -33,9 +33,9 @@ colors[emojis[8].value] = 'teal';
 class Topic extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentUser: this.props.currentUser
-    };
+    // this.state = {
+    //   currentUser: this.props.currentUser
+    // };
     this.renderTopicDetailedView = this.renderTopicDetailedView.bind(this);
   }
   
@@ -84,7 +84,7 @@ class Topic extends React.Component {
               </a>
               &nbsp;&nbsp;
               {this.props.topic.emotion ?
-              <Button compact color="blue" content={this.props.topic.emotion}/> : ''}
+                <Button compact color="blue" content={this.props.topic.emotion}/> : ''}
             </Card.Content>
           </Card>
         </Grid.Column>

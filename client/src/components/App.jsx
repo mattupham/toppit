@@ -16,14 +16,11 @@ var http = axios.create({
 
 import {Link, Redirect, BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {Button, Container, Header} from 'semantic-ui-react';
-
-// @connect((store) => {
-//   return {
-//     username: store.user.username,
-//     userFetched: store.user.fetched,
-//     password: store.user.password
-//   }
-// })
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import store from '../js/store.js';
+import { setUserId } from '../js/actions/userActions.js';
+import { displayNewTopic } from '../js/actions/topicActions.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -78,6 +75,7 @@ class App extends React.Component {
         // this.setState({ 
         //   currentUser: data 
         // });
+        this.props.setUserId(data._id);
       })
 
       .catch((err) => {
@@ -116,15 +114,17 @@ class App extends React.Component {
 
 
   createNewTopic() {
-    this.setState({
-      displayNewTopic: true
-    });
+    // this.setState({
+    //   displayNewTopic: true
+    // });
+    this.props.displayNewTopic(true);
   }
 
   closeNewTopic() {
-    this.setState({
-      displayNewTopic: false
-    });
+    // this.setState({
+    //   displayNewTopic: false
+    // });
+    this.props.displayNewTopic(false);
   }
 
   
@@ -132,14 +132,16 @@ class App extends React.Component {
     //do server request to add new topic to database 
     //then get new topic and render new list to topic list.
 
-    this.setState({
-      displayNewTopic: false
-    });
-    
+    // this.setState({
+    //   displayNewTopic: false
+    // });
+    // this.props.displayNewTopic(false);
+
     http.post('/api/topic', topic)
 
       .then(({data}) => {
         this.getSelectTopics();
+        console.log('Successfully posted ', data);
       })
 
       .catch((err) => {
@@ -148,9 +150,9 @@ class App extends React.Component {
   }
 
   onDetailedTopic(topic) {
-    this.setState({
-      selectedTopic: topic
-    });
+    // this.setState({
+    //   selectedTopic: topic
+    // });
   }
 
   upVote (topicId, currentUser, increment) {
@@ -181,6 +183,7 @@ class App extends React.Component {
     // const { contextRef } = this.state;
     // console.log(this.props.user.username);
     // console.log(this.props.user.password);
+    let topic = store.getState().topic.topic;
     return (
       <div className='mainapp'>
         <NavBar 
@@ -196,7 +199,7 @@ class App extends React.Component {
               <NewTopic {...props}
                 // currentUser={this.state.currentUser}
                 onNewTopic={this.onNewTopic}
-                // active={this.state.displayNewTopic}
+                active={topic.displayNewTopic}
                 closeNewTopic={this.closeNewTopic}
               />
             </Container>
@@ -243,4 +246,13 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  displayNewTopic: state.topic.displayNewTopic,
+  id: state.user.id
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ displayNewTopic, setUserId }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
