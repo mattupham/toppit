@@ -18,9 +18,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['react', 'es2015'],
+            presets: ['react', 'es2015', 'stage-1'],
             plugins: [
-              ["lodash", { "id": ["lodash", "semantic-ui-react"] }]
+              ["lodash", { "id": ["lodash", "semantic-ui-react"] }, "transform-decorators-legacy", "transform-class-properties"]
             ]
           }
         }

@@ -17,6 +17,14 @@ var http = axios.create({
 import {Link, Redirect, BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {Button, Container, Header} from 'semantic-ui-react';
 
+// @connect((store) => {
+//   return {
+//     username: store.user.username,
+//     userFetched: store.user.fetched,
+//     password: store.user.password
+//   }
+// })
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -39,9 +47,9 @@ class App extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser()
-    .then(() => (
-      this.getAllTopics()))
-    .catch( (err) => console.log(err.message))
+      .then(() => (
+        this.getAllTopics()))
+      .catch( (err) => console.log(err.message));
   }
 
   getAllTopics() {
@@ -171,7 +179,8 @@ class App extends React.Component {
 
   render() {
     const { contextRef } = this.state
-
+    console.log(this.props.user.username);
+    console.log(this.props.user.password);
     return (
       <div className='mainapp'>
         <NavBar 
@@ -180,7 +189,7 @@ class App extends React.Component {
           home={this.getAllTopics} 
           createNewTopic={this.createNewTopic}
           onSearch={this.getSelectTopics}
-          />
+        />
         <Switch>
           <Route path='/share' render={(props) => (
             <Container>
@@ -215,18 +224,19 @@ class App extends React.Component {
                 upvote={this.upVote}/>
             </Container>
           )}/>
-        </Switch> 
+        </Switch>
         <Menu attached='bottom' className='footer'>
           <Menu.Item >
-          <i className="copyright icon"></i><p>2018 Prospective Technologies, Inc. All Rights Reserved.</p>
+            <h1>{this.props.user.username}</h1>
+            <i className="copyright icon"></i><p>2018 Prospective Technologies, Inc. All Rights Reserved.</p>
           </Menu.Item> 
           <Menu.Item className="toTop button" onClick={this.topFunction} >
-            <i class="arrow up icon"></i>
+            <i className="arrow up icon"></i>
           </Menu.Item>
           <Menu.Item >
             <img className="logo" src={Logo} />
           </Menu.Item> 
-        </Menu>  
+        </Menu>
       </div>
     );
   }

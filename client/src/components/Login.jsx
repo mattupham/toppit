@@ -4,6 +4,15 @@ import http from 'axios';
 import SignIn from './SignIn.jsx';
 import SignUp from './SignUp.jsx';
 import Logo from '../images/logo.png';
+// import { setUsername, setUserPassword, fetchUser } from '../js/actions/userActions';
+// import { connect } from 'react-redux';
+// @connect((store) => {
+//   return {
+//     username: store.user.username,
+//     userFetched: store.user.fetched,
+//     password: store.user.password
+//   }
+// })
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,10 +21,10 @@ class Login extends React.Component {
     this.onSignIn = this.onSignIn.bind(this);
     this.onSignUp = this.onSignUp.bind(this);
 
-    this.state = {
-      signInError: null,
-      signUpError: null
-    };
+    // this.state = {
+    //   signInError: null,
+    //   signUpError: null
+    // };
   }
 
   onSignIn(username, password) {
@@ -51,13 +60,14 @@ class Login extends React.Component {
         if (response.status === 201) {
           this.props.history.replace('/');
         }
+        // set
       })
 
       .catch((err) => {
         if (err.response.status === 409) {
-          this.setState({
-            signUpError: 'username already taken, please choose a different one'
-          });
+          // this.setState({
+          //   signUpError: 'username already taken, please choose a different one'
+          // });
         } else {
           console.log(err);
         }
@@ -80,13 +90,19 @@ class Login extends React.Component {
               <Grid.Column width={2}>
               </Grid.Column>
               <Grid.Column verticalAlign='middle' width={5}>
-                <SignIn onSignIn={this.onSignIn} error={this.state.signInError}/>
+                <SignIn 
+                  onSignIn={this.onSignIn} 
+                // error={this.state.signInError}
+                />
               </Grid.Column>
               <Grid.Column width={1}>
                 <Divider vertical>Or</Divider>
               </Grid.Column>
               <Grid.Column verticalAlign='middle' width={5}>
-                <SignUp onSignUp={this.onSignUp} error={this.state.signUpError}/>
+                <SignUp 
+                  onSignUp={this.onSignUp} 
+                  // error={this.state.signUpError}
+                />
               </Grid.Column>
               <Grid.Column width={2}>
               </Grid.Column>
