@@ -46,6 +46,7 @@ class SignUp extends React.Component {
     let user = store.getState().user.user;
     if (user.password !== user.confirm) {
       this.props.setUserPwError(true);
+      this.props.setUsernameError(true);
       // this.setState({
       //   confirmPasswordError: true,
       //   passwordError: true,
@@ -84,7 +85,7 @@ class SignUp extends React.Component {
     let phrase = colors[strength.passedTests.length][1];
 
     this.props.setUserPwStrength(strength.passedTests.length / 6 * 100);
-    // this.props.setUserPwStrengthColor(color);
+    this.props.setUserPwStrengthColor(color);
     this.props.setUserPwStrengthPhrase(phrase);
     this.props.setUserPwError(false);
     this.props.setUsernameError(false);
