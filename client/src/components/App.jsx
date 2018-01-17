@@ -83,6 +83,7 @@ class App extends React.Component {
       });
   }
   
+  //any change in viewed list goes through this
   getSelectTopics(query, search) {
     if (query) {
       // this.setState({
