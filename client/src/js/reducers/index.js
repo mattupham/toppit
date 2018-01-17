@@ -9,5 +9,6 @@ export default combineReducers({
   user,
   topic,
   search,
-  topicList
+  topicList,
+  utilsBar
 });
