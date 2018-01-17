@@ -20,7 +20,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
-import { displayNewTopic } from '../js/actions/topicActions.js';
+import { displayNewTopic, setHeadline, setDescription, setUpvoteStateColor } from '../js/actions/topicActions.js';
+import { addTopicToList } from '../js/actions/topicListActions.js';
+
+
+
+
 
 class App extends React.Component {
   constructor(props) {
@@ -54,9 +59,13 @@ class App extends React.Component {
     //   filterBy: '',
     //   sortBy: 'timeStamp'
     // });
+    console.log('getting all topics')
     return http.get('/api/topics')
 
       .then(({ data }) => {
+        data.forEach(topic => {
+          this.props.addTopicToList(topic)
+        });
         // this.setState({
         //   topicList: data
         // });
@@ -72,9 +81,6 @@ class App extends React.Component {
 
       .then(({data}) => {
         console.log('Current User ', data);
-        // this.setState({ 
-        //   currentUser: data 
-        // });
         this.props.setUserId(data._id);
       })
 
@@ -115,16 +121,10 @@ class App extends React.Component {
 
 
   createNewTopic() {
-    // this.setState({
-    //   displayNewTopic: true
-    // });
     this.props.displayNewTopic(true);
   }
 
   closeNewTopic() {
-    // this.setState({
-    //   displayNewTopic: false
-    // });
     this.props.displayNewTopic(false);
   }
 
@@ -136,7 +136,7 @@ class App extends React.Component {
     // this.setState({
     //   displayNewTopic: false
     // });
-    // this.props.displayNewTopic(false);
+    this.props.displayNewTopic(false);
 
     http.post('/api/topic', topic)
 
@@ -212,12 +212,12 @@ class App extends React.Component {
                   // defaultFilter={this.state.filterBy} 
                   // defaultSort={this.state.sortBy} 
                   onDropdownChange={this.getSelectTopics}/>
-                {/* <TopicList {...props} 
+                <TopicList {...props} 
                   // currentUser={this.state.currentUser}
-                  upVote={this.upVote} 
-                  onDetailedTopic={this.onDetailedTopic} 
+                  // upVote={this.upVote} 
+                  // onDetailedTopic={this.onDetailedTopic} 
                   // topicList={this.state.topicList} 
-                /> */}
+                />
               </Container>
             </div>
           )}/>
@@ -249,11 +249,12 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
-  id: state.user.id
+  id: state.user.id,
+  topicList: state.topicList.topicList
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ displayNewTopic, setUserId }, dispatch);
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
