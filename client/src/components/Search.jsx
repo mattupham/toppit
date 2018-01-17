@@ -1,43 +1,38 @@
 import React from 'react';
-import { Form, Button, Icon, Input } from 'semantic-ui-react';
+import { Form, Button, Icon, Input, Card } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { setSearchValue, toggleIsLoading } from '../js/actions/searchActions.js';
+import { bindActionCreators } from 'redux';
+
+import store from '../js/store.js';
+
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoading: false,
-      value: ''
-    }
-
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(e) {
-    this.props.onSearch(null, this.state.value);
-    this.setState({
-      value: ''
-    }) 
+    console.log('this is being searched', store.getState().search.searchValue);
+    this.props.onSearch(null, store.getState().search.searchValue);
+    this.props.setSearchValue('');
   }
 
-  handleChange(e, {value}) {
-    this.setState({
-      isLoading: true,
-      value: value
-    });
-
+  handleChange(e) {
+    this.props.setSearchValue(e.target.value);
+    this.props.toggleIsLoading();
     setTimeout(() => {
-      this.setState({
-        isLoading: false
-      });
+      this.props.toggleIsLoading();
     }, 1500)
   }
 
   render() {
     return(
       <Form onSubmit={this.handleSubmit}>
-        <Input  focus placeholder='Search...' value={this.state.value} onChange={this.handleChange} />
-        <Button icon type='submit'color='blue' size='large' compact loading={this.state.isLoading}>
+        <Input  focus placeholder='Search...' onChange={this.handleChange} />
+        <Button icon type='submit'color='blue' size='large' compact loading={store.getState().search.isLoading}>
           <Icon name='search' />
         </Button>
       </Form>
@@ -45,4 +40,13 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+const mapStateToProps = (state) => ({
+  searchValue: state.search.searchValue,
+  isLoading: state.search.isLoading
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ setSearchValue, toggleIsLoading }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -85,6 +85,7 @@ class App extends React.Component {
       });
   }
   
+  //any change in viewed list goes through this
   getSelectTopics(query, search) {
     if (query) {
       this.setState({
@@ -179,8 +180,8 @@ class App extends React.Component {
 
   render() {
     const { contextRef } = this.state
-    console.log(this.props.user.username);
-    console.log(this.props.user.password);
+    // console.log(this.props.user.username);
+    // console.log(this.props.user.password);
     return (
       <div className='mainapp'>
         <NavBar 
@@ -227,7 +228,7 @@ class App extends React.Component {
         </Switch>
         <Menu attached='bottom' className='footer'>
           <Menu.Item >
-            <h1>{this.props.user.username}</h1>
+            {/* <h1>{this.props.user.username}</h1> */}
             <i className="copyright icon"></i><p>2018 Prospective Technologies, Inc. All Rights Reserved.</p>
           </Menu.Item> 
           <Menu.Item className="toTop button" onClick={this.topFunction} >
