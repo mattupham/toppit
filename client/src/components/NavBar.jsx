@@ -2,21 +2,21 @@ import React from 'react';
 import { Input, Menu, Image, Button, Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Logo from '../images/logo.png';
-
 import defaultPhoto from '../images/defaultPhoto.jpg';
 import Search from './Search.jsx';
+import store from '../js/store.js';
 
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
-      activeItem: 'home',
-    };
+    // this.state = { 
+    //   activeItem: 'home',
+    // };
 
-    this.handleItemClick = (e, { name }) => {
-      this.setState({ activeItem: name });
-    };
+    // this.handleItemClick = (e, { name }) => {
+    //   this.setState({ activeItem: name });
+    // };
 
     this.onHome = this.onHome.bind(this);
     this.onNewTopic = this.onNewTopic.bind(this);
@@ -38,12 +38,11 @@ export default class NavBar extends React.Component {
     this.props.createNewTopic();
   }
 
- 
-
-
   render() {
-    const { activeItem } = this.state;
-    let name = (this.props.currentUser && (this.props.currentUser.fullName || this.props.currentUser.username) || '');
+    // const { activeItem } = this.state;
+    // let name = (this.props.currentUser && (this.props.currentUser.fullName || this.props.currentUser.username) || '');
+    let name = store.getState().user.user.username;
+
     let photoUrl = (this.props.currentUser && this.props.currentUser.photo) || defaultPhoto;
 
     const trigger = (
@@ -54,8 +53,12 @@ export default class NavBar extends React.Component {
 
     return (
       <Menu attached='top' className='nav'>
-        <Menu.Item name='home' active={activeItem === 'home'} onClick={this.onHome} >
-            <img className="logo" src={Logo} />
+        <Menu.Item 
+          name='home' 
+          // active={activeItem === 'home'} 
+          onClick={this.onHome} 
+        >
+          <img className="logo" src={Logo} />
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
@@ -65,10 +68,10 @@ export default class NavBar extends React.Component {
             <Search onSearch={this.props.onSearch}/>
           </Menu.Item>
           <Dropdown trigger={trigger} item simple>
-              <Dropdown.Menu>
-                <Dropdown.Item as='a' href='/login' >Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Dropdown.Menu>
+              <Dropdown.Item as='a' href='/login' >Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Menu.Menu>
       </Menu>
     );
