@@ -15,17 +15,17 @@ class Search extends React.Component {
   }
 
   handleSubmit(e) {
-    console.log('this is being searched', store.getState().search.searchValue);
+    this.props.toggleIsLoading();
+    setTimeout(() => {
+      this.props.toggleIsLoading();
+    }, 1000)
+    console.log('this is being searched:', store.getState().search.searchValue);    
     this.props.onSearch(null, store.getState().search.searchValue);
     this.props.setSearchValue('');
   }
 
   handleChange(e) {
     this.props.setSearchValue(e.target.value);
-    this.props.toggleIsLoading();
-    setTimeout(() => {
-      this.props.toggleIsLoading();
-    }, 1500)
   }
 
   render() {
