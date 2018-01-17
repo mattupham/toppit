@@ -29,12 +29,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      topicList: [],
-      filterBy: '',
-      sortBy: 'timeStamp',
-      // search: ''
-    };
+    // this.state = {
+    //   topicList: [],
+    //   filterBy: '',
+    //   sortBy: 'timeStamp',
+    //   // search: ''
+    // };
 
     this.createNewTopic = this.createNewTopic.bind(this);
     this.onNewTopic = this.onNewTopic.bind(this);
@@ -53,16 +53,16 @@ class App extends React.Component {
   }
 
   getAllTopics() {
-    this.setState({
-      filterBy: '',
-      sortBy: 'timeStamp'
-    });
+    // this.setState({
+    //   filterBy: '',
+    //   sortBy: 'timeStamp'
+    // });
     return http.get('/api/topics')
 
       .then(({ data }) => {
-        this.setState({
-          topicList: data
-        });
+        // this.setState({
+        //   topicList: data
+        // });
       })
 
       .catch((err) => {
@@ -75,9 +75,9 @@ class App extends React.Component {
 
       .then(({data}) => {
         console.log('Current User ', data);
-        this.setState({ 
-          currentUser: data 
-        });
+        // this.setState({ 
+        //   currentUser: data 
+        // });
       })
 
       .catch((err) => {
@@ -87,14 +87,14 @@ class App extends React.Component {
   
   getSelectTopics(query, search) {
     if (query) {
-      this.setState({
-        filterBy: query.filterBy,
-        sortBy: query.sortBy
-      });
+      // this.setState({
+      //   filterBy: query.filterBy,
+      //   sortBy: query.sortBy
+      // });
     } else {
       query = {
-        filterBy: this.state.filterBy,
-        sortBy: this.state.sortBy,
+        // filterBy: this.state.filterBy,
+        // sortBy: this.state.sortBy,
       };
     }
     http.get('/api/topics', {params: query})
@@ -103,10 +103,10 @@ class App extends React.Component {
         if (search) {
           var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
         }
-        this.setState({
-          topicList: filteredData || data,
-          // search: search
-        });
+        // this.setState({
+        //   topicList: filteredData || data,
+        //   // search: search
+        // });
       })
 
       .catch((err) => {
@@ -178,13 +178,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { contextRef } = this.state
-    console.log(this.props.user.username);
-    console.log(this.props.user.password);
+    // const { contextRef } = this.state;
+    // console.log(this.props.user.username);
+    // console.log(this.props.user.password);
     return (
       <div className='mainapp'>
         <NavBar 
-          currentUser={this.state.currentUser}
+          // currentUser={this.state.currentUser}
           history={this.props.history} 
           home={this.getAllTopics} 
           createNewTopic={this.createNewTopic}
@@ -194,9 +194,9 @@ class App extends React.Component {
           <Route path='/share' render={(props) => (
             <Container>
               <NewTopic {...props}
-                currentUser={this.state.currentUser}
+                // currentUser={this.state.currentUser}
                 onNewTopic={this.onNewTopic}
-                active={this.state.displayNewTopic}
+                // active={this.state.displayNewTopic}
                 closeNewTopic={this.closeNewTopic}
               />
             </Container>
@@ -205,21 +205,22 @@ class App extends React.Component {
             <div>
               <Container>
                 <UtilsBar 
-                  defaultFilter={this.state.filterBy} 
-                  defaultSort={this.state.sortBy} 
+                  // defaultFilter={this.state.filterBy} 
+                  // defaultSort={this.state.sortBy} 
                   onDropdownChange={this.getSelectTopics}/>
-                <TopicList {...props} 
-                  currentUser={this.state.currentUser}
+                {/* <TopicList {...props} 
+                  // currentUser={this.state.currentUser}
                   upVote={this.upVote} 
                   onDetailedTopic={this.onDetailedTopic} 
-                  topicList={this.state.topicList} />
+                  // topicList={this.state.topicList} 
+                /> */}
               </Container>
             </div>
           )}/>
           <Route path='/topic/:topicId' render={(props) => (
             <Container>
               <TopicDetailed {...props} 
-                currentUser={this.state.currentUser}
+                // currentUser={this.state.currentUser}
                 topicId={props.match.params.topicId} 
                 upvote={this.upVote}/>
             </Container>
@@ -227,7 +228,7 @@ class App extends React.Component {
         </Switch>
         <Menu attached='bottom' className='footer'>
           <Menu.Item >
-            <h1>{this.props.user.username}</h1>
+            {/* <h1>{this.props.user.username}</h1> */}
             <i className="copyright icon"></i><p>2018 Prospective Technologies, Inc. All Rights Reserved.</p>
           </Menu.Item> 
           <Menu.Item className="toTop button" onClick={this.topFunction} >

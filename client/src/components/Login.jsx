@@ -40,13 +40,13 @@ class Login extends React.Component {
       })
 
       .catch((err) => {
-        if (err.response.status === 401) {
-          this.setState({
-            signInError: 'Incorrect username or password entered'
-          });
-        } else {
-          console.log(err);
-        }
+        // if (err.response.status === 401) {
+        //   // this.setState({
+        //   //   signInError: 'Incorrect username or password entered'
+        //   // });
+        // } else {
+        //   console.log(err);
+        // }
       });
   }
 
@@ -64,13 +64,13 @@ class Login extends React.Component {
       })
 
       .catch((err) => {
-        if (err.response.status === 409) {
-          // this.setState({
-          //   signUpError: 'username already taken, please choose a different one'
-          // });
-        } else {
-          console.log(err);
-        }
+        // if (err.response.status === 409) {
+        //   // this.setState({
+        //   //   signUpError: 'username already taken, please choose a different one'
+        //   // });
+        // } else {
+        //   console.log(err);
+        // }
       });
   }
 

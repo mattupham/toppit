@@ -99,7 +99,7 @@ class SignUp extends React.Component {
     return (
       <Card raised centered>
         <Segment padded size='large'>
-          <Form error={this.props.error ? true : false}>
+          <Form error={this.props.error ? true : false} onClick={this.onSignUp}>
             <Header as='h1'>Sign Up</Header>
             <Form.Input 
               label='username' 
@@ -136,7 +136,7 @@ class SignUp extends React.Component {
               error
               content={this.props.error}
             /> */}
-            <Form.Button primary type='submit' onClick={this.onSignUp}>Sign Up</Form.Button>
+            <Form.Button primary type='submit'>Sign Up</Form.Button>
           </Form>
         </Segment>
       </Card>
