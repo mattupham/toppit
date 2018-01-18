@@ -23,10 +23,6 @@ import { setUserId } from '../js/actions/userActions.js';
 import { displayNewTopic } from '../js/actions/topicActions.js';
 import { addTopicToList, addTopicToListFront, changeViewedList } from '../js/actions/topicListActions.js';
 
-
-
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -99,6 +95,7 @@ class App extends React.Component {
       //   filterBy: query.filterBy,
       //   sortBy: query.sortBy
       // });
+      
     } else {
       //**also fix here
       query = {

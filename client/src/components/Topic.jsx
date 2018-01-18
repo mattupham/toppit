@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 
-
 const anonPhotos = [
   anonPhoto1,
   anonPhoto2,
@@ -51,7 +50,6 @@ class Topic extends React.Component {
   }
 
   render () {
-
     console.log('Topic ', this.props);
     let name, photoUrl;
     if (this.props.topic.authorId) {

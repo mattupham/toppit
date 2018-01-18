@@ -21,12 +21,14 @@ class UtilsBar extends React.Component {
     console.log('onSortChange sortBy value', sortBy)
     //sets sort state with sortBy value
     this.props.setSort(sortBy);
+    //FIGURE OUT HOW TO RE-RENDER ONSORTCHANGE FUNCTION
   }
 
   onFilterChange(filterBy) {
     console.log('onFilterChange filterBy value', filterBy)
     //sets filter state with filterBy value
     this.props.setFilter(filterBy);
+    //FIGURE OUT HOW TO RE-RENDER SETFILTER FUNCTION
   }
 
   render() {
@@ -49,9 +51,7 @@ class UtilsBar extends React.Component {
   }
 }
 
-//CHANGED, how to access filterBy
 const mapStateToProps = (state) => ({
-  //change to correct values
   filter: state.filter,
   sort: state.sort
 });
