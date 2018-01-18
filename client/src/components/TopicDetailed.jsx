@@ -46,7 +46,7 @@ class TopicDetailed extends React.Component {
         console.log(data.emotion);
 
         this.props.setDetailedTopic(data);
-        
+        console.log(store.getState().topicList.detailedTopic);
         // this.setState({
         //   topic: data,
         //   commentText: '',
@@ -75,17 +75,18 @@ class TopicDetailed extends React.Component {
       upvotes: 0
     };
     //http request to database to add comment to topic
+    console.log(newComment);
 
-    http.post(`/api/topic/${this.props.topicId}`, newComment)
-      .then( (result) => {
-        console.log('success!', result);
-        newComment.description = result.data.text;
-      })
-      .catch( (error) => {
-        console.log(error);
-      });
-
-    var allComments = store.getState().topicList.detailedTopic.commentId;
+    // http.post(`/api/topic/${this.props.topicId}`, newComment)
+    //   .then( (result) => {
+    //     console.log('success!', result);
+    //     newComment.description = result.data.text;
+    //   })
+    //   .catch( (error) => {
+    //     console.log(error);
+    //   });
+    
+    var allComments = store.getState().topicList.detailedTopic;
     console.log(allComments);
     // allComments.push(newComment);
     // this.props.setCommentList(allComments);

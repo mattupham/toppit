@@ -80,7 +80,7 @@ export default function reducer(state = {
         ...state,
         detailedTopic: { 
           ...state.topicList, 
-          commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
+          commentId: state.topicList.detailedTopic.commentId.concat(action.payload) 
         }
       }
     }
