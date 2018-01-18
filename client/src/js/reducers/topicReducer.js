@@ -4,6 +4,7 @@ export default function reducer(state = {
     description: '',
     emotion: '',
     anon: false,
+    comments: [],
     commentText: '',
     upvoteStateColor: 'grey',
     displayNewTopic: false
@@ -53,6 +54,13 @@ export default function reducer(state = {
       return {
         ...state,
         topic: { ...state.topic, commentText: action.payload }
+      }
+    }
+    case 'ADD_COMMENT': {
+      console.log('Adding comment in reducer!');
+      return {
+        ...state,
+        topic: { ...state.topic, comments: state.topic.comments.concat(action.payload) }
       }
     }
     case 'SET_UPVOTE_STATE_COLOR': {

@@ -201,7 +201,7 @@ let saveComment = (commentObj, topicId, callback) => {
       _id:        id,
       text:       commentObj.text,
       timeStamp:  commentObj.timeStamp,
-      authorId:   doc._id,
+      authorId:   commentObj.authorId,
       username:   commentObj.username,
       upvotes:    commentObj.upvotes
     };

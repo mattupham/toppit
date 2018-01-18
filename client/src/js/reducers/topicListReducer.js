@@ -3,7 +3,17 @@ export default function reducer(state = {
   viewedTopicList: [],
   topicList: [],
   selectedTopic: {},
-  detailedTopic: {}
+  detailedTopic: {
+    authorId: null,
+    commentText: '',
+    commentId: [],
+    headline: '',
+    description: '',
+    emotion: '',
+    timeStamp: '',
+    upvoteUsers: [],
+    upvotes: 0
+  },
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -31,7 +41,7 @@ export default function reducer(state = {
       console.log('Setting selected item in reducer!');
       return {
         ...state,
-        topicList: { ...state.topicList, selectedTopic: action.payload }
+        selectedTopic: action.payload
       }
     }
     case 'SET_DETAILED_TOPIC': {
@@ -39,7 +49,31 @@ export default function reducer(state = {
       console.log(action.payload);
       return {
         ...state,
-        topicList: { ...state.topicList, detailedTopic: action.payload }
+        detailedTopic: action.payload
+      }
+    }
+    case 'SET_COMMENT_TEXT': {
+      console.log('Setting comment text in reducer!');
+      return {
+        ...state,
+        detailedTopic: { ...state.topicList, commentText: action.payload }
+      }
+    }
+    case 'SET_COMMENT_LIST': {
+      console.log('Setting comment list in reducer!');
+      return {
+        ...state,
+        detailedTopic: { ...state.topicList, commentId: action.payload }
+      }
+    }
+    case 'ADD_COMMENT': {
+      console.log('Adding comment in reducer!');
+      return {
+        ...state,
+        detailedTopic: { 
+          ...state.topicList, 
+          commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
+        }
       }
     }
     default: {

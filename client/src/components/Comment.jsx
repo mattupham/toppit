@@ -6,23 +6,23 @@ import defaultPhoto from '../images/defaultPhoto.jpg';
 
 const MyComment = (props) => {
 
-let name = (props.comment.authorId && (props.comment.authorId.fullName || props.comment.authorId.username) || '');
-let photoUrl = (props.comment.authorId && props.comment.authorId.photo) || defaultPhoto;
+  let name = (props.comment.authorId && (props.comment.authorId.fullName || props.comment.authorId.username) || '');
+  let photoUrl = (props.comment.authorId && props.comment.authorId.photo) || defaultPhoto;
 
-
-return(
-  <Comment>
-    <Comment.Avatar className='commentuser' src={photoUrl} />
-    <Comment.Content>
-      <Comment.Author as='a'>{name}</Comment.Author>
-      <Comment.Metadata>
-        <div>{moment(props.comment.timeStamp).fromNow()}</div>
-      </Comment.Metadata>
-      <Comment.Text>{props.comment.text}</Comment.Text>
-    </Comment.Content>
-  </Comment>
+  console.log(props.comment);
+  return (
+    <Comment>
+      <Comment.Avatar className='commentuser' src={photoUrl} />
+      <Comment.Content>
+        <Comment.Author as='a'>{name}</Comment.Author>
+        <Comment.Metadata>
+          <div>{moment(props.comment.timeStamp).fromNow()}</div>
+        </Comment.Metadata>
+        <Comment.Text>{props.comment.text}</Comment.Text>
+      </Comment.Content>
+    </Comment>
   );
-}
+};
 
 export default MyComment;
 

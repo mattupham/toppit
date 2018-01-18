@@ -30,9 +30,30 @@ export const setSelectedTopic = (selectedTopic) => {
 };
 
 export const setDetailedTopic = (detailedTopic) => {
-  console.log('Setting detailed topic', detailedTopic, 'in actions!');
   return {
     type: 'SET_DETAILED_TOPIC',
     payload: detailedTopic
+  };
+};
+
+export const addDetailedComment = (comment) => {
+  console.log(comment, ' in actions');
+  return {
+    type: 'ADD_COMMENT',
+    payload: comment
+  };
+};
+export const setDetailedCommentText = (commentText) => {
+  console.log(commentText, ' in actions');
+  return {
+    type: 'SET_COMMENT_TEXT',
+    payload: commentText
+  };
+};
+export const setDetailedCommentList = (commentList) => {
+  console.log(commentList, ' in actions');
+  return {
+    type: 'SET_COMMENT_LIST',
+    payload: commentList
   };
 };
