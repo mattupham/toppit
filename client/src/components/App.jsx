@@ -21,7 +21,7 @@ import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
 import { displayNewTopic } from '../js/actions/topicActions.js';
-import { addTopicToList, addTopicToListFront, changeViewedList } from '../js/actions/topicListActions.js';
+import { addTopicToList, addTopicToListFront, changeSearchedList, changeFilteredList } from '../js/actions/topicListActions.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -39,8 +39,8 @@ class App extends React.Component {
     this.closeNewTopic = this.closeNewTopic.bind(this);
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
-    this.onDetailedTopic = this.onDetailedTopic.bind(this);
-    this.getSelectTopics = this.getSelectTopics.bind(this);
+    // this.onDetailedTopic = this.onDetailedTopic.bind(this);
+    // this.getSelectTopics = this.getSelectTopics.bind(this);
   }
 
   componentDidMount() {
@@ -60,7 +60,8 @@ class App extends React.Component {
     return http.get('/api/topics')
 
       .then(({ data }) => {
-        this.props.changeViewedList(data);
+        this.props.changeSearchedList(data);
+        this.props.changeFilteredList(data);
         
         data.forEach(topic => {
           this.props.addTopicToList(topic)
@@ -86,41 +87,41 @@ class App extends React.Component {
       });
   }
   
-  //any change in viewed list goes through this
-  getSelectTopics(query, search) {
-    if (query) {
-      //**also fix here 
-      //use this.props.changeViewedList(arrayOfTopics)
-      // this.setState({
-      //   filterBy: query.filterBy,
-      //   sortBy: query.sortBy
-      // });
+  // //any change in viewed list goes through this
+  // getSelectTopics(query, search) {
+  //   if (query) {
+  //     //**also fix here 
+  //     //use this.props.changeViewedList(arrayOfTopics)
+  //     // this.setState({
+  //     //   filterBy: query.filterBy,
+  //     //   sortBy: query.sortBy
+  //     // });
       
-    } else {
-      //**also fix here
-      query = {
-        // filterBy: this.state.filterBy,
-        // sortBy: this.state.sortBy,
-      };
-    }
-    http.get('/api/topics', {params: query})
+  //   } else {
+  //     //**also fix here
+  //     query = {
+  //       // filterBy: this.state.filterBy,
+  //       // sortBy: this.state.sortBy,
+  //     };
+  //   }
+  //   http.get('/api/topics', {params: query})
 
-      .then(({data}) => {
-        if (search) {
-          var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
-        }
-        this.props.changeViewedList(filteredData);
-        //**also fix here
-        // this.setState({
-        //   topicList: filteredData || data,
-        //   // search: search
-        // });
-      })
+  //     .then(({data}) => {
+  //       if (search) {
+  //         var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
+  //       }
+  //       this.props.changeViewedList(filteredData);
+  //       //**also fix here
+  //       // this.setState({
+  //       //   topicList: filteredData || data,
+  //       //   // search: search
+  //       // });
+  //     })
 
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // }
 
 
   createNewTopic() {
@@ -143,7 +144,8 @@ class App extends React.Component {
       .then(({data}) => {
         //** need to rerender page
         this.props.addTopicToListFront(data);
-        this.props.changeViewedList(store.getState().topicList.fullTopicList)
+        this.props.changeSearchedList(store.getState().topicList.fullTopicList)
+        this.props.changeFilteredList(store.getState().topicList.fullTopicList)
         console.log('Successfully posted ', data);
       })
 
@@ -152,11 +154,11 @@ class App extends React.Component {
       });
   }
 
-  onDetailedTopic(topic) {
-    // this.setState({
-    //   selectedTopic: topic
-    // });
-  }
+  // onDetailedTopic(topic) {
+  //   // this.setState({
+  //   //   selectedTopic: topic
+  //   // });
+  // }
 
   upVote (topicId, currentUser, increment) {
     http.patch(`/api/topic/${topicId}`, {
@@ -165,7 +167,8 @@ class App extends React.Component {
     })      
       .then( ({data}) => {
         // function to be implemented to get all topics
-        this.getSelectTopics();
+        
+        // this.getSelectTopics();
       })
       .catch( (error) => {
         console.log(error);
@@ -194,7 +197,7 @@ class App extends React.Component {
           history={this.props.history} 
           home={this.getAllTopics} 
           createNewTopic={this.createNewTopic}
-          onSearch={this.getSelectTopics}
+          // onSearch={this.getSelectTopics}
         />
         <Switch>
           <Route path='/share' render={(props) => (
@@ -213,7 +216,8 @@ class App extends React.Component {
                 <UtilsBar 
                   // defaultFilter={this.state.filterBy} 
                   // defaultSort={this.state.sortBy} 
-                  onDropdownChange={this.getSelectTopics}/>
+                  // onDropdownChange={this.getSelectTopics}
+                  />
                 <TopicList {...props} 
                   // currentUser={this.state.currentUser}
                   // upVote={this.upVote} 
@@ -252,12 +256,11 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
   id: state.user.id,
-  viewedTopicList: state.topicList.viewedTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
-    addTopicToListFront, changeViewedList }, dispatch);
+    addTopicToListFront, changeSearchedList, changeFilteredList }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

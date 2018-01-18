@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Button, Icon, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { setSearchValue, toggleIsLoading } from '../js/actions/searchActions.js';
+import { changeSearchedList, changeFilteredList } from '../js/actions/topicListActions.js';
+
 import { bindActionCreators } from 'redux';
 
 import store from '../js/store.js';
@@ -15,13 +17,22 @@ class Search extends React.Component {
   }
 
   handleSubmit(e) {
+    var searchValue = (store.getState().search.searchValue).toLowerCase();
     this.props.toggleIsLoading();
     setTimeout(() => {
       this.props.toggleIsLoading();
-    }, 1000)
-    console.log('this is being searched:', store.getState().search.searchValue);    
-    this.props.onSearch(null, store.getState().search.searchValue);
-    this.props.setSearchValue('');
+    }, 1000)    
+    var topicListCopy = store.getState().topicList.fullTopicList;
+    console.log('full topic list', topicListCopy)
+    var filteredArr = topicListCopy.filter(topic => {
+      if (topic.headline.toLowerCase().includes(searchValue) || 
+        topic.description.toLowerCase().includes(searchValue) || 
+        topic.authorId.username.toLowerCase().includes(searchValue)) {
+          return topic;
+      }
+    });
+    this.props.changeSearchedList(filteredArr);
+    this.props.changeFilteredList(filteredArr);    
   }
 
   handleChange(e) {
@@ -42,11 +53,12 @@ class Search extends React.Component {
 
 const mapStateToProps = (state) => ({
   searchValue: state.search.searchValue,
-  isLoading: state.search.isLoading
+  isLoading: state.search.isLoading,
+  fullTopicList: state.topicList.fullTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setSearchValue, toggleIsLoading }, dispatch);
+  return bindActionCreators({ setSearchValue, toggleIsLoading, changeSearchedList, changeFilteredList }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

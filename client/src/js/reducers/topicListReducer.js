@@ -1,6 +1,7 @@
 export default function reducer(state = {
   fullTopicList: [],
-  viewedTopicList: []
+  searchedTopicList: [],
+  filteredTopicList: []
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -17,11 +18,18 @@ export default function reducer(state = {
         fullTopicList: [action.payload].concat(state.fullTopicList)
       }
     }
-    case 'CHANGE_VIEWED_LIST': {
-      console.log('changing viewed list action');
+    case 'CHANGE_SEARCHED_LIST': {
+      console.log('changing searched list action');
       return {
         ...state,
-        viewedTopicList: action.payload
+        searchedTopicList: action.payload
+      }
+    }
+    case 'CHANGE_FILTERED_LIST': {
+      console.log('changing filtered list action');
+      return {
+        ...state,
+        filteredTopicList: action.payload
       }
     }
     default: {
