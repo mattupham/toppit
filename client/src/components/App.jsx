@@ -20,8 +20,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
-import { displayNewTopic, setHeadline, setDescription, setUpvoteStateColor } from '../js/actions/topicActions.js';
-import { addTopicToList } from '../js/actions/topicListActions.js';
+import { displayNewTopic } from '../js/actions/topicActions.js';
+import { addTopicToList, addTopicToListFront, changeViewedList } from '../js/actions/topicListActions.js';
 
 
 
@@ -55,6 +55,7 @@ class App extends React.Component {
   }
 
   getAllTopics() {
+    //**need to set these in redux
     // this.setState({
     //   filterBy: '',
     //   sortBy: 'timeStamp'
@@ -63,13 +64,13 @@ class App extends React.Component {
     return http.get('/api/topics')
 
       .then(({ data }) => {
+        this.props.changeViewedList(data);
+        
         data.forEach(topic => {
           this.props.addTopicToList(topic)
         });
-        // this.setState({
-        //   topicList: data
-        // });
       })
+
 
       .catch((err) => {
         console.log(err.message);
@@ -92,11 +93,14 @@ class App extends React.Component {
   //any change in viewed list goes through this
   getSelectTopics(query, search) {
     if (query) {
+      //**also fix here 
+      //use this.props.changeViewedList(arrayOfTopics)
       // this.setState({
       //   filterBy: query.filterBy,
       //   sortBy: query.sortBy
       // });
     } else {
+      //**also fix here
       query = {
         // filterBy: this.state.filterBy,
         // sortBy: this.state.sortBy,
@@ -108,6 +112,7 @@ class App extends React.Component {
         if (search) {
           var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
         }
+        //**also fix here
         // this.setState({
         //   topicList: filteredData || data,
         //   // search: search
@@ -133,15 +138,14 @@ class App extends React.Component {
     //do server request to add new topic to database 
     //then get new topic and render new list to topic list.
 
-    // this.setState({
-    //   displayNewTopic: false
-    // });
     this.props.displayNewTopic(false);
 
     http.post('/api/topic', topic)
 
       .then(({data}) => {
-        this.getSelectTopics();
+        //** need to rerender page
+        this.props.addTopicToListFront(data);
+        this.props.changeViewedList(store.getState().topicList.fullTopicList)
         console.log('Successfully posted ', data);
       })
 
@@ -249,11 +253,13 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
-  id: state.user.id
+  id: state.user.id,
+  viewedTopicList: state.topicList.viewedTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList }, dispatch);
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
+    addTopicToListFront, changeViewedList }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
