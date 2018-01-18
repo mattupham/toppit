@@ -14,10 +14,16 @@ export const addTopicToListFront = (value) => {
   };
 };
 
-export const changeViewedList = (list) => {
-  console.log('LIST SORTED', list);
+export const changeSearchedList = (list) => {
   return {
-    type: 'CHANGE_VIEWED_LIST',
+    type: 'CHANGE_SEARCHED_LIST',
+    payload: list
+  };
+};
+
+export const changeFilteredList = (list) => {
+  return {
+    type: 'CHANGE_FILTERED_LIST',
     payload: list
   };
 };
