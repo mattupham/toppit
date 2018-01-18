@@ -14,6 +14,7 @@ export default function reducer(state = {
     upvoteUsers: [],
     upvotes: 0
   },
+
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
