@@ -19,18 +19,11 @@ class UtilsBar extends React.Component {
     //   sortBy: props.defaultSort
     // });
   }
-  
   //  test topic list [{upvotes: 2},{upvotes:3},{upvotes: 4}]
 
-  sortFullTopicListByUpvotes(fullTopicList){
+  sortFullTopicList(sortType, fullTopicList){
     return fullTopicList.sort(function(a, b){
-      return a.upvotes-b.upvotes;
-    });
-  }
-
-  sortFullTopicListByTimeStamp(fullTopicList){
-    return fullTopicList.sort(function(a, b){
-      return a.timestamp-b.timestamp;
+      return a[sortType]-b[sortType];
     });
   }
 
@@ -42,29 +35,24 @@ class UtilsBar extends React.Component {
     this.props.setSort(sortBy);
     let fullTopicList = store.getState().topicList.fullTopicList;
     //determines how to sort list by sortBy value
-    if (sortBy === 'upvotes') {
-      sortedFullTopicList = this.sortFullTopicListByUpvotes(fullTopicList);
-    } else if (sortBy === 'timeStamp') {
-      sortedFullTopicList = this.sortFullTopicListByTimeStamp(fullTopicList);
+    if (sortBy !== ''){
+      sortedFullTopicList = this.sortFullTopicList(sortBy, fullTopicList);
     }
     //changes viewed list
     this.props.changeViewedList(sortedFullTopicList);
   }
 
   onFilterChange(filterBy) {
-    let filteredFullTopicList;
     //sets filter state with filterBy value
     this.props.setFilter(filterBy);
     //gets emotion value
     let emotion = store.getState().utilsBar.filter.filterBy;
     let fullTopicList = store.getState().topicList.fullTopicList;
+    //set default filter
+    let filteredFullTopicList = fullTopicList;
     //determines how to filter depending on emotion value
     if (emotion !== ''){
-      filteredFullTopicList = fullTopicList.filter((topic) => {
-        return topic.emotion === emotion;
-      });
-    } else {
-      filteredFullTopicList = fullTopicList;
+      filteredFullTopicList = fullTopicList.filter((topic) => topic.emotion === emotion);
     }
     //changes viewed list to sorted list
     this.props.changeViewedList(filteredFullTopicList);
