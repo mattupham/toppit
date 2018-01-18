@@ -63,7 +63,11 @@ class NewTopic extends React.Component {
     // this.setState({
     //   anonymous: !this.state.anonymous
     // });
-    this.props.setAnon(!topic.anon);
+    if (topic.anon) {
+      this.props.setAnon(false);
+    } else {
+      this.props.setAnon(true);
+    }
   }
 
   onSubmit(e, { value }) {

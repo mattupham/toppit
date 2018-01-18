@@ -47,6 +47,7 @@ class Login extends React.Component {
   }
 
   onSignUp(username, password) {
+    let user = store.getState().user.user;
     http.post('/register', {
       username: username,
       password: password
@@ -61,7 +62,12 @@ class Login extends React.Component {
 
       .catch((err) => {
         if (err.response.status === 409) {
-          this.props.setSignUpError('Username already taken, please choose a different one');
+          if (user.pwError) {
+            this.props.setSignUpError('Passwords don\'t match, please try again');
+          } else {
+            this.props.setSignUpError('Username already taken, please choose a different one');
+          }
+          
           // this.setState({
           //   signUpError: 'username already taken, please choose a different one'
           // });
@@ -101,7 +107,6 @@ class Login extends React.Component {
                   onSignUp={this.onSignUp} 
                   error={user.signUpError}
                 />
-                {user.signUpError}
               </Grid.Column>
               <Grid.Column width={2}>
               </Grid.Column>
