@@ -20,7 +20,7 @@ import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
 import { displayNewTopic } from '../js/actions/topicActions.js';
-import { addTopicToList, addTopicToListFront, changeSearchedList, changeFilteredList } from '../js/actions/topicListActions.js';
+import { addTopicToList, addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic } from '../js/actions/topicListActions.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class App extends React.Component {
     this.closeNewTopic = this.closeNewTopic.bind(this);
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
-    // this.onDetailedTopic = this.onDetailedTopic.bind(this);
+    this.onDetailedTopic = this.onDetailedTopic.bind(this);
     // this.getSelectTopics = this.getSelectTopics.bind(this);
   }
 
@@ -153,11 +153,12 @@ class App extends React.Component {
       });
   }
 
-  // onDetailedTopic(topic) {
-  //   // this.setState({
-  //   //   selectedTopic: topic
-  //   // });
-  // }
+  onDetailedTopic(topic) {
+    // this.setState({
+    //   selectedTopic: topic
+    // });
+    this.props.setSelectedTopic(topic);
+  }
 
   upVote (topicId, currentUser, increment) {
     http.patch(`/api/topic/${topicId}`, {
@@ -260,7 +261,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, setSelectedTopic,
     addTopicToListFront, changeSearchedList, changeFilteredList }, dispatch);
 };
 
