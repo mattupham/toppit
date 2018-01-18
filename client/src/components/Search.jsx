@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Icon, Input, Card } from 'semantic-ui-react';
+import { Form, Button, Icon, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { setSearchValue, toggleIsLoading } from '../js/actions/searchActions.js';
 import { bindActionCreators } from 'redux';

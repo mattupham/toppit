@@ -9,7 +9,7 @@ import store from '../js/store.js';
 
 
 const TopicList = (props) => {
-  var topicList = store.getState().topicList.topicList;
+  var topicList = store.getState().topicList.viewedTopicList;
   console.log('in topic list....', topicList)
   return (
     <Container>
@@ -26,8 +26,7 @@ const TopicList = (props) => {
 
 
 const mapStateToProps = (state) => ({
-  topicList: state.topicList.topicList,
-
+  viewedTopicList: state.topicList.viewedTopicList
 });
 
 export default connect(mapStateToProps)(TopicList);
