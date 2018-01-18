@@ -11,6 +11,14 @@ import {
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 
+// @connect((store) => {
+//   return {
+//     username: store.user.username,
+//     userFetched: store.user.fetched,
+//     password: store.user.password
+//   }
+// })
+
 const colors = {
   '1': ['red', 'weak'],
   '2': ['red', 'weak'],
@@ -24,10 +32,7 @@ const colors = {
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    // Wish I could make owasp colors work without state :(
-    this.state = {
-      pwStrengthColor: 'grey'
-    };
+
     // this.state = {
     //   username: '',
     //   password: '',
@@ -36,9 +41,8 @@ class SignUp extends React.Component {
     //   pwStrengthColor: 'grey',
     //   pwStrengthPhrase: 'password strength'
     // };
-    this.onUsernameChange = this.onUsernameChange.bind(this);
-    this.onEnterPassword = this.onEnterPassword.bind(this);
-    this.onEnterConfirm = this.onEnterConfirm.bind(this);
+
+    this.onChange = this.onChange.bind(this);
     this.onSignUp = this.onSignUp.bind(this);
   }
   onSignUp() {
@@ -58,7 +62,7 @@ class SignUp extends React.Component {
     }
   }
 
-  onUsernameChange(e, { value }) {
+  onChange(e, { value }) {
     console.log('Entering username', value);
     // const name = e.target.name;
     // this.setState({
@@ -67,15 +71,12 @@ class SignUp extends React.Component {
     //   usernameError: false,
     //   [name]: value
     // });
-    this.props.setUsernameError(false);
-    this.props.setUserPwError(false);
     this.props.setUsername(value);
   }
 
   onEnterPassword(e, { value }) {
     var strength = owasp.test(value);
     let color = colors[strength.passedTests.length][0];
-    console.log(strength.passedTests);
     let phrase = colors[strength.passedTests.length][1];
     
     this.props.setUserPwStrength(strength.passedTests.length / 6 * 100);
@@ -100,10 +101,6 @@ class SignUp extends React.Component {
     // });
   }
 
-  onEnterConfirm(e, { value }) {
-    this.props.setUserConfirm(value);
-  }
-
   render() {
     let user = store.getState().user.user;
     console.log(user);
@@ -115,10 +112,11 @@ class SignUp extends React.Component {
             <Form.Input 
               label='username' 
               name='username' 
-              onChange={this.onUsernameChange} 
+              // value={this.state.username} 
+              onChange={this.onChange} 
               autoComplete='username' 
               placeholder='username'
-              error={user.usernameError} 
+              // error={this.state.usernameError} 
             />
             <Form.Input 
               type='password' 
@@ -130,19 +128,15 @@ class SignUp extends React.Component {
               placeholder='password'
               error={user.pwError} 
             />
-            <Progress 
-              percent={user.pwStrength} 
-              color={this.state.pwStrengthColor} 
-              size='tiny'
-            >
-              {user.pwStrengthPhrase}
-            </Progress>
-            <Form.Input 
+            {/* <Progress percent={this.state.pwStrength} color={this.state.pwStrengthColor} size='tiny'>
+              {this.state.pwStrengthPhrase}
+            </Progress> */}
+            {/* <Form.Input 
               type='password' 
               label='confirm password' 
               name='confirmPassword' 
-              // value={this.state.ConfirmPassword} 
-              onChange={this.onEnterConfirm} 
+              value={this.state.ConfirmPassword} 
+              onChange={this.onChange} 
               autoComplete='new-password' 
               placeholder='password'
               error={user.pwError} 

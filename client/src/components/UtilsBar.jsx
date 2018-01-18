@@ -3,7 +3,7 @@ import SortList from './SortList.jsx';
 import FilterList from './FilterList.jsx';
 import { Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { selectFilter, selectSort } from '../js/actions/utilsBarActions.js';
+import { setFilter, setSort } from '../js/actions/utilsBarActions.js';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 
@@ -18,23 +18,31 @@ class UtilsBar extends React.Component {
   }
   
   onSortChange(sortBy) {
+    console.log('onSortChange', sortBy)
+    //sets sort stat with sortBy value
+    this.props.setSort(sortBy);
+
     //where to select current sort?
     //CHANGED, creates sort value by getting current state for sort
-    let sort = store.getState().utilsBar.utilsBar.sortBy;
-
+    //ACCESSING CORRECT OBJECT
+    // let sort = store.getState().utilsBar.sort.sortBy;
+    // console.log('sort', sort);
     // this.state.sortBy = sortBy;
+    
 
     //CHANGED, onDropdownChange accesses sort value
-    this.props.onDropdownChange(sort.sortBy);
+    this.props.onDropdownChange(sort);
   }
 
   onFilterChange(filterBy) {
     //CHANGED, creates filter value by getting current state for filter
-    let filter = store.getState().utilsBar.utilsBar.filterBy;
+    //ACCESSING CORRECT OBJECT
+    let filter = store.getState().utilsBar.filter.filterBy;
+    console.log('filter', filter);
     // this.state.filterBy = filterBy;
 
     //CHANGED, onDropdownChange accesses filter value
-    this.props.onDropdownChange(filter.filterBy);
+    // this.props.onDropdownChange(filter);
   }
 
   render() {
@@ -60,12 +68,12 @@ class UtilsBar extends React.Component {
 //CHANGED, how to access filterBy
 const mapStateToProps = (state) => ({
   //change to correct values
-  filter: state.utilsBar.filterBy,
-  sort: state.utilsBar.sortBy
+  filter: state.filter,
+  sort: state.sort
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ selectFilter, selectSort }, dispatch);
+  return bindActionCreators({ setFilter, setSort }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtilsBar);
