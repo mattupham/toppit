@@ -1,8 +1,7 @@
 export default function reducer(state = {
   fullTopicList: [],
-<<<<<<< HEAD
-  viewedTopicList: [],
-  topicList: [],
+  searchedTopicList: [],
+  filteredTopicList: [],
   selectedTopic: {},
   detailedTopic: {
     authorId: null,
@@ -15,10 +14,6 @@ export default function reducer(state = {
     upvoteUsers: [],
     upvotes: 0
   },
-=======
-  searchedTopicList: [],
-  filteredTopicList: []
->>>>>>> search bar filters global fullTopicList
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
