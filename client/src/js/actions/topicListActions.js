@@ -15,6 +15,7 @@ export const addTopicToListFront = (value) => {
 };
 
 export const changeViewedList = (list) => {
+  console.log('LIST SORTED', list);
   return {
     type: 'CHANGE_VIEWED_LIST',
     payload: list
