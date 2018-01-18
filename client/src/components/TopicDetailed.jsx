@@ -11,7 +11,10 @@ import anonPhoto1 from '../images/anonPhoto1.png';
 import anonPhoto2 from '../images/anonPhoto2.png';
 import anonPhoto3 from '../images/anonPhoto3.png';
 import anonPhoto4 from '../images/anonPhoto4.png';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import store from '../js/store.js';
+import { setDetailedTopic } from '../js/actions/topicListActions.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -37,6 +40,11 @@ class TopicDetailed extends React.Component {
 
       .then(({data}) => {
         console.log('getting topic', data);
+        console.log(data.headline);
+        console.log(data.description);
+        console.log(data.emotion);
+
+        this.props.setDetailedTopic(data);
         // this.setState({
         //   topic: data,
         //   commentText: '',
@@ -51,48 +59,51 @@ class TopicDetailed extends React.Component {
       });
   }
 
-  handleInputText(e, {value} ) {
+  // handleInputText(e, {value} ) {
 
-    this.setState({
-      commentText: e.target.value
-    })
-  }
+  //   this.setState({
+  //     commentText: e.target.value
+  //   })
+  // }
 
-  submitComment(commentText) {
-    var newComment = {
-      authorId: this.state.currentUser._id,
-      text: commentText,
-      timeStamp: new Date(),
-      upvotes: 0
-    }
-    //http request to database to add comment to topic
+  // submitComment(commentText) {
+  //   var newComment = {
+  //     authorId: this.state.currentUser._id,
+  //     text: commentText,
+  //     timeStamp: new Date(),
+  //     upvotes: 0
+  //   }
+  //   //http request to database to add comment to topic
 
-    http.post(`/api/topic/${this.props.topicId}`, newComment)
-      .then( (result) => {
-        console.log('success!', result);
-        newComment.description = result.data.text;
-      })
-      .catch( (error) => {
-        console.log(error)
-      })
+  //   http.post(`/api/topic/${this.props.topicId}`, newComment)
+  //     .then( (result) => {
+  //       console.log('success!', result);
+  //       newComment.description = result.data.text;
+  //     })
+  //     .catch( (error) => {
+  //       console.log(error)
+  //     })
 
-    var allComments = this.state.comments;
-    allComments.push(newComment);
-    this.setState({
-      comments: allComments,
-      commentText: ''
-    })
-  }  
+  //   var allComments = this.state.comments;
+  //   allComments.push(newComment);
+  //   this.setState({
+  //     comments: allComments,
+  //     commentText: ''
+  //   })
+  // }  
   
   render() {
     
     let name, photoUrl;
-    
-    if (!this.state.topic) {
-      return null;
-    }
+    let topic = store.getState().topicList.selectedTopic;
+    console.log(store.getState().topicList);
+    // console.log(topic.headline);
+    // console.log(topic.description);
+    // if (!topic) {
+    //   return null;
+    // }
 
-    const { topic } = this.state;
+    // const topic = store.get.topic;
 
     if (topic.authorId) {
       name = (topic.authorId && (topic.authorId.fullName || topic.authorId.username) || '');
@@ -123,9 +134,12 @@ class TopicDetailed extends React.Component {
                   <Card.Content header={topic.headline} meta={meta}/>
                   <Card.Content description={topic.description} />
                   <Card.Content extra>
-                    <UpvoteButton topic={topic} upvote={this.props.upvote} currentUser={this.state.currentUser}/>            
+                    <UpvoteButton 
+                      topic={topic} 
+                      // upvote={this.props.upvote} 
+                      currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {this.state.comments.length || 0} comments
+                    {/* {this.state.comments.length || 0} comments */}
                     &nbsp;&nbsp;
                     {topic.emotion ?
                       <Button compact color="blue" content={topic.emotion}/> : ''}                
@@ -139,16 +153,21 @@ class TopicDetailed extends React.Component {
               <Grid.Column width={14}>
                 <div>
                   &nbsp;&nbsp;
-                  <CommentList
+                  {/* <CommentList
                     handleCommentSubmitClick={this.submitComment.bind(this)}
-                    comments={this.state.comments} />
+                    comments={this.state.comments} 
+                  /> */}
                 </div>
                 <Container className='newcommentcontainer' text>
                   <Item>
                     <Form reply>
-                      <Form.TextArea value={this.state.commentText} onChange={this.handleInputText.bind(this)} />
+                      <Form.TextArea 
+                        // value={this.state.commentText} 
+                        // onChange={this.handleInputText.bind(this)} 
+                      />
                       <Button
-                        onClick={() => this.submitComment(this.state.commentText)} content="Add Reply" labelPosition='left' icon='edit' primary />
+                        // onClick={() => this.submitComment(this.state.commentText)} content="Add Reply" labelPosition='left' icon='edit' primary
+                      />
                     </Form>
                   </Item>
                 </Container>
@@ -161,9 +180,13 @@ class TopicDetailed extends React.Component {
   }
 }
 
-export default TopicDetailed;
 
-/* */
+const mapStateToProps = (state) => ({
+  detailedTopic: state.topicList.detailedTopic
+});
 
-                /*                 
-                */
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ setDetailedTopic }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopicDetailed);

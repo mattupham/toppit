@@ -1,9 +1,9 @@
 export const ADD_TOPIC_TO_LIST = 'ADD_TOPIC_TO_LIST';
 
-export const addTopicToList = (value) => {
+export const addTopicToList = (topic) => {
   return {
     type: 'ADD_TOPIC_TO_LIST',
-    payload: value
+    payload: topic
   };
 };
 
@@ -22,3 +22,17 @@ export const changeViewedList = (list) => {
   };
 };
 
+export const setSelectedTopic = (selectedTopic) => {
+  return {
+    type: 'SET_SELECTED_TOPIC',
+    payload: selectedTopic
+  };
+};
+
+export const setDetailedTopic = (detailedTopic) => {
+  console.log('Setting detailed topic', detailedTopic, 'in actions!');
+  return {
+    type: 'SET_DETAILED_TOPIC',
+    payload: detailedTopic
+  };
+};

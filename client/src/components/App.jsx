@@ -155,6 +155,7 @@ class App extends React.Component {
     // this.setState({
     //   selectedTopic: topic
     // });
+    this.props.setSelectedTopic(topic);
   }
 
   upVote (topicId, currentUser, increment) {
@@ -216,7 +217,7 @@ class App extends React.Component {
                 <TopicList {...props} 
                   // currentUser={this.state.currentUser}
                   // upVote={this.upVote} 
-                  // onDetailedTopic={this.onDetailedTopic} 
+                  onDetailedTopic={this.onDetailedTopic} 
                   // topicList={this.state.topicList} 
                 />
               </Container>
@@ -251,12 +252,20 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
   id: state.user.id,
+<<<<<<< HEAD
   viewedTopicList: state.topicList.viewedTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
     addTopicToListFront, changeViewedList }, dispatch);
+=======
+  selectedTopic: state.topic.selectedTopic
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, setSelectedTopic }, dispatch);
+>>>>>>> Progress on TopicDetailed -- detailedTopic not being stored correctly
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

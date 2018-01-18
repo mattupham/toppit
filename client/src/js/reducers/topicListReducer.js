@@ -1,6 +1,9 @@
 export default function reducer(state = {
   fullTopicList: [],
-  viewedTopicList: []
+  viewedTopicList: [],
+  topicList: [],
+  selectedTopic: {},
+  detailedTopic: {}
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -22,6 +25,21 @@ export default function reducer(state = {
       return {
         ...state,
         viewedTopicList: action.payload
+      }
+    }
+    case 'SET_SELECTED_TOPIC': {
+      console.log('Setting selected item in reducer!');
+      return {
+        ...state,
+        topicList: { ...state.topicList, selectedTopic: action.payload }
+      }
+    }
+    case 'SET_DETAILED_TOPIC': {
+      console.log('Setting detailed topic in reducer!');
+      console.log(action.payload);
+      return {
+        ...state,
+        topicList: { ...state.topicList, detailedTopic: action.payload }
       }
     }
     default: {
