@@ -4,6 +4,7 @@ import {Button, Header, Comment, Container, Form} from 'semantic-ui-react'
 
 
 const CommentList  = (props) => (
+
   <Comment.Group>
     <Header as="h3" dividing>Comments</Header>
     {props.comments.map( (comment, index) => (

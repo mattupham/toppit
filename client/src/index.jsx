@@ -11,11 +11,11 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 console.log('Rendering Main Page');
 
 ReactDOM.render((
-<Provider store={store}>
-  <Router>
-    <Switch>
-      <Route exact path='/login' component={Login}/>
-      <Route path='/' component={App}/>
-    </Switch>
-  </Router>
-</Provider>), document.getElementById('app'));
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route exact path='/login' component={Login}/>
+        <Route path='/' component={App}/>
+      </Switch>
+    </Router>
+  </Provider>), document.getElementById('app'));

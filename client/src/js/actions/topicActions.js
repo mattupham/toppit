@@ -33,6 +33,13 @@ export const setAnon = (anon) => {
     payload: anon
   };
 };
+export const addComment = (comment) => {
+  console.log(comment, ' in actions');
+  return {
+    type: 'ADD_COMMENT',
+    payload: comment
+  };
+};
 export const setCommentText = (commentText) => {
   console.log(commentText, ' in actions');
   return {

@@ -1,14 +1,6 @@
 // import * as user from '../userActions';
 // user.setUsername('user2');
-// export const fetchUser = () => {
-//   return {
-//     type: 'FETCH_USER_FULFILLED',
-//     payload: {
-//       username: 'user',
-//       password: 1234,
-//     }
-//   };
-// };
+
 export const setUserId = (id) => {
   console.log(id, ' in actions');
   return {

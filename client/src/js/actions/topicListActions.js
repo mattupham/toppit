@@ -1,9 +1,9 @@
 export const ADD_TOPIC_TO_LIST = 'ADD_TOPIC_TO_LIST';
 
-export const addTopicToList = (value) => {
+export const addTopicToList = (topic) => {
   return {
     type: 'ADD_TOPIC_TO_LIST',
-    payload: value
+    payload: topic
   };
 };
 
@@ -22,3 +22,38 @@ export const changeViewedList = (list) => {
   };
 };
 
+export const setSelectedTopic = (selectedTopic) => {
+  return {
+    type: 'SET_SELECTED_TOPIC',
+    payload: selectedTopic
+  };
+};
+
+export const setDetailedTopic = (detailedTopic) => {
+  return {
+    type: 'SET_DETAILED_TOPIC',
+    payload: detailedTopic
+  };
+};
+
+export const addDetailedComment = (comment) => {
+  console.log(comment, ' in actions');
+  return {
+    type: 'ADD_COMMENT',
+    payload: comment
+  };
+};
+export const setDetailedCommentText = (commentText) => {
+  console.log(commentText, ' in actions');
+  return {
+    type: 'SET_COMMENT_TEXT',
+    payload: commentText
+  };
+};
+export const setDetailedCommentList = (commentList) => {
+  console.log(commentList, ' in actions');
+  return {
+    type: 'SET_COMMENT_LIST',
+    payload: commentList
+  };
+};

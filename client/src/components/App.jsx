@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TopicList from './TopicList.jsx';
 import NewTopic from './NewTopic.jsx';
@@ -21,7 +20,7 @@ import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
 import { displayNewTopic } from '../js/actions/topicActions.js';
-import { addTopicToList, addTopicToListFront, changeViewedList } from '../js/actions/topicListActions.js';
+import { addTopicToList, addTopicToListFront, changeViewedList, setSelectedTopic } from '../js/actions/topicListActions.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -155,6 +154,7 @@ class App extends React.Component {
     // this.setState({
     //   selectedTopic: topic
     // });
+    this.props.setSelectedTopic(topic);
   }
 
   upVote (topicId, currentUser, increment) {
@@ -216,7 +216,7 @@ class App extends React.Component {
                 <TopicList {...props} 
                   // currentUser={this.state.currentUser}
                   // upVote={this.upVote} 
-                  // onDetailedTopic={this.onDetailedTopic} 
+                  onDetailedTopic={this.onDetailedTopic} 
                   // topicList={this.state.topicList} 
                 />
               </Container>
@@ -251,12 +251,13 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
   id: state.user.id,
-  viewedTopicList: state.topicList.viewedTopicList
+  viewedTopicList: state.topicList.viewedTopicList,
+  selectedTopic: state.topicList.selectedTopic
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
-    addTopicToListFront, changeViewedList }, dispatch);
+    addTopicToListFront, changeViewedList, setSelectedTopic }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

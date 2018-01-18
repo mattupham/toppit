@@ -19,10 +19,11 @@ const TopicList = (props) => {
           key={topic._id} 
           // upVote={props.upVote}
           // currentUser={props.currentUser} 
+          onDetailedTopic={props.onDetailedTopic}
         />))}
     </Container>
-  )
-}
+  );
+};
 
 
 const mapStateToProps = (state) => ({

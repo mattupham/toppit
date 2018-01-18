@@ -60,7 +60,7 @@ class Topic extends React.Component {
       photoUrl = anonPhotos[Math.floor(Math.random() * anonPhotos.length)];
     }
     let color = colors[this.props.topic.emotion];
-    let headline = /^([.]+)\s[.]+$/.exec(this.props.topic.emotion) + this.props.topic.headline 
+    let headline = /^([.]+)\s[.]+$/.exec(this.props.topic.emotion) + this.props.topic.headline;
 
     let meta = (
       <span>
