@@ -81,24 +81,21 @@ class TopicDetailed extends React.Component {
     http.post(`/api/topic/${this.props.topicId}`, newComment)
       .then( (result) => {
         console.log('success!', result);
-        store.getState().topicList.detailedTopic.commentId.push(result.data);
         // newComment.description = result.data.text;
-        console.log(store.getState().topicList.detailedTopic.commentId);
-        this.props.setDetailedCommentList(store.getState().topicList.detailedTopic.commentId);
       })
       .catch( (error) => {
         console.log(error);
       });
-    // console.log(store.getState().topicList.selectedTopic);
-    // console.log(store.getState().topicList.detailedTopic.commentId);
+    console.log(store.getState().topicList.selectedTopic);
+    console.log(store.getState().topicList.detailedTopic.commentId);
     
-    // var allComments = store.getState().topicList.detailedTopic.commentId;
+    var allComments = store.getState().topicList.detailedTopic.commentId;
 
-    // allComments.push(newComment);
-    // console.log(allComments);
-    // this.props.setDetailedCommentList(allComments);
-    // console.log(store.getState().topicList.detailedTopic.commentId);
-    // // this.props.setDetailedComment(a)
+    allComments.push(newComment);
+    console.log(allComments);
+    this.props.setDetailedCommentList(allComments);
+    console.log(store.getState().topicList.detailedTopic.commentId);
+    // this.props.setDetailedComment(a)
     // this.props.setCommentText('');
     // this.setState({
     //   comments: allComments,
@@ -154,7 +151,7 @@ class TopicDetailed extends React.Component {
                       // upvote={this.props.upvote} 
                       currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {store.getState().topicList.selectedTopic.commentId.length || 0} comments
+                    {selectedTopic.commentId.length || 0} comments
                     &nbsp;&nbsp;
                     {selectedTopic.emotion ?
                       <Button compact color="blue" content={selectedTopic.emotion}/> : ''}                
@@ -170,7 +167,7 @@ class TopicDetailed extends React.Component {
                   &nbsp;&nbsp;
                   <CommentList
                     handleCommentSubmitClick={this.submitComment.bind(this)}
-                    comments={store.getState().topicList.selectedTopic.commentId} 
+                    comments={selectedTopic.commentId} 
                   />
                 </div>
                 <Container className='newcommentcontainer' text>
