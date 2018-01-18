@@ -13,13 +13,13 @@ const TopicList = (props) => {
   console.log('in topic list....', topicList)
   return (
     <Container>
-      {/* {topicList.map((topic) => (
+      {topicList.map((topic) => (
         <Topic {...props}
           topic={topic} 
           key={topic._id} 
-          upVote={props.upVote}
-          currentUser={props.currentUser} 
-        />))} */}
+          // upVote={props.upVote}
+          // currentUser={props.currentUser} 
+        />))}
     </Container>
   )
 }
@@ -27,6 +27,7 @@ const TopicList = (props) => {
 
 const mapStateToProps = (state) => ({
   topicList: state.topicList.topicList,
+
 });
 
 export default connect(mapStateToProps)(TopicList);

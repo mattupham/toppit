@@ -12,6 +12,11 @@ import anonPhoto2 from '../images/anonPhoto2.png';
 import anonPhoto3 from '../images/anonPhoto3.png';
 import anonPhoto4 from '../images/anonPhoto4.png';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import store from '../js/store.js';
+
+
 const anonPhotos = [
   anonPhoto1,
   anonPhoto2,
@@ -76,7 +81,7 @@ class Topic extends React.Component {
             <Card.Content onClick={this.renderTopicDetailedView} header={this.props.topic.headline} meta={meta}/>
             <Card.Content description={this.props.topic.description}/>
             <Card.Content extra>
-              <UpvoteButton topic={this.props.topic} upvote={this.props.upVote} currentUser={this.state.currentUser}/>
+              <UpvoteButton topic={this.props.topic} upvote={this.props.upVote}/>
               &nbsp;
               <a onClick={this.renderTopicDetailedView}>
                 <Icon name='comments'/>
@@ -93,4 +98,13 @@ class Topic extends React.Component {
   }  
 }
 
-export default Topic;
+const mapStateToProps = (state) => ({
+  topicList: state.topicList.topicList,
+  currentUser: state.search.isLoading
+});
+
+// const mapDispatchToProps = (dispatch) => {
+//   return bindActionCreators({  }, dispatch);
+// };
+
+export default connect(mapStateToProps)(Topic);
