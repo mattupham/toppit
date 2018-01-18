@@ -109,6 +109,7 @@ class App extends React.Component {
         if (search) {
           var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
         }
+        this.props.changeViewedList(filteredData);
         //**also fix here
         // this.setState({
         //   topicList: filteredData || data,
