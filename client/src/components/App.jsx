@@ -254,7 +254,9 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
-  id: state.user.id,
+  id: state.user.user.id,
+  viewedTopicList: state.topicList.viewedTopicList,
+  selectedTopic: state.topicList.selectedTopic
 });
 
 const mapDispatchToProps = (dispatch) => {

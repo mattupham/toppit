@@ -42,7 +42,7 @@ export const setDetailedTopic = (detailedTopic) => {
   };
 };
 
-export const addDetailedComment = (comment) => {
+export const addComment = (comment) => {
   console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT',

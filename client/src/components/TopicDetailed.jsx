@@ -69,27 +69,36 @@ class TopicDetailed extends React.Component {
 
   submitComment(commentText) {
     var newComment = {
-      authorId: store.getState().user.user.id,
+      authorId: store.getState().topicList.detailedTopic.authorId,
       text: commentText,
       timeStamp: new Date(),
+      username: store.getState().user.user.username,
       upvotes: 0
     };
     //http request to database to add comment to topic
     console.log(newComment);
 
-    // http.post(`/api/topic/${this.props.topicId}`, newComment)
-    //   .then( (result) => {
-    //     console.log('success!', result);
-    //     newComment.description = result.data.text;
-    //   })
-    //   .catch( (error) => {
-    //     console.log(error);
-    //   });
+    http.post(`/api/topic/${this.props.topicId}`, newComment)
+      .then( (result) => {
+        console.log('success!', result);
+        store.getState().topicList.detailedTopic.commentId.push(result.data);
+        // newComment.description = result.data.text;
+        console.log(store.getState().topicList.detailedTopic.commentId);
+        this.props.setDetailedCommentList(store.getState().topicList.detailedTopic.commentId);
+      })
+      .catch( (error) => {
+        console.log(error);
+      });
+    // console.log(store.getState().topicList.selectedTopic);
+    // console.log(store.getState().topicList.detailedTopic.commentId);
     
-    var allComments = store.getState().topicList.detailedTopic;
-    console.log(allComments);
+    // var allComments = store.getState().topicList.detailedTopic.commentId;
+
     // allComments.push(newComment);
-    // this.props.setCommentList(allComments);
+    // console.log(allComments);
+    // this.props.setDetailedCommentList(allComments);
+    // console.log(store.getState().topicList.detailedTopic.commentId);
+    // // this.props.setDetailedComment(a)
     // this.props.setCommentText('');
     // this.setState({
     //   comments: allComments,
@@ -145,7 +154,7 @@ class TopicDetailed extends React.Component {
                       // upvote={this.props.upvote} 
                       currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {/* {this.state.comments.length || 0} comments */}
+                    {store.getState().topicList.selectedTopic.commentId.length || 0} comments
                     &nbsp;&nbsp;
                     {selectedTopic.emotion ?
                       <Button compact color="blue" content={selectedTopic.emotion}/> : ''}                
@@ -159,10 +168,10 @@ class TopicDetailed extends React.Component {
               <Grid.Column width={14}>
                 <div>
                   &nbsp;&nbsp;
-                  {/* <CommentList
+                  <CommentList
                     handleCommentSubmitClick={this.submitComment.bind(this)}
-                    comments={topic.comments} 
-                  /> */}
+                    comments={store.getState().topicList.selectedTopic.commentId} 
+                  />
                 </div>
                 <Container className='newcommentcontainer' text>
                   <Item>
@@ -190,7 +199,8 @@ class TopicDetailed extends React.Component {
 const mapStateToProps = (state) => ({
   selectedTopic: state.topicList.selectedTopic,
   commentText: state.topic.commentText,
-  comments: state.topic.comments
+  comments: state.topic.comments,
+  commentId: state.topicList.selectedTopic.commentId
 });
 
 const mapDispatchToProps = (dispatch) => {

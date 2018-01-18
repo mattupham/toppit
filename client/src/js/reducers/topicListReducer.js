@@ -3,18 +3,7 @@ export default function reducer(state = {
   searchedTopicList: [],
   filteredTopicList: [],
   selectedTopic: {},
-  detailedTopic: {
-    authorId: null,
-    commentText: '',
-    commentId: [],
-    headline: '',
-    description: '',
-    emotion: '',
-    timeStamp: '',
-    upvoteUsers: [],
-    upvotes: 0
-  },
-
+  detailedTopic: {},
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -60,27 +49,30 @@ export default function reducer(state = {
         detailedTopic: action.payload
       }
     }
-    case 'SET_COMMENT_TEXT': {
-      console.log('Setting comment text in reducer!');
-      return {
-        ...state,
-        detailedTopic: { ...state.topicList, commentText: action.payload }
-      }
-    }
+    // case 'SET_COMMENT_TEXT': {
+    //   console.log('Setting comment text in reducer!');
+    //   return {
+    //     ...state,
+    //     detailedTopic: { ...state.topicList, commentText: action.payload }
+    //   }
+    // }
     case 'SET_COMMENT_LIST': {
-      console.log('Setting comment list in reducer!');
+      console.log('Setting detailed comment list in reducer!');
       return {
         ...state,
-        detailedTopic: { ...state.topicList, commentId: action.payload }
+        selectedTopic: { 
+          ...state.selectedTopic, 
+          commentId: state.selectedTopic.commentId.concat(action.payload) 
+        }
       }
     }
     case 'ADD_COMMENT': {
       console.log('Adding comment in reducer!');
       return {
         ...state,
-        detailedTopic: { 
+        selectedTopic: { 
           ...state.topicList, 
-          commentId: state.topicList.detailedTopic.commentId.concat(action.payload) 
+          commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
         }
       }
     }
