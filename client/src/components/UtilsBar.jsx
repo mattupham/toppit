@@ -18,31 +18,15 @@ class UtilsBar extends React.Component {
   }
   
   onSortChange(sortBy) {
-    console.log('onSortChange', sortBy)
-    //sets sort stat with sortBy value
+    console.log('onSortChange sortBy value', sortBy)
+    //sets sort state with sortBy value
     this.props.setSort(sortBy);
-
-    //where to select current sort?
-    //CHANGED, creates sort value by getting current state for sort
-    //ACCESSING CORRECT OBJECT
-    // let sort = store.getState().utilsBar.sort.sortBy;
-    // console.log('sort', sort);
-    // this.state.sortBy = sortBy;
-    
-
-    //CHANGED, onDropdownChange accesses sort value
-    this.props.onDropdownChange(sort);
   }
 
   onFilterChange(filterBy) {
-    //CHANGED, creates filter value by getting current state for filter
-    //ACCESSING CORRECT OBJECT
-    let filter = store.getState().utilsBar.filter.filterBy;
-    console.log('filter', filter);
-    // this.state.filterBy = filterBy;
-
-    //CHANGED, onDropdownChange accesses filter value
-    // this.props.onDropdownChange(filter);
+    console.log('onFilterChange filterBy value', filterBy)
+    //sets filter state with filterBy value
+    this.props.setFilter(filterBy);
   }
 
   render() {
