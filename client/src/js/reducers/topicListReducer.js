@@ -43,6 +43,7 @@ export default function reducer(state = {
       return {
         ...state,
         filteredTopicList: action.payload
+<<<<<<< HEAD
       }
     }
     case 'SET_SELECTED_TOPIC': {
@@ -82,6 +83,8 @@ export default function reducer(state = {
           ...state.topicList, 
           commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
         }
+=======
+>>>>>>> 5f97983af2a8042705b32400f7c6d075fcb05ba1
       }
     }
     default: {
