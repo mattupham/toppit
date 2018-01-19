@@ -3,7 +3,11 @@ export default function reducer(state = {
   searchedTopicList: [],
   filteredTopicList: [],
   selectedTopic: {},
-  detailedTopic: {},
+  detailedTopic: {
+    authorId: '',
+    commentId: []
+  },
+  commentList: []
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -60,10 +64,17 @@ export default function reducer(state = {
       console.log('Setting detailed comment list in reducer!');
       return {
         ...state,
-        selectedTopic: { 
-          ...state.selectedTopic, 
-          commentId: state.selectedTopic.commentId.concat(action.payload) 
+        detailedTopic: { 
+          ...state.detailedTopic, 
+          commentId: action.payload
         }
+      }
+    }
+    case 'SET_TOPIC_COMMENTS': {
+      console.log('Setting topic comments in reducer!');
+      return {
+        ...state,
+        commentList: action.payload
       }
     }
     case 'ADD_COMMENT': {
@@ -72,8 +83,15 @@ export default function reducer(state = {
         ...state,
         selectedTopic: { 
           ...state.topicList, 
-          commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
+          commentId: state.selectedTopic.commentId.concat(action.payload) 
         }
+      }
+    }
+    case 'ADD_COMMENT_TO_FRONT': {
+      console.log('Adding comment to front!');
+      return {
+        ...state,
+        commentList: state.commentList.concat(action.payload)
       }
     }
     default: {

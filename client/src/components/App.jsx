@@ -142,6 +142,7 @@ class App extends React.Component {
 
       .then(({data}) => {
         //** need to rerender page
+        // console.log(data);
         this.props.addTopicToListFront(data);
         this.props.changeSearchedList(store.getState().topicList.fullTopicList)
         this.props.changeFilteredList(store.getState().topicList.fullTopicList)

@@ -98,7 +98,7 @@ api.get('/user/:userId', (req, res) => {
   if (req.params.userId === 'current') {
     query._id = req.session.passport.user;
   } else {
-    query[Object.keys(req.params.userId)[0]] = req.params.userId;
+    query = req.params.userId._id;
   }
 
   db.getUser(query, (err, user) => {

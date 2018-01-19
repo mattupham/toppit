@@ -28,7 +28,7 @@ class Search extends React.Component {
       if (topic.headline.toLowerCase().includes(searchValue) || 
         topic.description.toLowerCase().includes(searchValue) || 
         topic.authorId.username.toLowerCase().includes(searchValue)) {
-          return topic;
+        return topic;
       }
     });
     this.props.changeSearchedList(filteredArr);

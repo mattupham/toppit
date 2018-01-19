@@ -23,6 +23,7 @@ const commentSchema = mongoose.Schema({
   text:       String,
   timeStamp:  Date,
   authorId:   { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  topicId:    String,
   username:   String,
   upvotes:    Number
 });
@@ -133,7 +134,7 @@ let saveTopic = (topic, callback) => {
       console.log(err.message);
       callback(err, null);
     }
-    callback(null, newTopic);
+    callback(null, result);
   });
 };
 
@@ -187,6 +188,7 @@ let saveComment = (commentObj, topicId, callback) => {
     _id:        id,
     text:       commentObj.text,
     timeStamp:  commentObj.timeStamp,
+    authorId:   commentObj.topicId,
     username:   commentObj.username,
     upvotes:    commentObj.upvotes
   });
@@ -203,6 +205,7 @@ let saveComment = (commentObj, topicId, callback) => {
       text:       commentObj.text,
       timeStamp:  commentObj.timeStamp,
       authorId:   doc._id,
+      topicId:    commentObj.topicId,
       username:   commentObj.username,
       upvotes:    commentObj.upvotes
     };

@@ -2,7 +2,7 @@ import React from'react';
 import { Button, Comment, Form, Card, Header } from 'semantic-ui-react';
 import moment from 'moment';
 import defaultPhoto from '../images/defaultPhoto.jpg';
-
+import store from '../js/store.js';
 
 const MyComment = (props) => {
 
@@ -14,7 +14,7 @@ const MyComment = (props) => {
     <Comment>
       <Comment.Avatar className='commentuser' src={photoUrl} />
       <Comment.Content>
-        <Comment.Author as='a'>{name}</Comment.Author>
+        <Comment.Author as='a'>{props.comment.username}</Comment.Author>
         <Comment.Metadata>
           <div>{moment(props.comment.timeStamp).fromNow()}</div>
         </Comment.Metadata>
