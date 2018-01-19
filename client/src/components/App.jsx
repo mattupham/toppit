@@ -101,14 +101,12 @@ class App extends React.Component {
   }
 
   upVote (topicId, currentUser, increment, upvoteOrDownvote) {
-            console.log('store...', store.getState());
     http.patch(`/api/topic/${topicId}`, {
       upvotes: increment,
       currentUser: currentUser
     })      
       .then( ({data}) => {
-        console.log('store...', store.getState());
-        this.createNewViewedTopicList(upvoteOrDownvote, increment, currentUser, topicId);
+        this.createNewFilteredTopicList(upvoteOrDownvote, increment, currentUser, topicId);
       })
       .catch( (error) => {
         console.log(error);
@@ -129,32 +127,33 @@ class App extends React.Component {
     return topic;
   }
 
-  createNewViewedTopicList(upvoteOrDownvote, newVoteTotal, userId, topicId) {
+  createNewFilteredTopicList(upvoteOrDownvote, newVoteTotal, userId, topicId) {
     // var fullTopicList = JSON.parse(JSON.stringify(store.getState().topicList.fullTopicList));
     // var viewedTopicList = JSON.parse(JSON.stringify(store.getState().topicList.viewedTopicList));
-    var newViewedTopicList = [...store.getState().topicList.viewedTopicList];
+    console.log('store...', store.getState());
+    var newFilteredTopicList = [...store.getState().topicList.filteredTopicList];
     if (upvoteOrDownvote === 1) {
-      for (var j = 0; j < newViewedTopicList.length; j++) {
-        var topic = newViewedTopicList[j];
+      for (var j = 0; j < newFilteredTopicList.length; j++) {
+        var topic = newFilteredTopicList[j];
         if (topic._id === topicId) {
           var selectedTopic = {...topic};
           selectedTopic.upvoteUsers = [...topic.upvoteUsers];
           selectedTopic = this.addUpvoteAndUser(selectedTopic, userId);
-          newViewedTopicList[j] = selectedTopic;
+          newFilteredTopicList[j] = selectedTopic;
         }
       }
     } else if (upvoteOrDownvote === -1) {
-      for (var j = 0; j < newViewedTopicList.length; j++) {
-        var topic = newViewedTopicList[j];
+      for (var j = 0; j < newFilteredTopicList.length; j++) {
+        var topic = newFilteredTopicList[j];
         if (topic._id === topicId) {
           var selectedTopic = {...topic};
           selectedTopic.upvoteUsers = [...topic.upvoteUsers];
           selectedTopic = this.deleteUpvoteAndUser(selectedTopic, userId);
-          newViewedTopicList[j] = selectedTopic;
+          newFilteredTopicList[j] = selectedTopic;
         }
       }
     }
-    this.props.changeViewedList(newViewedTopicList);
+    this.props.changeFilteredList(newFilteredTopicList);
   }
 
 
@@ -234,8 +233,9 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
   id: state.user.user.id,
-  viewedTopicList: state.topicList.viewedTopicList,
-  selectedTopic: state.topicList.selectedTopic
+  filteredTopicList: state.topicList.filteredTopicList,
+  selectedTopic: state.topicList.selectedTopic,
+  fullTopicList: state.topicList.fullTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
