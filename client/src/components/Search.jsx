@@ -26,7 +26,7 @@ class Search extends React.Component {
     var filteredArr = topicListCopy.filter(topic => {
       if (topic.headline.toLowerCase().includes(searchValue) || 
         topic.description.toLowerCase().includes(searchValue) || 
-        topic.authorId.username.toLowerCase().includes(searchValue)) {
+        topic.authorUsername.toLowerCase().includes(searchValue)) {
         return topic;
       }
     });

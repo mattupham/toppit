@@ -13,14 +13,7 @@ import store from '../js/store.js';
 class UtilsBar extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = ({
-    //   filterBy: props.defaultFilter,
-    //   sortBy: props.defaultSort
-    // });
   }
-  
-  //  test topic list [{upvotes: 2},{upvotes:3},{upvotes: 4}]
 
   sortTopicListByUpvotes(searchedTopicList) {
     return searchedTopicList.sort(function(a, b) {
@@ -33,7 +26,6 @@ class UtilsBar extends React.Component {
       return a.timestamp - b.timestamp;
     });
   }
-
 
   onSortChange(sortBy) {
     let newFilteredTopicList = [];
