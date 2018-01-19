@@ -1,9 +1,9 @@
 export const ADD_TOPIC_TO_LIST = 'ADD_TOPIC_TO_LIST';
 
-export const addTopicToList = (topic) => {
+export const addTopicToList = (value) => {
   return {
     type: 'ADD_TOPIC_TO_LIST',
-    payload: topic
+    payload: value
   };
 };
 export const addTopicToListFront = (value) => {
@@ -24,6 +24,7 @@ export const changeFilteredList = (list) => {
     payload: list
   };
 };
+
 export const setSelectedTopic = (selectedTopic) => {
   return {
     type: 'SET_SELECTED_TOPIC',
@@ -71,3 +72,4 @@ export const addCommentToFront = (topic) => {
     payload: topic
   };
 };
+

@@ -32,6 +32,7 @@ class App extends React.Component {
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
     this.onDetailedTopic = this.onDetailedTopic.bind(this);
+    // this.getSelectTopics = this.getSelectTopics.bind(this);
   }
 
   componentDidMount() {
@@ -100,20 +101,65 @@ class App extends React.Component {
     this.props.setSelectedTopic(topic);
   }
 
-  upVote (topicId, currentUser, increment) {
+  upVote (topicId, currentUser, increment, upvoteOrDownvote) {
     http.patch(`/api/topic/${topicId}`, {
       upvotes: increment,
       currentUser: currentUser
     })      
       .then( ({data}) => {
-        // function to be implemented to get all topics
-        // this.getSelectTopics();
+        this.createNewFilteredTopicList(upvoteOrDownvote, increment, currentUser, topicId);
       })
       .catch( (error) => {
         console.log(error);
       });
     
   }
+
+  addUpvoteAndUser(topic, userId) {
+    topic.upvotes += 1;
+    topic.upvoteUsers.push(userId);
+        console.log('topic......', topic);
+    return topic;
+  }
+
+  deleteUpvoteAndUser(topic, userId) {
+    topic.upvotes -= 1;
+    topic.upvoteUsers.splice(topic.upvoteUsers.indexOf(userId), 1);
+    return topic;
+  }
+
+  createNewFilteredTopicList(upvoteOrDownvote, newVoteTotal, userId, topicId) {
+    // var fullTopicList = JSON.parse(JSON.stringify(store.getState().topicList.fullTopicList));
+    // var viewedTopicList = JSON.parse(JSON.stringify(store.getState().topicList.viewedTopicList));
+    console.log('store...', store.getState());
+    var newFilteredTopicList = [...store.getState().topicList.filteredTopicList];
+    if (upvoteOrDownvote === 1) {
+      for (var j = 0; j < newFilteredTopicList.length; j++) {
+        var topic = newFilteredTopicList[j];
+        if (topic._id === topicId) {
+          var selectedTopic = {...topic};
+          selectedTopic.upvoteUsers = [...topic.upvoteUsers];
+          selectedTopic = this.addUpvoteAndUser(selectedTopic, userId);
+          newFilteredTopicList[j] = selectedTopic;
+        }
+      }
+    } else if (upvoteOrDownvote === -1) {
+      for (var j = 0; j < newFilteredTopicList.length; j++) {
+        var topic = newFilteredTopicList[j];
+        if (topic._id === topicId) {
+          var selectedTopic = {...topic};
+          selectedTopic.upvoteUsers = [...topic.upvoteUsers];
+          selectedTopic = this.deleteUpvoteAndUser(selectedTopic, userId);
+          newFilteredTopicList[j] = selectedTopic;
+        }
+      }
+    }
+    this.props.changeFilteredList(newFilteredTopicList);
+  }
+
+
+
+
 
   downVote (topicId) {
 
@@ -152,7 +198,8 @@ class App extends React.Component {
                   // onDropdownChange={this.getSelectTopics}
                 />
                 <TopicList {...props} 
-                  // upVote={this.upVote} 
+                  // currentUser={this.state.currentUser}
+                  upVote={this.upVote} 
                   onDetailedTopic={this.onDetailedTopic} 
                 />
               </Container>
@@ -187,13 +234,14 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   displayNewTopic: state.topic.displayNewTopic,
   id: state.user.user.id,
-  viewedTopicList: state.topicList.viewedTopicList,
-  selectedTopic: state.topicList.selectedTopic
+  filteredTopicList: state.topicList.filteredTopicList,
+  selectedTopic: state.topicList.selectedTopic,
+  fullTopicList: state.topicList.fullTopicList
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, setSelectedTopic,
-    addTopicToListFront, changeSearchedList, changeFilteredList }, dispatch);
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
+    addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
