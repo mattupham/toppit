@@ -66,8 +66,6 @@ let Comment = db.model('Comment', commentSchema);
 //let List = db.model('List', listchema);
 //let Organization = db.model('Organization', sessionSchema);
 
-
-
 let getTopics = (callback) => {
 
   Topic.find({}, null, {sort: '-timeStamp'})

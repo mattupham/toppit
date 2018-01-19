@@ -38,6 +38,14 @@ export default function reducer(state = {
         filteredTopicList: action.payload
       }
     }
+    // case 'CHANGE_FULL_TOPIC_LIST_AND_VIEWED_LIST': {
+    //   console.log('action payload', action.payload);
+    //   return {
+    //     ...state,
+    //     viewedTopicList: action.payload[1],
+    //     fullTopicList: action.payload[0]
+    //   }
+    // }
     case 'SET_SELECTED_TOPIC': {
       // console.log('Setting selected item in reducer!');
       return {

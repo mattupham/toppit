@@ -100,20 +100,71 @@ class App extends React.Component {
     this.props.setSelectedTopic(topic);
   }
 
-  upVote (topicId, currentUser, increment) {
+  upVote (topicId, currentUser, increment, upvoteOrDownvote) {
+            console.log('store...', store.getState());
     http.patch(`/api/topic/${topicId}`, {
       upvotes: increment,
       currentUser: currentUser
     })      
       .then( ({data}) => {
         // function to be implemented to get all topics
+<<<<<<< HEAD
         // this.getSelectTopics();
+=======
+        console.log('store...', store.getState());
+        this.createNewViewedTopicList(upvoteOrDownvote, increment, currentUser, topicId);
+>>>>>>> upvote with redux is working
       })
       .catch( (error) => {
         console.log(error);
       });
     
   }
+
+  addUpvoteAndUser(topic, userId) {
+    topic.upvotes += 1;
+    topic.upvoteUsers.push(userId);
+        console.log('topic......', topic);
+    return topic;
+  }
+
+  deleteUpvoteAndUser(topic, userId) {
+    topic.upvotes -= 1;
+    topic.upvoteUsers.splice(topic.upvoteUsers.indexOf(userId), 1);
+    return topic;
+  }
+
+  createNewViewedTopicList(upvoteOrDownvote, newVoteTotal, userId, topicId) {
+    // var fullTopicList = JSON.parse(JSON.stringify(store.getState().topicList.fullTopicList));
+    // var viewedTopicList = JSON.parse(JSON.stringify(store.getState().topicList.viewedTopicList));
+    var newViewedTopicList = [...store.getState().topicList.viewedTopicList];
+    if (upvoteOrDownvote === 1) {
+      for (var j = 0; j < newViewedTopicList.length; j++) {
+        var topic = newViewedTopicList[j];
+        if (topic._id === topicId) {
+          var selectedTopic = {...topic};
+          selectedTopic.upvoteUsers = [...topic.upvoteUsers];
+          selectedTopic = this.addUpvoteAndUser(selectedTopic, userId);
+          newViewedTopicList[j] = selectedTopic;
+        }
+      }
+    } else if (upvoteOrDownvote === -1) {
+      for (var j = 0; j < newViewedTopicList.length; j++) {
+        var topic = newViewedTopicList[j];
+        if (topic._id === topicId) {
+          var selectedTopic = {...topic};
+          selectedTopic.upvoteUsers = [...topic.upvoteUsers];
+          selectedTopic = this.deleteUpvoteAndUser(selectedTopic, userId);
+          newViewedTopicList[j] = selectedTopic;
+        }
+      }
+    }
+    this.props.changeViewedList(newViewedTopicList);
+  }
+
+
+
+
 
   downVote (topicId) {
 
@@ -152,7 +203,8 @@ class App extends React.Component {
                   // onDropdownChange={this.getSelectTopics}
                 />
                 <TopicList {...props} 
-                  // upVote={this.upVote} 
+                  // currentUser={this.state.currentUser}
+                  upVote={this.upVote} 
                   onDetailedTopic={this.onDetailedTopic} 
                 />
               </Container>
