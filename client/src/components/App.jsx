@@ -244,7 +244,7 @@ const mapStateToProps = (state) => ({
   id: state.user.user.id,
   filteredTopicList: state.topicList.filteredTopicList,
   selectedTopic: state.topicList.selectedTopic,
-  fullTopicList: state.topicList.fullTopicList
+  fullTopicList: state.topicList.fullTopicList,
   username: state.user.user.username,
   viewedTopicList: state.topicList.viewedTopicList,
   selectedTopic: state.topicList.selectedTopic
