@@ -14,8 +14,8 @@ import anonPhoto4 from '../images/anonPhoto4.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
-import { setCommentText, setTopicAuthor } from '../js/actions/topicActions';
-import { setDetailedTopic, setDetailedCommentList, addComment, addCommentToFront } from '../js/actions/topicListActions.js';
+import { setCommentText } from '../js/actions/topicActions';
+import { setDetailedTopic, addCommentToFront, setDetailedCommentList } from '../js/actions/topicListActions.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -27,29 +27,13 @@ const anonPhotos = [
 class TopicDetailed extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   // currentUser: this.props.currentUser,
-    //   topic: null,
-    //   commentText: '',
-    //   upvoteStateColor: 'grey'
-    // };
   }
 
   componentDidMount() {
     http.get(`/api/topic/${this.props.topicId}`) 
-
       .then(({data}) => {
-        // this.props.setDetailedTopic(data);
         this.props.setDetailedCommentList(data.commentId);
-        // console.log(store.getState().topicList.detailedTopic);
-        // this.setState({
-        //   topic: data,
-        //   commentText: '',
-        //   comments: data.commentId
-        // });
       })
-
       .catch((err) => {
         console.log(err.message);
       });
@@ -57,9 +41,6 @@ class TopicDetailed extends React.Component {
 
   handleInputText(e, {value} ) {
     this.props.setCommentText(value);
-    // this.setState({
-    //   commentText: e.target.value
-    // })
   }
 
   submitComment(commentText) {
@@ -72,29 +53,19 @@ class TopicDetailed extends React.Component {
       upvotes: 0
     };
     //http request to database to add comment to topic
-    console.log(newComment);
-    this.props.setTopicAuthor(store.getState().topicList.selectedTopic.authorId.username);
-    this.props.addComment(newComment);
-    this.props.setDetailedCommentList(store.getState().topicList.selectedTopic.commentId);
+    // console.log(newComment);
     this.props.addCommentToFront(newComment);
-    
-    // this.postComment();
+
     http.post(`/api/topic/${this.props.topicId}`, newComment)
       .then( (result) => {
         console.log('success!', result);
-        // newComment.description = result.data.text;
       })
       .catch( (error) => {
         console.log(error);
       });
-    // this.setState({
-    //   comments: allComments,
-    //   commentText: ''
-    // })
   }  
   
   render() {
-    
     let name, photoUrl;
     let selectedTopic = store.getState().topicList.selectedTopic;
     let detailedTopic = store.getState().topicList.detailedTopic;
@@ -132,7 +103,7 @@ class TopicDetailed extends React.Component {
                       // upvote={this.props.upvote} 
                       currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {selectedTopic.commentId.length || 0} comments
+                    {selectedTopic.commentId.length} {(selectedTopic.commentId.length === 1) ? 'comment' : 'comments'}
                     &nbsp;&nbsp;
                     {selectedTopic.emotion ?
                       <Button compact color="blue" content={selectedTopic.emotion}/> : ''}                
@@ -155,7 +126,6 @@ class TopicDetailed extends React.Component {
                   <Item>
                     <Form reply>
                       <Form.TextArea 
-                        // value={this.state.commentText} 
                         onChange={this.handleInputText.bind(this)} 
                       />
                       <Button
@@ -183,7 +153,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
-    setDetailedTopic, setTopicAuthor, setCommentText, addComment, addCommentToFront, setDetailedCommentList }, dispatch);
+    setDetailedTopic, setCommentText, addCommentToFront, setDetailedCommentList }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopicDetailed);

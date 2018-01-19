@@ -7,15 +7,16 @@ const passportLocalMongoose = require('passport-local-mongoose');
 var db = mongoose.createConnection(uri, options);
 
 const topicSchema = mongoose.Schema({
-  _id:           mongoose.Schema.Types.ObjectId,
-  headline:      String,
-  description:   String,
-  timeStamp:     Date,
-  upvotes:       Number,
-  commentId:     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  authorId:      { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  emotion:       String,
-  upvoteUsers:   []
+  _id:            mongoose.Schema.Types.ObjectId,
+  headline:       String,
+  description:    String,
+  timeStamp:      Date,
+  upvotes:        Number,
+  commentId:      [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  authorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  authorUsername: String,
+  emotion:        String,
+  upvoteUsers:    []
 });
 
 const commentSchema = mongoose.Schema({

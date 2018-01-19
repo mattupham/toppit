@@ -5,13 +5,6 @@ export const setTopicUsername = (username) => {
     payload: username
   };
 };
-export const setTopicAuthor = (author) => {
-  console.log(author, ' in actions');
-  return {
-    type: 'SET_TOPIC_AUTHOR',
-    payload: author
-  };
-};
 export const displayNewTopic = (display) => {
   console.log(display, ' in actions');
   return {

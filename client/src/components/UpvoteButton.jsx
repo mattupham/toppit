@@ -60,7 +60,7 @@ class UpvoteButton extends React.Component {
         labelPosition='right'
         onClick={ this.handleClick.bind(this)}
       />   
-      )
+    )
   }
 }
 export default UpvoteButton;

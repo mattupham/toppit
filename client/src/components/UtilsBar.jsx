@@ -22,15 +22,15 @@ class UtilsBar extends React.Component {
   
   //  test topic list [{upvotes: 2},{upvotes:3},{upvotes: 4}]
 
-  sortTopicListByUpvotes(searchedTopicList){
-    return searchedTopicList.sort(function(a, b){
-      return a.upvotes-b.upvotes;
+  sortTopicListByUpvotes(searchedTopicList) {
+    return searchedTopicList.sort(function(a, b) {
+      return a.upvotes - b.upvotes;
     });
   }
 
-  sortTopicListByTimeStamp(searchedTopicList){
-    return searchedTopicList.sort(function(a, b){
-      return a.timestamp-b.timestamp;
+  sortTopicListByTimeStamp(searchedTopicList) {
+    return searchedTopicList.sort(function(a, b) {
+      return a.timestamp - b.timestamp;
     });
   }
 
@@ -58,7 +58,7 @@ class UtilsBar extends React.Component {
     let emotion = store.getState().utilsBar.filter.filterBy;
     let searchedTopicList = store.getState().topicList.searchedTopicList;
     //determines how to filter depending on emotion value
-    if (emotion !== ''){
+    if (emotion !== '') {
       newFilteredTopicList = searchedTopicList.filter((topic) => {
         return topic.emotion === emotion;
       });
