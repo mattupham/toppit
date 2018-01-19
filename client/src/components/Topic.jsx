@@ -15,6 +15,7 @@ import anonPhoto4 from '../images/anonPhoto4.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
+import { setTopicUsername } from '../js/actions/topicActions.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -42,6 +43,16 @@ class Topic extends React.Component {
     // };
     this.renderTopicDetailedView = this.renderTopicDetailedView.bind(this);
   }
+  componentDidMount() {
+    http.get(`/api/user/${this.props.topic.authorId}`)
+      .then((data) => {
+        // console.log('This is the username', data.data.username);
+        this.props.setTopicUsername(data.data.username);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
   
   renderTopicDetailedView () {
     //react router something?
@@ -50,8 +61,10 @@ class Topic extends React.Component {
   }
 
   render () {
-    console.log('Topic ', this.props);
+    // console.log('Topic ', this.props);
     let name, photoUrl;
+    // console.log(this.props.topic.authorId);
+
     if (this.props.topic.authorId) {
       name = (this.props.topic.authorId && (this.props.topic.authorId.fullName || this.props.topic.authorId.username) || '');
       photoUrl = (this.props.topic.authorId && this.props.topic.authorId.photo) || defaultPhoto;
@@ -98,11 +111,12 @@ class Topic extends React.Component {
 
 const mapStateToProps = (state) => ({
   topicList: state.topicList.topicList,
-  currentUser: state.search.isLoading
+  currentUser: state.search.isLoading,
+  username: state.topic.topic.username
 });
 
-// const mapDispatchToProps = (dispatch) => {
-//   return bindActionCreators({  }, dispatch);
-// };
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ setTopicUsername }, dispatch);
+};
 
-export default connect(mapStateToProps)(Topic);
+export default connect(mapStateToProps, mapDispatchToProps)(Topic);

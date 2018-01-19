@@ -42,7 +42,7 @@ export const setDetailedTopic = (detailedTopic) => {
   };
 };
 
-export const addDetailedComment = (comment) => {
+export const addComment = (comment) => {
   console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT',
@@ -61,5 +61,21 @@ export const setDetailedCommentList = (commentList) => {
   return {
     type: 'SET_COMMENT_LIST',
     payload: commentList
+  };
+};
+
+export const setTopicComments = (comments) => {
+  console.log(comments, ' in actions');
+  return {
+    type: 'SET_TOPIC_COMMENTS',
+    payload: comments
+  };
+};
+
+export const addCommentToFront = (topic) => {
+  console.log(topic, ' in actions');
+  return {
+    type: 'ADD_COMMENT_TO_FRONT',
+    payload: topic
   };
 };

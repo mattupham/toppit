@@ -4,17 +4,10 @@ export default function reducer(state = {
   filteredTopicList: [],
   selectedTopic: {},
   detailedTopic: {
-    authorId: null,
-    commentText: '',
-    commentId: [],
-    headline: '',
-    description: '',
-    emotion: '',
-    timeStamp: '',
-    upvoteUsers: [],
-    upvotes: 0
+    authorId: '',
+    commentId: []
   },
-
+  commentList: []
 }, action) {
   switch (action.type) {
     case 'ADD_TOPIC_TO_LIST': {
@@ -60,28 +53,45 @@ export default function reducer(state = {
         detailedTopic: action.payload
       }
     }
-    case 'SET_COMMENT_TEXT': {
-      console.log('Setting comment text in reducer!');
+    // case 'SET_COMMENT_TEXT': {
+    //   console.log('Setting comment text in reducer!');
+    //   return {
+    //     ...state,
+    //     detailedTopic: { ...state.topicList, commentText: action.payload }
+    //   }
+    // }
+    case 'SET_COMMENT_LIST': {
+      console.log('Setting detailed comment list in reducer!');
       return {
         ...state,
-        detailedTopic: { ...state.topicList, commentText: action.payload }
+        detailedTopic: { 
+          ...state.detailedTopic, 
+          commentId: action.payload
+        }
       }
     }
-    case 'SET_COMMENT_LIST': {
-      console.log('Setting comment list in reducer!');
+    case 'SET_TOPIC_COMMENTS': {
+      console.log('Setting topic comments in reducer!');
       return {
         ...state,
-        detailedTopic: { ...state.topicList, commentId: action.payload }
+        commentList: action.payload
       }
     }
     case 'ADD_COMMENT': {
       console.log('Adding comment in reducer!');
       return {
         ...state,
-        detailedTopic: { 
+        selectedTopic: { 
           ...state.topicList, 
-          commentId: state.topicList.selectedTopic.commentId.concat(action.payload) 
+          commentId: state.selectedTopic.commentId.concat(action.payload) 
         }
+      }
+    }
+    case 'ADD_COMMENT_TO_FRONT': {
+      console.log('Adding comment to front!');
+      return {
+        ...state,
+        commentList: state.commentList.concat(action.payload)
       }
     }
     default: {

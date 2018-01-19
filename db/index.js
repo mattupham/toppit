@@ -23,6 +23,7 @@ const commentSchema = mongoose.Schema({
   text:       String,
   timeStamp:  Date,
   authorId:   { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  topicId:    String,
   username:   String,
   upvotes:    Number
 });
@@ -133,7 +134,7 @@ let saveTopic = (topic, callback) => {
       console.log(err.message);
       callback(err, null);
     }
-    callback(null, newTopic);
+    callback(null, result);
   });
 };
 
@@ -187,9 +188,11 @@ let saveComment = (commentObj, topicId, callback) => {
     _id:        id,
     text:       commentObj.text,
     timeStamp:  commentObj.timeStamp,
+    authorId:   commentObj.topicId,
     username:   commentObj.username,
     upvotes:    commentObj.upvotes
   });
+  console.log('Being saved before findOne', comment);
   // find User instance by username
   User.findOne({ username: commentObj.username}, (err, doc) => {
     if (err) {
@@ -201,10 +204,12 @@ let saveComment = (commentObj, topicId, callback) => {
       _id:        id,
       text:       commentObj.text,
       timeStamp:  commentObj.timeStamp,
-      authorId:   commentObj.authorId,
+      authorId:   doc._id,
+      topicId:    commentObj.topicId,
       username:   commentObj.username,
       upvotes:    commentObj.upvotes
     };
+    console.log('Being created before create', comment);
     Comment.create(comment, (err, result) => {
       if (err) {
         console.log(err.message);

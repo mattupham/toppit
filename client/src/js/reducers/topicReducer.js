@@ -1,5 +1,7 @@
 export default function reducer(state = {
   topic: {
+    username: '',
+    author: '',
     headline: '',
     description: '',
     emotion: '',
@@ -14,6 +16,20 @@ export default function reducer(state = {
   error: null
 }, action) {
   switch (action.type) {
+    case 'SET_TOPIC_USERNAME': {
+      console.log('Setting topic username in reducer');
+      return {
+        ...state,
+        topic: { ...state.topic, username: action.payload }
+      }
+    }
+    case 'SET_TOPIC_AUTHOR': {
+      console.log('Setting topic author in reducer');
+      return {
+        ...state,
+        topic: { ...state.topic, author: action.payload }
+      }
+    }
     case 'DISPLAY_NEW_TOPIC': {
       console.log('Setting display new topic in reducer!');
       return {
