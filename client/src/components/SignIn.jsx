@@ -21,20 +21,12 @@ class SignIn extends React.Component {
   }
 
   onUsernameChange(e, { value }) {
-    // const name = e.target.name;
-    console.log(value);
-    // this.setState({
-    //   [name]: value
-    // });
+    // console.log(value);
     this.props.setUsername(value);
   }
 
   onPasswordChange(e, { value }) {
-    // const name = e.target.name;
-    console.log(value);
-    // this.setState({
-    //   [name]: value
-    // });
+    // console.log(value);
     this.props.setUserPassword(value);
   }
 

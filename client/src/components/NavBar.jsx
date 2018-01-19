@@ -9,15 +9,7 @@ import store from '../js/store.js';
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = { 
-    //   activeItem: 'home',
-    // };
-
-    // this.handleItemClick = (e, { name }) => {
-    //   this.setState({ activeItem: name });
-    // };
-
+    
     this.onHome = this.onHome.bind(this);
     this.onNewTopic = this.onNewTopic.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +31,6 @@ export default class NavBar extends React.Component {
   }
 
   render() {
-    // const { activeItem } = this.state;
     // let name = (this.props.currentUser && (this.props.currentUser.fullName || this.props.currentUser.username) || '');
     let name = store.getState().user.user.username;
 
@@ -55,7 +46,6 @@ export default class NavBar extends React.Component {
       <Menu attached='top' className='nav'>
         <Menu.Item 
           name='home' 
-          // active={activeItem === 'home'} 
           onClick={this.onHome} 
         >
           <img className="logo" src={Logo} />

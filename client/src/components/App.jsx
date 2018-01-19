@@ -26,20 +26,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   topicList: [],
-    //   filterBy: '',
-    //   sortBy: 'timeStamp',
-    //   // search: ''
-    // };
-
     this.createNewTopic = this.createNewTopic.bind(this);
     this.onNewTopic = this.onNewTopic.bind(this);
     this.closeNewTopic = this.closeNewTopic.bind(this);
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
     this.onDetailedTopic = this.onDetailedTopic.bind(this);
-    // this.getSelectTopics = this.getSelectTopics.bind(this);
   }
 
   componentDidMount() {
@@ -51,23 +43,16 @@ class App extends React.Component {
 
   getAllTopics() {
     //**need to set these in redux
-    // this.setState({
-    //   filterBy: '',
-    //   sortBy: 'timeStamp'
-    // });
-    console.log('getting all topics')
+    console.log('getting all topics');
     return http.get('/api/topics')
-
       .then(({ data }) => {
         this.props.changeSearchedList(data);
         this.props.changeFilteredList(data);
         
         data.forEach(topic => {
-          this.props.addTopicToList(topic)
+          this.props.addTopicToList(topic);
         });
       })
-
-
       .catch((err) => {
         console.log(err.message);
       });
@@ -75,53 +60,14 @@ class App extends React.Component {
 
   getCurrentUser() {
     return http.get('/api/user/current')
-
       .then(({data}) => {
         console.log('Current User ', data);
         this.props.setUserId(data._id);
       })
-
       .catch((err) => {
         console.log(err.message);
       });
   }
-  
-  // //any change in viewed list goes through this
-  // getSelectTopics(query, search) {
-  //   if (query) {
-  //     //**also fix here 
-  //     //use this.props.changeViewedList(arrayOfTopics)
-  //     // this.setState({
-  //     //   filterBy: query.filterBy,
-  //     //   sortBy: query.sortBy
-  //     // });
-      
-  //   } else {
-  //     //**also fix here
-  //     query = {
-  //       // filterBy: this.state.filterBy,
-  //       // sortBy: this.state.sortBy,
-  //     };
-  //   }
-  //   http.get('/api/topics', {params: query})
-
-  //     .then(({data}) => {
-  //       if (search) {
-  //         var filteredData = data.filter((item) => item.headline.toLowerCase().includes(search.toLowerCase()))
-  //       }
-  //       this.props.changeViewedList(filteredData);
-  //       //**also fix here
-  //       // this.setState({
-  //       //   topicList: filteredData || data,
-  //       //   // search: search
-  //       // });
-  //     })
-
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // }
-
 
   createNewTopic() {
     this.props.displayNewTopic(true);
@@ -135,29 +81,22 @@ class App extends React.Component {
   onNewTopic (topic) {
     //do server request to add new topic to database 
     //then get new topic and render new list to topic list.
-
     this.props.displayNewTopic(false);
 
     http.post('/api/topic', topic)
-
       .then(({data}) => {
         //** need to rerender page
-        // console.log(data);
         this.props.addTopicToListFront(data);
-        this.props.changeSearchedList(store.getState().topicList.fullTopicList)
-        this.props.changeFilteredList(store.getState().topicList.fullTopicList)
+        this.props.changeSearchedList(store.getState().topicList.fullTopicList);
+        this.props.changeFilteredList(store.getState().topicList.fullTopicList);
         console.log('Successfully posted ', data);
       })
-
       .catch((err) => {
         console.log(err.message);
       });
   }
 
   onDetailedTopic(topic) {
-    // this.setState({
-    //   selectedTopic: topic
-    // });
     this.props.setSelectedTopic(topic);
   }
 
@@ -168,7 +107,6 @@ class App extends React.Component {
     })      
       .then( ({data}) => {
         // function to be implemented to get all topics
-        
         // this.getSelectTopics();
       })
       .catch( (error) => {
@@ -187,24 +125,18 @@ class App extends React.Component {
   }
 
   render() {
-    // const { contextRef } = this.state;
-    // console.log(this.props.user.username);
-    // console.log(this.props.user.password);
     let topic = store.getState().topic.topic;
     return (
       <div className='mainapp'>
         <NavBar 
-          // currentUser={this.state.currentUser}
           history={this.props.history} 
           home={this.getAllTopics} 
           createNewTopic={this.createNewTopic}
-          // onSearch={this.getSelectTopics}
         />
         <Switch>
           <Route path='/share' render={(props) => (
             <Container>
               <NewTopic {...props}
-                // currentUser={this.state.currentUser}
                 onNewTopic={this.onNewTopic}
                 active={topic.displayNewTopic}
                 closeNewTopic={this.closeNewTopic}
@@ -218,28 +150,26 @@ class App extends React.Component {
                   // defaultFilter={this.state.filterBy} 
                   // defaultSort={this.state.sortBy} 
                   // onDropdownChange={this.getSelectTopics}
-                  />
+                />
                 <TopicList {...props} 
-                  // currentUser={this.state.currentUser}
                   // upVote={this.upVote} 
                   onDetailedTopic={this.onDetailedTopic} 
-                  // topicList={this.state.topicList} 
                 />
               </Container>
             </div>
           )}/>
           <Route path='/topic/:topicId' render={(props) => (
             <Container>
-              <TopicDetailed {...props} 
-                // currentUser={this.state.currentUser}
+              <TopicDetailed 
+                {...props} 
                 topicId={props.match.params.topicId} 
-                upvote={this.upVote}/>
+                upvote={this.upVote}
+              />
             </Container>
           )}/>
         </Switch>
         <Menu attached='bottom' className='footer'>
           <Menu.Item >
-            {/* <h1>{this.props.user.username}</h1> */}
             <i className="copyright icon"></i><p>2018 Prospective Technologies, Inc. All Rights Reserved.</p>
           </Menu.Item> 
           <Menu.Item className="toTop button" onClick={this.topFunction} >

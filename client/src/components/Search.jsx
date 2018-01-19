@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 
 import store from '../js/store.js';
 
-
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,7 @@ class Search extends React.Component {
     this.props.toggleIsLoading();
     setTimeout(() => {
       this.props.toggleIsLoading();
-    }, 1000)    
+    }, 1000);
     var topicListCopy = store.getState().topicList.fullTopicList;
     console.log('full topic list', topicListCopy)
     var filteredArr = topicListCopy.filter(topic => {
@@ -42,7 +41,7 @@ class Search extends React.Component {
   render() {
     return(
       <Form onSubmit={this.handleSubmit}>
-        <Input  focus placeholder='Search...' onChange={this.handleChange} />
+        <Input focus placeholder='Search...' onChange={this.handleChange} />
         <Button icon type='submit'color='blue' size='large' compact loading={store.getState().search.isLoading}>
           <Icon name='search' />
         </Button>

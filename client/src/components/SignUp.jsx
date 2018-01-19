@@ -28,14 +28,6 @@ class SignUp extends React.Component {
     this.state = {
       pwStrengthColor: 'grey'
     };
-    // this.state = {
-    //   username: '',
-    //   password: '',
-    //   confirmPassword: '',
-    //   pwStrength: 0,
-    //   pwStrengthColor: 'grey',
-    //   pwStrengthPhrase: 'password strength'
-    // };
     this.onUsernameChange = this.onUsernameChange.bind(this);
     this.onEnterPassword = this.onEnterPassword.bind(this);
     this.onEnterConfirm = this.onEnterConfirm.bind(this);
@@ -46,27 +38,14 @@ class SignUp extends React.Component {
     let user = store.getState().user.user;
     if (user.password !== user.confirm) {
       this.props.setUserPwError(true);
-      // this.props.setUsernameError(true);
       this.props.setSignUpError('Passwords don\'t match, please try again');
-      // this.setState({
-      //   confirmPasswordError: true,
-      //   passwordError: true,
-      //   nonMatchingPasswords: true
-      // });
     } else {
       this.props.onSignUp(user.username, user.password);
     }
   }
 
   onUsernameChange(e, { value }) {
-    console.log('Entering username', value);
-    // const name = e.target.name;
-    // this.setState({
-    //   confirmPasswordError: false,
-    //   passwordError: false,
-    //   usernameError: false,
-    //   [name]: value
-    // });
+    // console.log('Entering username', value);
     this.props.setUsernameError(false);
     this.props.setUserPwError(false);
     this.props.setUsername(value);
@@ -80,7 +59,7 @@ class SignUp extends React.Component {
     
     this.props.setUserPwStrength(strength.passedTests.length / 6 * 100);
     // this.props.setUserPwStrengthColor(color);
-    console.log(store.getState().user.user.pwStrengthColor);
+    // console.log(store.getState().user.user.pwStrengthColor);
     this.props.setUserPwStrengthPhrase(phrase);
     this.props.setUserPwError(false);
     this.props.setUsernameError(false);
@@ -89,15 +68,6 @@ class SignUp extends React.Component {
     this.setState({
       pwStrengthColor: color
     });
-    // this.setState({
-    //   confirmPasswordError: false,
-    //   passwordError: false,
-    //   usernameError: false,
-    //   password: value,
-    //   pwStrength: strength.passedTests.length / 6 * 100,
-    //   pwStrengthColor: color,
-    //   pwStrengthPhrase: phrase
-    // });
   }
 
   onEnterConfirm(e, { value }) {

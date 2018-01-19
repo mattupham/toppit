@@ -83,8 +83,9 @@ class NewTopic extends React.Component {
         timeStamp: Date.now(),
         upvotes: 0
       };
-
+      
       topicObj.authorId = (!topic.anon) ? user.id : null;
+      topicObj.authorUsername = (!topic.anon) ? user.username : null;
 
       console.log(topicObj);
       this.props.onNewTopic(topicObj);

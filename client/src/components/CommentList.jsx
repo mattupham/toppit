@@ -7,16 +7,6 @@ import { setTopicComments } from '../js/actions/topicListActions.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// const CommentList = (props) => (
-//   <Comment.Group>
-//     <Header as="h3" dividing>Comments</Header>
-//     {props.comments.map( (comment, index) => (
-//       <MyComment comment={comment} key={index} />
-//     )
-//     )}
-//   </Comment.Group>
-// );
-
 class CommentList extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +37,6 @@ class CommentList extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   commentList: state.topicList.commentList

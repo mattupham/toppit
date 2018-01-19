@@ -15,11 +15,6 @@ class Login extends React.Component {
 
     this.onSignIn = this.onSignIn.bind(this);
     this.onSignUp = this.onSignUp.bind(this);
-
-    // this.state = {
-    //   signInError: null,
-    //   signUpError: null
-    // };
   }
 
   onSignIn(username, password) {
@@ -27,19 +22,14 @@ class Login extends React.Component {
       username: username,
       password: password
     })
-
       .then((response) => {
         if (response.status === 200) {
           this.props.history.replace('/');
         }
       })
-
       .catch((err) => {
         if (err.response.status === 401) {
           this.props.setSignInError('Incorrect username or password entered');
-          // this.setState({
-          //   signInError: 'Incorrect username or password entered'
-          // });
         } else {
           console.log(err);
         }
@@ -57,7 +47,6 @@ class Login extends React.Component {
         if (response.status === 201) {
           this.props.history.replace('/');
         }
-        // set
       })
 
       .catch((err) => {
@@ -67,10 +56,6 @@ class Login extends React.Component {
           } else {
             this.props.setSignUpError('Username already taken, please choose a different one');
           }
-          
-          // this.setState({
-          //   signUpError: 'username already taken, please choose a different one'
-          // });
         } else {
           console.log(err);
         }

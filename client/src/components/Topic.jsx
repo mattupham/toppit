@@ -38,15 +38,11 @@ colors[emojis[8].value] = 'teal';
 class Topic extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   currentUser: this.props.currentUser
-    // };
     this.renderTopicDetailedView = this.renderTopicDetailedView.bind(this);
   }
   componentDidMount() {
     http.get(`/api/user/${this.props.topic.authorId}`)
       .then((data) => {
-        // console.log('This is the username', data.data.username);
         this.props.setTopicUsername(data.data.username);
       })
       .catch((err) => {
@@ -61,17 +57,16 @@ class Topic extends React.Component {
   }
 
   render () {
-    // console.log('Topic ', this.props);
     let name, photoUrl;
-    // console.log(this.props.topic.authorId);
 
     if (this.props.topic.authorId) {
-      name = (this.props.topic.authorId && (this.props.topic.authorId.fullName || this.props.topic.authorId.username) || '');
+      name = (this.props.topic.authorId && (this.props.topic.authorId.fullName || this.props.topic.authorUsername) || '');
       photoUrl = (this.props.topic.authorId && this.props.topic.authorId.photo) || defaultPhoto;
     } else {
       name = 'Anonymous';
       photoUrl = anonPhotos[Math.floor(Math.random() * anonPhotos.length)];
     }
+
     let color = colors[this.props.topic.emotion];
     let headline = /^([.]+)\s[.]+$/.exec(this.props.topic.emotion) + this.props.topic.headline;
 
@@ -96,7 +91,8 @@ class Topic extends React.Component {
               &nbsp;
               <a onClick={this.renderTopicDetailedView}>
                 <Icon name='comments'/>
-                {this.props.topic.commentId.length || 0} comments
+                {/* {(store.getState().topicList.commentList.length === 1) ? 'comment' : 'comments' } */}
+                {this.props.topic.commentId.length} {(this.props.topic.commentId.length === 1) ? 'comment' : 'comments' }
               </a>
               &nbsp;&nbsp;
               {this.props.topic.emotion ?
