@@ -24,7 +24,7 @@ class Search extends React.Component {
     var topicListCopy = store.getState().topicList.fullTopicList;
     console.log('full topic list', topicListCopy);
     var filteredArr = topicListCopy.filter(topic => {
-      if (topic.topic.headline.toLowerCase().includes(searchValue) || 
+      if (topic.headline.toLowerCase().includes(searchValue) || 
         topic.description.toLowerCase().includes(searchValue) || 
         topic.authorUsername.toLowerCase().includes(searchValue)) {
         return topic;
