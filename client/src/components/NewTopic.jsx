@@ -25,12 +25,7 @@ const anonPhotos = [
 class NewTopic extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   headline: '',
-    //   description: '',
-    //   emotion: '',
-    //   anonymous: false
-    // };
+
     this.onHeadlineChange = this.onHeadlineChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -39,11 +34,7 @@ class NewTopic extends React.Component {
   }
 
   onHeadlineChange(e, { value }) {
-    // const name = e.target.name;
     this.props.setHeadline(value);
-    // this.setState({
-    //   [name]: value
-    // });
   }
 
   onDescriptionChange(e, { value }) {
@@ -51,18 +42,12 @@ class NewTopic extends React.Component {
   }
 
   onEmotion(e, {value}) {
-    // this.setState({
-    //   emotion: value
-    // });
     this.props.setEmotion(value);
   }
 
   toggleAnonymous() {
-    console.log('Toggling anon');
+    // console.log('Toggling anon');
     let topic = store.getState().topic.topic;
-    // this.setState({
-    //   anonymous: !this.state.anonymous
-    // });
     if (topic.anon) {
       this.props.setAnon(false);
     } else {
