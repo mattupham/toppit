@@ -32,6 +32,10 @@ class App extends React.Component {
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
     this.onDetailedTopic = this.onDetailedTopic.bind(this);
+<<<<<<< HEAD
+=======
+    // this.getSelectTopics = this.getSelectTopics.bind(this);
+>>>>>>> commit before rebaes
   }
 
   componentDidMount() {
@@ -239,8 +243,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, setSelectedTopic,
-    addTopicToListFront, changeSearchedList, changeFilteredList }, dispatch);
+  return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
+    addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
