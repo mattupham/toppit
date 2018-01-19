@@ -1,14 +1,14 @@
 export default function reducer(state = {
-  nav: {
-    activeItem: 'home'
+  comment: {
+    commentText: 'home'
   }
 }, action) {
   switch (action.type) {
-    case 'SET_ACTIVE_ITEM': {
+    case 'SET_REPLY_TEXT': {
       // console.log('Setting active item in reducer!');
       return {
         ...state,
-        nav: { ...state.nav, activeItem: action.payload }
+        commentText: { ...state.comment, commentText: action.payload }
       }
     }
     default: {

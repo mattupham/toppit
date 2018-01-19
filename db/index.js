@@ -20,14 +20,30 @@ const topicSchema = mongoose.Schema({
 });
 
 const commentSchema = mongoose.Schema({
-  _id:        mongoose.Schema.Types.ObjectId,
-  text:       String,
-  timeStamp:  Date,
-  authorId:   { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  topicId:    String,
-  username:   String,
-  upvotes:    Number
+  _id:            mongoose.Schema.Types.ObjectId,
+  text:           String,
+  timeStamp:      Date,
+  authorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  authorUsername: String,
+  parentId:       mongoose.Schema.Types.ObjectId,
+  comments:       [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  topicId:        String,
+  username:       String,
+  upvotes:        Number
 });
+
+// const nestedCommentSchema = mongoose.Schema({
+//   _id:            mongoose.Schema.Types.ObjectId,
+//   text:           String,
+//   timeStamp:      Date,
+//   authorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+//   authorUsername: String,
+//   parentId:       mongoose.Schema.Types.ObjectId,
+//   comments:       [{ type: mongoose.Schema.Types.ObjectId, ref: 'NestedComment' }],
+//   topicId:        String,
+//   username:       String,
+//   upvotes:        Number
+// });
 
 const userSchema = mongoose.Schema({
   username:    String,
@@ -46,6 +62,7 @@ userSchema.plugin(passportLocalMongoose);
 let Topic = db.model('Topic', topicSchema);
 let User = db.model('User', userSchema);
 let Comment = db.model('Comment', commentSchema);
+// let NestedComment = db.model('NestedComment', nestedCommentSchema);
 //let List = db.model('List', listchema);
 //let Organization = db.model('Organization', sessionSchema);
 
@@ -178,8 +195,51 @@ const removeUpvote = (id, currentUser, callback) => {
       }
       callback(null, doc);
     }
-  )
-}
+  );
+};
+
+let replyToComment = (commentObj, topicId, commentId, callback) => {
+  let id = mongoose.Types.ObjectId();
+
+  let comment = new Comment({
+    _id:            id,
+    text:           commentObj.text,
+    timeStamp:      commentObj.timeStamp,
+    topicId:        commentObj.topicId,
+    authorId:       commentObj.authorId,
+    authorUsername: commentObj.authorUsername,
+    parentId:       commentObj.parentId,
+    comments:       commentObj.comments
+  });
+
+  console.log(comment);
+
+  Topic.findById(topicId).exec((err, topic) => {
+    if (err) {
+      console.log('Error getting topic', err);
+    } else {
+      console.log(topic);
+      // Comment.findOne({ _id: commentId }).exec((err, data) => {
+      //   if (err) {
+      //     console.log('Error getting comment', err);
+      //   } else {
+      //     console.log('Successfully got comment', data);
+      //   }
+      // });
+      Comment.findById(commentId).
+        populate({ path: 'comments', populate: { path: 'comments' }}).
+        exec((err, nested) => {
+          if (err) {
+            console.log('Error nesting comment', err);
+            callback(err, null);
+          } else {
+            console.log('Successfully nested comment!', nested);
+            callback(null, nested);
+          }
+        });
+    }
+  });
+};
 
 // - Saves comment to Mongo DB
 let saveComment = (commentObj, topicId, callback) => {
@@ -260,6 +320,7 @@ module.exports.User = User;
 module.exports.getUser = getUser;
 module.exports.findOrCreateUser = findOrCreateUser;
 module.exports.removeUpvote = removeUpvote;
+module.exports.replyToComment = replyToComment;
 // module.exports.users = User;
 // module.exports.comments = Comment;
 // module.exports.lists = List;
