@@ -6,12 +6,26 @@ import store from '../js/store.js';
 import http from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setReplyCommentText } from '../js/actions/commentActions';
+import { setReplyCommentText, setCommentId } from '../js/actions/commentActions';
 
 class MyComment extends React.Component {
   constructor(props) {
     super(props);
     this.onReply = this.onReply.bind(this);
+  }
+  componentDidMount() {
+    let topicId = store.getState().topicList.selectedTopic._id;
+    let author = this.props.comment.authorId.username;
+    let text = this.props.comment.text;
+    console.log(text);
+    http.get(`/api/comments/${topicId}/${author}`, { params: { text: this.props.comment.text }})
+      .then((comment) => {
+        // console.log('Got the comment!', comment);
+        this.props.setCommentId(comment.data._id);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
   handleInputText(e, { value }) {
     this.props.setReplyCommentText(value);
@@ -35,7 +49,6 @@ class MyComment extends React.Component {
       .catch((err) => {
         console.error(err);
       });
-    // alert(this.props.comment.text);
   }
   render() {
     console.log(this.props.comment);
@@ -65,10 +78,11 @@ class MyComment extends React.Component {
 }
 const mapStateToProps = (state) => ({
   commentText: state.comment.commentText,
+  commentId: state.comment.commentId
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setReplyCommentText }, dispatch);
+  return bindActionCreators({ setReplyCommentText, setCommentId }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComment);

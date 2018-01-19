@@ -253,6 +253,24 @@ let replyToComment = (commentObj, topicId, commentId, callback) => {
   });
 };
 
+let getOneComment = (text, topicId, author, callback) => {
+  Topic.findOne({ _id: topicId }, (err, topic) => {
+    if (err) {
+      console.log('Could not find topic', err);
+    } else {
+      console.log(topic);
+      Comment.findOne({ text: text, username: author }, (err, comment) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          console.log('Got the comment!');
+          callback(null, comment);
+        }
+      });
+    }
+  });
+};
+
 // - Saves comment to Mongo DB
 let saveComment = (commentObj, topicId, callback) => {
   let id = mongoose.Types.ObjectId();
@@ -334,6 +352,7 @@ module.exports.findOrCreateUser = findOrCreateUser;
 module.exports.removeUpvote = removeUpvote;
 module.exports.replyToComment = replyToComment;
 module.exports.getTopicsInSubtoppit = getTopicsInSubtoppit;
+module.exports.getOneComment = getOneComment;
 // module.exports.users = User;
 // module.exports.comments = Comment;
 // module.exports.lists = List;
