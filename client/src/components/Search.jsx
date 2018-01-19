@@ -22,11 +22,11 @@ class Search extends React.Component {
       this.props.toggleIsLoading();
     }, 1000);
     var topicListCopy = store.getState().topicList.fullTopicList;
-    console.log('full topic list', topicListCopy)
+    console.log('full topic list', topicListCopy);
     var filteredArr = topicListCopy.filter(topic => {
       if (topic.headline.toLowerCase().includes(searchValue) || 
         topic.description.toLowerCase().includes(searchValue) || 
-        topic.authorId.username.toLowerCase().includes(searchValue)) {
+        topic.authorUsername.toLowerCase().includes(searchValue)) {
         return topic;
       }
     });

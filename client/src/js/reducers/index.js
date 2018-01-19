@@ -6,6 +6,7 @@ import topic from './topicReducer.js';
 import search from './searchReducer.js';
 import topicList from './topicListReducer.js';
 import utilsBar from './utilsBarReducer.js';
+import comment from './commentReducer.js';
 
 export default combineReducers({
   nav,
@@ -13,5 +14,6 @@ export default combineReducers({
   topic,
   search,
   topicList,
-  utilsBar
+  utilsBar,
+  comment
 });

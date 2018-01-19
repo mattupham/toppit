@@ -92,6 +92,19 @@ api.post('/topic/:topicId', (req, res) => {
   });
 });
 
+api.post('/topic/:topicId/:commentId', (req, res) => {
+  db.replyToComment(req.body, req.params.topicId, req.params.commentId, (err, data) => {
+    if (err) {
+      res.status(400).send('Unable to reply to comment');
+    } else {
+      console.log('Replied to comment!', data);
+      res.status(200).send(data);
+    }
+  });
+  // console.log('Hi', req.params.topicId, req.params.commentId);
+  // res.send('Hi', req.params.topicId, req.params.commentId);
+});
+
 api.get('/user/:userId', (req, res) => {
 
   let query = {};
