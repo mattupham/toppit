@@ -32,10 +32,7 @@ class App extends React.Component {
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
     this.onDetailedTopic = this.onDetailedTopic.bind(this);
-<<<<<<< HEAD
-=======
     // this.getSelectTopics = this.getSelectTopics.bind(this);
->>>>>>> commit before rebaes
   }
 
   componentDidMount() {
