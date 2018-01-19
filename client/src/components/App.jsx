@@ -107,13 +107,8 @@ class App extends React.Component {
       currentUser: currentUser
     })      
       .then( ({data}) => {
-        // function to be implemented to get all topics
-<<<<<<< HEAD
-        // this.getSelectTopics();
-=======
         console.log('store...', store.getState());
         this.createNewViewedTopicList(upvoteOrDownvote, increment, currentUser, topicId);
->>>>>>> upvote with redux is working
       })
       .catch( (error) => {
         console.log(error);
