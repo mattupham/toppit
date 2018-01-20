@@ -28,7 +28,7 @@ class TopicList extends React.Component {
 
   render() {
     // this.subtoppit = this.props.match.params.subtoppit;
-          console.log('subtoppit....', this.subtoppit);
+    console.log('subtoppit....', this.subtoppit);
     if (!this.props.match.params.subtoppit) {
       this.subtoppit = '';
     }
@@ -47,7 +47,7 @@ class TopicList extends React.Component {
           <Topic {...this.props}
             topic={topic} 
             key={index} 
-            // upVote={props.upVote}
+            upVote={this.props.upVote}
             onDetailedTopic={this.props.onDetailedTopic}
           />)) : <div></div>}
       </Container>
