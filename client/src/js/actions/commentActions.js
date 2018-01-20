@@ -6,10 +6,17 @@ export const setCommentId = (commentId) => {
   };
 };
 export const setReplyCommentText = (commentText) => {
-  //change filter
   console.log(commentText, ' in actions!');
   return {
     type: 'SET_REPLY_TEXT',
     payload: commentText
+  };
+};
+export const setShowReply = (showReply) => {
+  //change filter
+  console.log(showReply, ' in actions!');
+  return {
+    type: 'SET_SHOW_REPLY',
+    payload: showReply
   };
 };
