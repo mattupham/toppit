@@ -40,7 +40,7 @@ export default function reducer(state = {
       // console.log('adding topic to list front');
       return {
         ...state,
-        nestedCommentsCopy: [action.payload].concat(state.nestedCommentsCopy)
+        nestedCommentsCopy: state.nestedCommentsCopy.concat(action.payload)
       }
     }
     default: {

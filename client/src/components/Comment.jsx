@@ -35,7 +35,7 @@ class MyComment extends React.Component {
             return http.get(`/api/comments/${comment}`)
               .then((nested) => {
                 // console.log('This is the nested comment', nested.data);
-                this.props.addNestedToFront(nested.data);
+                // this.props.addNestedToFront(nested.data);
                 comment = nested.data;
                 return comment;
               })
@@ -47,6 +47,7 @@ class MyComment extends React.Component {
             .then((data) => {
               console.log(data);
               this.props.setNestedCommentsCopy(data);
+              // this.props.addNestedToFront(data[data.length - 1]);
             })
             .catch((err) => {
               console.error(err);
@@ -93,7 +94,6 @@ class MyComment extends React.Component {
     //   .catch((err) => {
     //     console.error(err);
     //   });
-
     let comment = {
       text: store.getState().comment.commentText,
       timeStamp: new Date(),
@@ -152,57 +152,59 @@ class MyComment extends React.Component {
     console.log(nested);
     return (
       <div>
-        <Comment>
-          <Comment.Avatar className='commentuser' src={defaultPhoto} />
-          <Comment.Content>
-            <Comment.Author as='a'>{comment.username}</Comment.Author>
-            <Comment.Metadata>
-              <div>{moment(comment.timeStamp).fromNow()}</div>
-            </Comment.Metadata>
-            <Comment.Text>{comment.text}</Comment.Text>
-            <Comment.Actions>
-              <Comment.Action onClick={this.toggleShowParentReply.bind(this)}>Reply</Comment.Action>
-            </Comment.Actions>
-            {
-              (store.getState().comment.showReply) &&
-                <Form reply className="replyTextArea">
-                  <Form.TextArea onChange={this.handleInputText.bind(this)} />
-                  <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
-                </Form>
-            }
-            {
-              comment.comments && comment.comments.length > 0 && nested.map((child, index) => {
-                console.log(child, index);
-                return (
-                  <Comment.Group key={index}>
-                    <Comment>
-                      <Comment.Avatar src={defaultPhoto} />
-                      <Comment.Content>
-                        <Comment.Author as='a'>{child.authorUsername}</Comment.Author>
-                        <Comment.Metadata>
-                          <div>{moment(child.timeStamp).fromNow()}</div>
-                        </Comment.Metadata>
-                        <Comment.Text>
-                          {child.text}
-                        </Comment.Text>
-                        <Comment.Actions>
-                          <Comment.Action onClick={this.toggleShowNestedReply.bind(this)}>Reply</Comment.Action>
-                        </Comment.Actions>
-                        {
-                          (parent.showReply) &&
-                            <Form reply className="replyTextArea">
-                              <Form.TextArea onChange={this.handleInputText.bind(this)} />
-                              <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
-                            </Form>
-                        }
-                      </Comment.Content>
-                    </Comment>
-                  </Comment.Group>
-                );
-              })
-            }
-          </Comment.Content>
-        </Comment>
+        <Comment.Group>
+          <Comment>
+            <Comment.Avatar className='commentuser' src={defaultPhoto} />
+            <Comment.Content>
+              <Comment.Author as='a'>{comment.username}</Comment.Author>
+              <Comment.Metadata>
+                <div>{moment(comment.timeStamp).fromNow()}</div>
+              </Comment.Metadata>
+              <Comment.Text>{comment.text}</Comment.Text>
+              <Comment.Actions>
+                <Comment.Action onClick={this.toggleShowParentReply.bind(this)}>Reply</Comment.Action>
+              </Comment.Actions>
+              {
+                (store.getState().comment.showReply) &&
+                  <Form reply className="replyTextArea">
+                    <Form.TextArea onChange={this.handleInputText.bind(this)} />
+                    <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
+                  </Form>
+              }
+              {
+                comment.comments && comment.comments.length > 0 && nested.map((child, index) => {
+                  console.log(child, index);
+                  return (
+                    <Comment.Group key={index}>
+                      <Comment>
+                        <Comment.Avatar src={defaultPhoto} />
+                        <Comment.Content>
+                          <Comment.Author as='a'>{child.authorUsername}</Comment.Author>
+                          <Comment.Metadata>
+                            <div>{moment(child.timeStamp).fromNow()}</div>
+                          </Comment.Metadata>
+                          <Comment.Text>
+                            {child.text}
+                          </Comment.Text>
+                          <Comment.Actions>
+                            <Comment.Action onClick={this.toggleShowNestedReply.bind(this)}>Reply</Comment.Action>
+                          </Comment.Actions>
+                          {
+                            (parent.showReply) &&
+                              <Form reply className="replyTextArea">
+                                <Form.TextArea onChange={this.handleInputText.bind(this)} />
+                                <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
+                              </Form>
+                          }
+                        </Comment.Content>
+                      </Comment>
+                    </Comment.Group>
+                  );
+                })
+              }
+            </Comment.Content>
+          </Comment>
+        </Comment.Group>
       </div>
     );
   }
