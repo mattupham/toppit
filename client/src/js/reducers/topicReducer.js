@@ -1,6 +1,7 @@
 export default function reducer(state = {
   topic: {
     username: '',
+    subtoppit: 'home',
     author: '',
     headline: '',
     description: '',

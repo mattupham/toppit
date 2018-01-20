@@ -8,7 +8,7 @@ import { typeMessage, addMessage } from '../js/actions/chatActions.js';
 import { connect } from 'react-redux';
 
 class Chat extends React.Component {
-  constructor(props) {
+  constructor( ) {
     super(props)
 
     store.dispatch({type:'server/onLogin', user: store.getState().user.user.username});

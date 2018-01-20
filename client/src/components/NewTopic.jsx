@@ -42,6 +42,8 @@ class NewTopic extends React.Component {
   }
 
   onEmotion(e, {value}) {
+    console.log('on emotion...', e)
+    console.log('value...', {value});
     this.props.setEmotion(value);
   }
 
@@ -78,6 +80,10 @@ class NewTopic extends React.Component {
   }
   
 
+  onSubtoppitSelection() {
+
+  }
+
   render() {
     const anonText = 'Post Anonymously';
     let topic = store.getState().topic.topic;
@@ -89,30 +95,13 @@ class NewTopic extends React.Component {
     } else {
       photoUrl = (this.props.currentUser && this.props.currentUser.photo) || defaultPhoto;
     }
+    this.subtoppits = [{value: 'legacyProject', text: 'legacyProject'}, {value: 'greenFieldProject', text: 'greenFieldProject'}];
 
     return (
       <Dimmer.Dimmable as={Form} blurring dimmed={this.props.active}>
         <Dimmer active={this.props.active} inverted page>
           <Container textAlign='left'>
             <Grid columns={3}>
-              <Grid.Row>
-                <Grid.Column width={2}>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <Header as='h2' icon>
-                    <Icon name='idea' />
-                    Share a new idea
-                    <Header.Subheader>
-                      Share an idea, inspiration or frustration and gather reactions from others
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width={2}>
-                  <Link to='/'>
-                    <Button circular icon='remove' onClick={this.props.closeNewTopic} />
-                  </Link>
-                </Grid.Column>
-              </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={2}>
                   <Image className='topicavatar' size='tiny' circular src={photoUrl} />
@@ -133,6 +122,7 @@ class NewTopic extends React.Component {
                       placeholder='Tell us a little more about your idea' />
                     <Form.Group inline>
                       <Form.Select label="I'm feeling ..." name='emotion' onChange={this.onEmotion} options={emojis} placeholder='Emotion' />
+                      <Form.Select label="choose a subtoppit" name="subtoppitSelectionForPost" onChange={this.onSubtoppitSelection.bind(this)} options={this.subtoppits} /> 
                       <Form.Button type="submit">Submit</Form.Button>
                       <Form.Button type="submit" onClick={this.toggleAnonymous}>{anonText}</Form.Button>
                     </Form.Group>

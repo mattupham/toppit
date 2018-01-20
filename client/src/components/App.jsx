@@ -197,6 +197,15 @@ class App extends React.Component {
           <Route path='/chat' render={(props) => (
             <Chat />
           )}/>
+          <Route path='/t/:subtoppit' render={(props) => (
+            <div>
+              <Container>
+                <UtilsBar />
+                <div> {props.match.params.subtoppit} </div>
+              
+              </Container>
+            </div>
+          )}/>
           <Route exact path='/' render={(props) => (
             <div>
               <Container>

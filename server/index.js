@@ -9,12 +9,9 @@ const api = require('./api');
 const auth = require('./auth');
 const db = require('../db');
 const passport = require('passport');
-<<<<<<< HEAD
 const socketIo = require('socket.io');
 const http = require('http');
-=======
 const history = require('connect-history-api-fallback');
->>>>>>> commit before rebase
 
 app.use(morgan('tiny'));
 app.use(cookieParser());

@@ -8,6 +8,7 @@ var db = mongoose.createConnection(uri, options);
 
 const topicSchema = mongoose.Schema({
   _id:            mongoose.Schema.Types.ObjectId,
+  subtoppit:      String,
   headline:       String,
   description:    String,
   timeStamp:      Date,

@@ -1,4 +1,5 @@
 export default function reducer(state = {
+  subtoppitView: 'home',
   fullTopicList: [],
   searchedTopicList: [],
   filteredTopicList: [],

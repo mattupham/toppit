@@ -32,7 +32,15 @@ export default class NavBar extends React.Component {
 
   handleChatClick() {
     this.props.history.push('/chat');
+  }
 
+  // handleSubtoppitClick(subtoppit) {
+  //   subtoppit = subtoppit.slice(0, subtoppit.indexOf('Subtoppit'));
+  //   this.props.history.push('/t/' + subtoppit);
+  // }
+
+  selectSubtoppit(e, {value}) {
+    console.log('event...', {value});
   }
 
   render() {
@@ -47,6 +55,8 @@ export default class NavBar extends React.Component {
       </span>
     );
 
+    let subtoppits = [{value: 'legacyProject', text: 'legacyProject'}, {value: 'greenFieldProject', text: 'greenFieldProject'}];
+
     return (
       <Menu attached='top' className='nav'>
         <Menu.Item 
@@ -57,6 +67,10 @@ export default class NavBar extends React.Component {
         </Menu.Item>
         <Menu.Item>
           <Button primary onClick={this.handleChatClick.bind(this)}>Chat</Button>
+        </Menu.Item>
+        <Menu.Item>
+          <Dropdown placeholder='Select subtoppit' onChange={this.selectSubtoppit.bind(this)} fluid search selection options={subtoppits} />
+          {/*<Button id="legacyProjectSubtoppit" onClick={(e) => this.handleSubtoppitClick(e.target.id)}> Legacy Project </Button>*/}
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
