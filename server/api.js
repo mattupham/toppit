@@ -1,7 +1,6 @@
 const api = require('express').Router();
 const db = require('../db');
 
-
 // Get all topics
 api.get('/topics', (req, res) => {
 
