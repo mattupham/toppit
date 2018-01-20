@@ -20,17 +20,24 @@ export const setShowReply = (showReply) => {
     payload: showReply
   };
 };
-// export const setNestedComments = (nestedComments) => {
-//   console.log(nestedComments, ' in actions!');
-//   return {
-//     type: 'SET_NESTED_COMMENTS',
-//     payload: nestedComments
-//   };
-// };
+export const setNewNested = (nested) => {
+  console.log(nested, ' in actions!');
+  return {
+    type: 'SET_NESTED_COMMENTS',
+    payload: nested
+  };
+};
 export const setNestedCommentsCopy = (copy) => {
   console.log(copy, ' in actions');
   return {
     type: 'SET_NESTED_COMMENTS_COPY',
     payload: copy
+  };
+};
+export const addNestedToFront = (nested) => {
+  console.log(nested, ' in actions');
+  return {
+    type: 'ADD_NESTED_TO_FRONT',
+    payload: nested
   };
 };
