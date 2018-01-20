@@ -2,14 +2,16 @@ export default function reducer(state = {
   comment: {
     commentId: 0,
     commentText: '',
-    showReply: false
+    showReply: false,
+    nestedComments: [],
+    nestedCommentsCopy: []
   }
 }, action) {
   switch (action.type) {
     case 'SET_COMMENT_ID': {
       return {
         ...state,
-        commentId: { ...state.comment, commentId: action.payload }
+        commentId: action.payload
       }
     }
     case 'SET_REPLY_TEXT': {
@@ -21,9 +23,21 @@ export default function reducer(state = {
     case 'SET_SHOW_REPLY': {
       return {
         ...state,
-        showReply: { ...state.comment, showReply: action.payload }
+        showReply: action.payload
       }
     }
+    case 'SET_NESTED_COMMENTS_COPY': {
+      return {
+        ...state,
+        nestedCommentsCopy: action.payload
+      }
+    }
+    // case 'SET_NESTED_COMMENTS': {
+    //   return {
+    //     ...state,
+    //     // nestedComments: state.comment.nestedComments.push(action.payload)
+    //   }
+    // }
     default: {
       return state
     }

@@ -103,6 +103,17 @@ api.get('/comments/:topicId/:author', (req, res) => {
   });
 });
 
+api.get('/comments/:commentId', (req, res) => {
+  db.getNestedComment(req.params.commentId, (err, data) => {
+    if (err) {
+      res.status(404).send('Unable to get nested comment');
+    } else {
+      console.log('Got nested comment', data);
+      res.status(200).send(data);
+    }
+  });
+});
+
 api.post('/topic/:topicId/:commentId', (req, res) => {
   console.log(req.body);
   db.replyToComment(req.body, req.params.topicId, req.params.commentId, (err, data) => {

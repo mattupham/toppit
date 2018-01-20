@@ -20,3 +20,17 @@ export const setShowReply = (showReply) => {
     payload: showReply
   };
 };
+// export const setNestedComments = (nestedComments) => {
+//   console.log(nestedComments, ' in actions!');
+//   return {
+//     type: 'SET_NESTED_COMMENTS',
+//     payload: nestedComments
+//   };
+// };
+export const setNestedCommentsCopy = (copy) => {
+  console.log(copy, ' in actions');
+  return {
+    type: 'SET_NESTED_COMMENTS_COPY',
+    payload: copy
+  };
+};

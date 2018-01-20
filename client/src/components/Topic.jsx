@@ -87,7 +87,7 @@ class Topic extends React.Component {
             <Card.Content onClick={this.renderTopicDetailedView} header={this.props.topic.headline} meta={meta}/>
             <Card.Content description={this.props.topic.description}/>
             <Card.Content extra>
-              <UpvoteButton topic={this.props.topic} upVote={this.props.upVote}/>
+              <UpvoteButton topic={this.props.topic} upvote={this.props.upVote}/>
               &nbsp;
               <a onClick={this.renderTopicDetailedView}>
                 <Icon name='comments'/>
