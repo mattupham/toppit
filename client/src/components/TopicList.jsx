@@ -14,7 +14,7 @@ const TopicList = (props) => {
         <Topic {...props}
           topic={topic} 
           key={index} 
-          // upVote={props.upVote}
+          upVote={props.upVote}
           onDetailedTopic={props.onDetailedTopic}
         />))}
     </Container>
