@@ -10,6 +10,7 @@ const auth = require('./auth');
 const db = require('../db');
 const passport = require('passport');
 const socketIo = require('socket.io');
+const http = require('http');
 
 app.use(morgan('tiny'));
 app.use(cookieParser());
