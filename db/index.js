@@ -210,6 +210,19 @@ const removeUpvote = (id, currentUser, callback) => {
   );
 };
 
+let getNestedComment = (commentId, callback) => {
+  console.log('Comment id', commentId);
+  Comment.findById(commentId).exec((err, comment) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      console.log('Got nested comment from db', comment);
+      callback(null, comment);
+    }
+  });
+};
+
+
 let replyToComment = (commentObj, topicId, commentId, callback) => {
   let id = mongoose.Types.ObjectId();
 
@@ -224,14 +237,44 @@ let replyToComment = (commentObj, topicId, commentId, callback) => {
     comments:       commentObj.comments
   });
 
-  // console.log(commentModel);
+  console.log(commentModel);
   Topic.findById(topicId).exec((err, topic) => {
     if (err) {
       console.log('Error getting topic', err);
     } else {
       console.log('Topic', topic);
       console.log(topic.commentId);
-      Comment.update({ '_id': commentId }, {'$push': { 'comments': commentModel }}, (err, nested) => {
+      // Comment.findById(commentId, (err, comment) => {
+      //   if (err) {
+      //     console.log('Error getting comment', err);
+      //   } else {
+      //     console.log('Found comment', comment);
+      //     let createdComment = Comment.create(commentModel, (err, created) => {
+      //       if (err) {
+      //         console.log('Could not create the comment', err);
+      //       } else {
+      //         Comment.update({ '_id': mongoose.Types.ObjectId(commentId) }, {'$addToSet': { 'comments': createdComment }}, (err, nested) => {
+      //           if (err) {
+      //             console.log('Could not update the commentId array', err);
+      //             callback(err, null);
+      //           } else {
+      //             console.log('Updated the commentId array!', nested);
+      //             callback(null, nested);
+      //           }
+      //         });
+      //       }
+      //     });
+      //   }
+      // });
+      // let createdComment = Comment.create(commentModel, (err, result) => {
+      //   if (err) {
+      //     console.log('Could not create the comment', err);
+      //   } else {
+
+      //   }
+      // })
+      let created = Comment.create(commentModel);
+      Comment.update({ '_id': commentId }, {'$push': { 'comments': commentModel._id }}, (err, nested) => {
         if (err) {
           console.log('Could not update the commentId array', err);
           callback(err, null);
@@ -398,6 +441,7 @@ module.exports.removeUpvote = removeUpvote;
 module.exports.replyToComment = replyToComment;
 module.exports.getTopicsInSubtoppit = getTopicsInSubtoppit;
 module.exports.getOneComment = getOneComment;
+module.exports.getNestedComment = getNestedComment;
 // module.exports.users = User;
 // module.exports.comments = Comment;
 // module.exports.lists = List;
