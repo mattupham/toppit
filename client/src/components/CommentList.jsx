@@ -30,7 +30,7 @@ class CommentList extends React.Component {
       <Comment.Group>
         <Header as="h3" dividing>Comments</Header>
         {commentList.map( (comment, index) => (
-          <MyComment comment={comment} key={index} topicId={comment.topicId} />
+          <MyComment comment={comment} key={index} />
         )
         )}
       </Comment.Group>

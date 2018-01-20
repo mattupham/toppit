@@ -1,11 +1,9 @@
 export default function reducer(state = {
-  comment: {
-    commentId: 0,
-    commentText: '',
-    showReply: false,
-    nestedComments: [],
-    nestedCommentsCopy: []
-  }
+  commentId: 0,
+  commentText: '',
+  showReply: false,
+  nestedComments: [],
+  nestedCommentsCopy: []
 }, action) {
   switch (action.type) {
     case 'SET_COMMENT_ID': {
@@ -32,12 +30,19 @@ export default function reducer(state = {
         nestedCommentsCopy: action.payload
       }
     }
-    // case 'SET_NESTED_COMMENTS': {
-    //   return {
-    //     ...state,
-    //     // nestedComments: state.comment.nestedComments.push(action.payload)
-    //   }
-    // }
+    case 'SET_NEW_NESTED': {
+      return {
+        ...state,
+        nestedCommentsCopy: [action.payload].concat(state.nestedComments)
+      }
+    }
+    case 'ADD_NESTED_TO_FRONT': {
+      // console.log('adding topic to list front');
+      return {
+        ...state,
+        nestedCommentsCopy: [action.payload].concat(state.nestedCommentsCopy)
+      }
+    }
     default: {
       return state
     }
