@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import reducer from './reducers';
 
-var socket = io('http://localhost:3000');
+var socket = io('//karms-toppit.herokuapp.com/' || '//localhost:3000');
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
