@@ -157,4 +157,6 @@ a.item.toTop.button {
 .messages .container {
   background-color: #fff;
   padding: 5px 0 5px 10px;
+  overflow: auto;
+  height: 250px; 
 }
