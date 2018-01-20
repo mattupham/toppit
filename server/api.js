@@ -97,13 +97,14 @@ api.get('/comments/:topicId/:author', (req, res) => {
     if (err) {
       res.status(404).send('Unable to get one comment');
     } else {
-      console.log('Got', req.body.text, req.params.topicId, req.params.author);
+      console.log('Got', req.query.text, req.params.topicId, req.params.author);
       res.status(200).send(data);
     }
   });
 });
 
 api.post('/topic/:topicId/:commentId', (req, res) => {
+  console.log(req.body);
   db.replyToComment(req.body, req.params.topicId, req.params.commentId, (err, data) => {
     if (err) {
       res.status(400).send('Unable to reply to comment');

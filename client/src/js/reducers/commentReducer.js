@@ -1,7 +1,8 @@
 export default function reducer(state = {
   comment: {
     commentId: 0,
-    commentText: ''
+    commentText: '',
+    showReply: false
   }
 }, action) {
   switch (action.type) {
@@ -14,7 +15,13 @@ export default function reducer(state = {
     case 'SET_REPLY_TEXT': {
       return {
         ...state,
-        commentText: { ...state.comment, commentText: action.payload }
+        commentText: action.payload
+      }
+    }
+    case 'SET_SHOW_REPLY': {
+      return {
+        ...state,
+        showReply: { ...state.comment, showReply: action.payload }
       }
     }
     default: {

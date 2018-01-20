@@ -201,24 +201,40 @@ const removeUpvote = (id, currentUser, callback) => {
 let replyToComment = (commentObj, topicId, commentId, callback) => {
   let id = mongoose.Types.ObjectId();
 
-  let comment = new Comment({
+  let commentModel = new Comment({
     _id:            id,
     text:           commentObj.text,
     timeStamp:      commentObj.timeStamp,
-    topicId:        commentObj.topicId,
+    topicId:        topicId,
     authorId:       commentObj.authorId,
     authorUsername: commentObj.authorUsername,
     parentId:       commentObj.parentId,
     comments:       commentObj.comments
   });
 
-  console.log(comment);
-
+  // console.log(commentModel);
   Topic.findById(topicId).exec((err, topic) => {
     if (err) {
       console.log('Error getting topic', err);
     } else {
-      console.log(topic);
+      console.log('Topic', topic);
+      console.log(topic.commentId);
+      Comment.update({ '_id': commentId }, {'$push': { 'comments': commentModel }}, (err, nested) => {
+        if (err) {
+          console.log('Could not update the commentId array', err);
+          callback(err, null);
+        } else {
+          console.log('Updated the commentId array!', nested);
+          callback(null, nested);
+        }
+      });
+      // topic.commentId.findOne({ _id: commentId }, (err, comment) => {
+      //   if (err) {
+      //     console.log('Error getting comment', err);
+      //   } else {
+      //     comment.update({'$addToSet': { 'comment.$.comments': commentModel}});
+      //   }
+      // });
       // Comment.findOne({ _id: commentId }).exec((err, data) => {
       //   if (err) {
       //     console.log('Error getting comment', err);
@@ -226,17 +242,46 @@ let replyToComment = (commentObj, topicId, commentId, callback) => {
       //     console.log('Successfully got comment', data);
       //   }
       // });
-      Comment.findById(commentId).
-        populate({ path: 'comments', populate: { path: 'comments' }}).
-        exec((err, nested) => {
-          if (err) {
-            console.log('Error nesting comment', err);
-            callback(err, null);
-          } else {
-            console.log('Successfully nested comment!', nested);
-            callback(null, nested);
-          }
-        });
+      // Comment.findOne({ _id: commentId }, {'$addToSet': {'comments': commentModel }});
+      // Comment.findOne({ _id: commentId }, (err, comment) => {
+      //   if (err) {
+      //     console.log('Could not find comment', err);
+      //   } else {
+      //     console.log(comment);
+      //     for (var i = 0; i < comments.$.comments.length; i++) {
+      //       console.log(comment.comments[i]);
+      //       // comment.update({ '$set': { 'comment.comments[i]': commentModel }}, (err, nested) => {
+      //       //   if (err) {
+      //       //     console.log('Error nesting comment', err);
+      //       //     callback(err, null);
+      //       //   } else {
+      //       //     console.log('Successfully nested comment!', nested);
+      //       //     callback(null, nested);
+      //       //   }
+      //       // });
+      //     }
+      //   }
+      // });
+      // Comment.update({ _id: commentId }, { '$set': {'comments.comments': commentModel }});
+      
+
+      // Comment.update({ _id: commentId }, $push: { commentModel })
+
+      // let comment = Comment.findById(commentId);
+      // console.log('Comment', comment);
+      // comment.update({})
+      // let populated = comment.populate({ path: 'comments', populate: { path: 'comments' }});
+      // console.log('Populated', populated);
+
+      // populated.exec((err, nested) => {
+      //   if (err) {
+      //     console.log('Error nesting comment', err);
+      //     callback(err, null);
+      //   } else {
+      //     console.log('Successfully nested comment!', nested);
+      //     callback(null, nested);
+      //   }
+      // });
     }
   });
 };

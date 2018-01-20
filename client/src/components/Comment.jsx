@@ -6,7 +6,7 @@ import store from '../js/store.js';
 import http from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setReplyCommentText, setCommentId } from '../js/actions/commentActions';
+import { setReplyCommentText, setCommentId, setShowReply } from '../js/actions/commentActions';
 
 class MyComment extends React.Component {
   constructor(props) {
@@ -30,18 +30,27 @@ class MyComment extends React.Component {
   handleInputText(e, { value }) {
     this.props.setReplyCommentText(value);
   }
+  toggleShowReply() {
+    let comment = store.getState().comment;
+    if (comment.showReply) {
+      this.props.setShowReply(false);
+    } else {
+      this.props.setShowReply(true);
+    }
+
+  }
   onReply() {
     let topicId = store.getState().topicList.selectedTopic._id;
-
+    console.log(store.getState().comment);
     let comment = {
       text: store.getState().comment.commentText,
       timeStamp: new Date(),
       authorId: store.getState().user.user.id,
       authorUsername: store.getState().user.user.username,
-      parentId: null || this.props.comment._id,
+      parentId: this.props.comment._id,
       comments: []
     };
-    console.log(comment);
+    console.log('Comment in component',comment);
     http.post(`/api/topic/${topicId}/${this.props.comment._id}`, comment)
       .then((data) => {
         console.log('Data', data);
@@ -65,12 +74,21 @@ class MyComment extends React.Component {
           </Comment.Metadata>
           <Comment.Text>{this.props.comment.text}</Comment.Text>
           <Comment.Actions>
-            <Comment.Action>Reply</Comment.Action>
+            <Comment.Action onClick={this.toggleShowReply.bind(this)}>Reply</Comment.Action>
           </Comment.Actions>
-          <Form reply>
-            <Form.TextArea onChange={this.handleInputText.bind(this)} />
-            <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
-          </Form>
+          {
+            (store.getState().comment.showReply) ?
+              <Form reply className="replyTextArea">
+                <Form.TextArea onChange={this.handleInputText.bind(this)} />
+                <Button onClick={() => this.onReply(store.getState().comment.commentText)} content='Add Reply' labelPosition='left' icon='edit' primary />
+              </Form>
+              : null
+          }
+          {
+            () => {
+              
+            }
+          }
         </Comment.Content>
       </Comment>
     );
@@ -78,11 +96,12 @@ class MyComment extends React.Component {
 }
 const mapStateToProps = (state) => ({
   commentText: state.comment.commentText,
-  commentId: state.comment.commentId
+  commentId: state.comment.commentId,
+  showReply: state.comment.showReply
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setReplyCommentText, setCommentId }, dispatch);
+  return bindActionCreators({ setReplyCommentText, setCommentId, setShowReply }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComment);
