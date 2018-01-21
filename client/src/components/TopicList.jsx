@@ -20,7 +20,7 @@ class TopicList extends React.Component {
   }  
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.subtoppit !== nextProps.match.params.subtoppit) {
+    if (this.props.match.params.subtoppit && this.props.match.params.subtoppit !== nextProps.match.params.subtoppit) {
       this.subtoppit = nextProps.match.params.subtoppit;
       this.props.getAllTopicsInSubtoppit(this.subtoppit);
     }
@@ -28,12 +28,17 @@ class TopicList extends React.Component {
 
   render() {
     // this.subtoppit = this.props.match.params.subtoppit;
+          console.log('subtoppit....', this.subtoppit);
+    if (!this.props.match.params.subtoppit) {
+      this.subtoppit = '';
+    }
     if (this.subtoppit && this.props.subtoppitList[0]) {
       console.log('setting to subtoppit list!....');
       this.topicList = this.props.subtoppitList;
     } else if (this.subtoppit && !this.props.subtoppitList[0]) {
       this.topicList = [];
     } else {
+      console.log('subtoppit....', this.subtoppit);
       this.topicList = this.props.filteredTopicList;
     }
     return (

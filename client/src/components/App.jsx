@@ -186,7 +186,6 @@ class App extends React.Component {
     // console.log(this.props.user.password);
     let topic = store.getState().topic.topic;
     // store.dispatch({type:'server/hello', data:'Hello!', user: username});
-
     return (
       <div className='mainapp'>
         <NavBar 
