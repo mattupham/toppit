@@ -122,7 +122,14 @@ class NewTopic extends React.Component {
     } else {
       photoUrl = (this.props.currentUser && this.props.currentUser.photo) || defaultPhoto;
     }
-    this.subtoppits = [{value: 'legacyProject', text: 'legacyProject'}, {value: 'greenFieldProject', text: 'greenFieldProject'}];
+    this.subtoppits = [
+      {value: 'introductions', text: 'introductions'},
+      {value: 'chatter', text: 'chatter'},
+      {value: 'legacyProject', text: 'legacyProject'}, 
+      {value: 'greenFieldProject', text: 'greenFieldProject'},
+      {value: 'cats', text: 'cats'},
+      {value: 'dogs', text: 'dogs'},
+    ];
 
     return (
       <Dimmer.Dimmable as={Form} blurring dimmed={this.props.active}>

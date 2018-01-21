@@ -31,18 +31,20 @@ class TopicList extends React.Component {
     if (this.subtoppit && this.props.subtoppitList[0]) {
       console.log('setting to subtoppit list!....');
       this.topicList = this.props.subtoppitList;
+    } else if (this.subtoppit && !this.props.subtoppitList[0]) {
+      this.topicList = [];
     } else {
       this.topicList = this.props.filteredTopicList;
     }
     return (
       <Container>
-        {this.topicList.map((topic, index) => (
+        {this.topicList[0] ? this.topicList.map((topic, index) => (
           <Topic {...this.props}
             topic={topic} 
             key={index} 
             // upVote={props.upVote}
             onDetailedTopic={this.props.onDetailedTopic}
-          />))}
+          />)) : <div></div>}
       </Container>
     );
   }  
