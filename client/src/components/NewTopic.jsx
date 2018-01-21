@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Image, Dimmer, Button, Segment, Container, Grid, Header, Icon} from 'semantic-ui-react';
+import {Form, Image, Dimmer, Button, Segment, Container, Grid, Header, Icon, Message } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import emojis from '../emojis';
 import anonPhoto1 from '../images/anonPhoto1.png';
@@ -57,8 +57,30 @@ class NewTopic extends React.Component {
   }
 
   onSubmit(e, { value }) {
+    var errors = false;
+    if (document.querySelector('#subtoppitSelectionForPost .text').innerHTML === '') {
+      document.querySelector('.dimmer .form').classList.add('error');
+      document.querySelector('#subtoppitSelectionForPost').classList.add('error');
+      errors = true;
+    }
+    if (document.querySelector('#topicHeadline').value === '') {
+      document.querySelector('#topicHeadline').parentNode.parentNode.classList.add('error');
+      document.querySelector('.dimmer .form').classList.add('error');
+      errors = true;
+    }
+    if (document.querySelector('#topicDescription').value === '') {
+      document.querySelector('#topicDescription').parentNode.classList.add('error');
+      document.querySelector('.dimmer .form').classList.add('error');
+      errors = true;
+    }
+    if (errors) {
+      return;
+    }
+    // if (document.querySelector(".form .dropdown .text").innerHTML = '') {
+    //   console.log(document.querySelector(".form .dropdown .text"));
+    //   return;
+    // }
 
-    console.log('values...', {value})
     let topic = store.getState().topic.topic;
     let user = store.getState().user.user;
 
@@ -113,21 +135,22 @@ class NewTopic extends React.Component {
                 </Grid.Column>
                 <Grid.Column width={12}>
                   <Form onSubmit={this.onSubmit}>
+                    <Message error header='Missing field(s)' content='You have missing field(s)'/>
                     <Form.Input 
                       label='Topic Headline' 
                       name='headline' 
                       onChange={this.onHeadlineChange} 
-                      // value={topic.headline} 
+                      id="topicHeadline"
                       placeholder='Enter the headline of your topic' />
                     <Form.TextArea 
                       label='Short Description' 
                       name='description' 
                       onChange={this.onDescriptionChange} 
-                      // value={topic.description} 
+                      id="topicDescription"
                       placeholder='Tell us a little more about your idea' />
                     <Form.Group inline>
                       <Form.Select label="I'm feeling ..." name='emotion' onChange={this.onEmotion} options={emojis} placeholder='Emotion' />
-                      <Form.Select label="choose a subtoppit" name="subtoppitSelectionForPost" onChange={this.onSubtoppitSelection.bind(this)} options={this.subtoppits} /> 
+                      <Form.Select label="choose a subtoppit" id="subtoppitSelectionForPost" onChange={this.onSubtoppitSelection.bind(this)} options={this.subtoppits} /> 
                       <Form.Button type="submit">Submit</Form.Button>
                       <Form.Button type="submit" onClick={this.toggleAnonymous}>{anonText}</Form.Button>
                     </Form.Group>
