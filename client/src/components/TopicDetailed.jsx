@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setCommentText } from '../js/actions/topicActions';
-import { setDetailedTopic, addCommentToFront, setDetailedCommentList } from '../js/actions/topicListActions.js';
+import { setDetailedTopic, addCommentToFront, setDetailedCommentList, setTopicComments } from '../js/actions/topicListActions.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -36,6 +36,16 @@ class TopicDetailed extends React.Component {
       })
       .catch((err) => {
         console.log(err.message);
+      });
+
+    let topicId = store.getState().topicList.selectedTopic._id;
+    http.get(`/api/topic/${topicId}`)
+      .then((data) => {
+        console.log('This is the list of all comments', data);
+        this.props.setTopicComments(data.data.commentId);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 
@@ -117,9 +127,10 @@ class TopicDetailed extends React.Component {
               <Grid.Column width={14}>
                 <div>
                   &nbsp;&nbsp;
+                  <Header as="h3" dividing>Comments</Header>
                   <CommentList
                     handleCommentSubmitClick={this.submitComment.bind(this)}
-                    comments={detailedTopic.commentId} 
+                    comments={store.getState().topicList.commentList} 
                   />
                 </div>
                 <Container className='newcommentcontainer' text>
@@ -148,12 +159,13 @@ const mapStateToProps = (state) => ({
   selectedTopic: state.topicList.selectedTopic,
   commentText: state.topic.commentText,
   comments: state.topic.comments,
-  commentId: state.topicList.selectedTopic.commentId
+  commentId: state.topicList.selectedTopic.commentId,
+  commentList: state.topicList.commentList
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
-    setDetailedTopic, setCommentText, addCommentToFront, setDetailedCommentList }, dispatch);
+    setDetailedTopic, setCommentText, addCommentToFront, setDetailedCommentList, setTopicComments }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopicDetailed);

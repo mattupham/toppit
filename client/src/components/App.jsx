@@ -168,10 +168,6 @@ class App extends React.Component {
     this.props.changeFilteredList(newFilteredTopicList);
   }
 
-
-
-
-
   downVote (topicId) {
 
   }  

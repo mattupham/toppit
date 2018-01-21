@@ -11,7 +11,7 @@ var socket = io('//karms-toppit.herokuapp.com/' || '//localhost:3000');
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
-const middleware = applyMiddleware(promise(), thunk, createLogger(), socketIoMiddleware);
+const middleware = applyMiddleware(promise(), thunk, socketIoMiddleware);
 
 export default createStore(reducer, middleware);
 
