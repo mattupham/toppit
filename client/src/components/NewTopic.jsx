@@ -9,7 +9,7 @@ import anonPhoto4 from '../images/anonPhoto4.png';
 import defaultPhoto from '../images/defaultPhoto.jpg';
 import { 
   displayNewTopic, setHeadline, setDescription,
-  setEmotion, setCommentText, setAnon, setUpvoteStateColor
+  setEmotion, setCommentText, setAnon, setUpvoteStateColor, setSubtoppitToPostTo
 } from '../js/actions/topicActions.js';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -57,6 +57,8 @@ class NewTopic extends React.Component {
   }
 
   onSubmit(e, { value }) {
+
+    console.log('values...', {value})
     let topic = store.getState().topic.topic;
     let user = store.getState().user.user;
 
@@ -65,6 +67,7 @@ class NewTopic extends React.Component {
       let topicObj = {
         headline: topic.headline,
         description: topic.description,
+        subtoppit: topic.subtoppit,
         emotion: topic.emotion,
         timeStamp: Date.now(),
         upvotes: 0
@@ -73,15 +76,17 @@ class NewTopic extends React.Component {
       topicObj.authorId = (!topic.anon) ? user.id : null;
       topicObj.authorUsername = (!topic.anon) ? user.username : 'Anonymous';
 
-      console.log(topicObj);
+      console.log('submitting...', topicObj);
       this.props.onNewTopic(topicObj);
     }
+    this.props.setSubtoppitToPostTo('');
     this.props.setAnon(false);
   }
   
 
-  onSubtoppitSelection() {
-
+  onSubtoppitSelection(e, {value}) {
+    var subtoppit = {value}.value;
+    this.props.setSubtoppitToPostTo(subtoppit)
   }
 
   render() {
@@ -129,6 +134,11 @@ class NewTopic extends React.Component {
                   </Form>
                 </Grid.Column>
                 <Grid.Column width={2}>
+                  <Link to='/'>
+                    <Button circular icon='remove' onClick={this.props.closeNewTopic} />
+                  </Link>
+                </Grid.Column>
+                <Grid.Column width={2}>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -146,13 +156,14 @@ const mapStateToProps = (state) => ({
   emotion: state.topic.emotion,
   anon: state.topic.anon,
   commentText: state.topic.commentText,
-  upvoteStateColor: state.topic.upvoteStateColor
+  upvoteStateColor: state.topic.upvoteStateColor,
+  subtoppit: state.topic.subtoppit
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
     displayNewTopic, setHeadline, setDescription,
-    setEmotion, setCommentText, setAnon, setUpvoteStateColor 
+    setEmotion, setCommentText, setAnon, setUpvoteStateColor, setSubtoppitToPostTo
   }, dispatch);
 };
 

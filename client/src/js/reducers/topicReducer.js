@@ -21,6 +21,12 @@ export default function reducer(state = {
         topic: { ...state.topic, username: action.payload }
       }
     }
+    case 'SET_SUBTOPPIT_TO_POST_TO': {
+      return {
+        ...state,
+        topic: { ...state.topic, subtoppit: action.payload }
+      }
+    }
     case 'SET_TOPIC_AUTHOR': {
       // console.log('Setting topic author in reducer');
       return {

@@ -10,7 +10,7 @@
     "start:dev": "nodemon server/index.js",
     "start:debug": "nodemon --inspect server/index.js",
     "start": "node server/index.js",
-    "react:dev": "webpack -d --watch",
+    "react:dev": "webpack -d --watch --hot",
     "test": "jest",
     "postinstall": "webpack -p"
   },

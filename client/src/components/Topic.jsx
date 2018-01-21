@@ -74,6 +74,7 @@ class Topic extends React.Component {
       <span>
         <span className='ui meta topicauthorname'>{name} | </span>
         <span className='ui meta topictime'>{moment(this.props.topic.timeStamp).fromNow()}</span>
+        <span className='ui meta topictoppitname'> {' to t/' + this.props.topic.subtoppit} </span>
       </span>
     );
 

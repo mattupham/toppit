@@ -82,6 +82,17 @@ let getTopics = (callback) => {
     });
 };
 
+let getTopicsInSubtoppit = (subtoppit, callback) => {
+  console.log('in database...');
+  Topic.find({'subtoppit': subtoppit}, null, {sort: '-timeStamp'}).exec((err, topics) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, topics);
+    }
+  });
+};
+
 //query key should be either username or _id
 let getUser = (query, callback) => {
   User.findOne(query, (err, user) => {
@@ -322,6 +333,7 @@ module.exports.getUser = getUser;
 module.exports.findOrCreateUser = findOrCreateUser;
 module.exports.removeUpvote = removeUpvote;
 module.exports.replyToComment = replyToComment;
+module.exports.getTopicsInSubtoppit = getTopicsInSubtoppit;
 // module.exports.users = User;
 // module.exports.comments = Comment;
 // module.exports.lists = List;

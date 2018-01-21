@@ -1,5 +1,5 @@
 export default function reducer(state = {
-  subtoppitView: 'home',
+  subtoppitList: [],
   fullTopicList: [],
   searchedTopicList: [],
   filteredTopicList: [],
@@ -16,6 +16,13 @@ export default function reducer(state = {
       return {
         ...state,
         fullTopicList: state.fullTopicList.concat(action.payload)
+      }
+    }
+    case 'SET_SUBTOPPIT_TOPICS': {
+      console.log('subtoppit list in reducer...', action.payload);
+      return {
+        ...state,
+        subtoppitList: action.payload
       }
     }
     case 'ADD_TOPIC_TO_LIST_FRONT': {

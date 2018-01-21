@@ -22,6 +22,7 @@ export default class NavBar extends React.Component {
 
   onHome() {
     this.props.history.push('/');
+    document.querySelector(".dropdown .text").innerHTML = '';
     this.props.home();
   }
 
@@ -34,13 +35,9 @@ export default class NavBar extends React.Component {
     this.props.history.push('/chat');
   }
 
-  // handleSubtoppitClick(subtoppit) {
-  //   subtoppit = subtoppit.slice(0, subtoppit.indexOf('Subtoppit'));
-  //   this.props.history.push('/t/' + subtoppit);
-  // }
-
   selectSubtoppit(e, {value}) {
-    console.log('event...', {value});
+    document.querySelector(".dropdown .text").innerHTML = '';
+    this.props.history.push('/t/' + {value}.value);
   }
 
   render() {
