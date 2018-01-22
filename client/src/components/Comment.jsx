@@ -15,7 +15,7 @@ class MyComment extends React.Component {
     this.onReply = this.onReply.bind(this);
   }
   componentDidMount() {
-    console.log(this.props.comment.comments);
+    // console.log(this.props.comment.comments);
     this.getAllComments();
   }
   getAllComments() {
@@ -72,7 +72,6 @@ class MyComment extends React.Component {
   }
   onReply(text) {
     let topicId = store.getState().topicList.selectedTopic._id;
-    // console.log(store.getState().comment);
 
     let comment = {
       text: text,
@@ -117,7 +116,7 @@ class MyComment extends React.Component {
       });
   }
   render() {
-    console.log(this.props.comment);
+    // console.log(this.props.comment);
     let comment = this.props.comment;
     // console.log(this.props.comments);
     let parent = store.getState().comment;
@@ -134,7 +133,7 @@ class MyComment extends React.Component {
     //       />
     //   ));
     // }
-    console.log('Nested in comment', nested);
+    // console.log('Nested in comment', nested);
     return (
       <div>
         <Comment.Group>

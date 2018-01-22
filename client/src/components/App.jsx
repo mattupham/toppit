@@ -33,7 +33,6 @@ class App extends React.Component {
     this.getAllTopics = this.getAllTopics.bind(this);
     this.upVote = this.upVote.bind(this);
     this.onDetailedTopic = this.onDetailedTopic.bind(this);
-    // this.getSelectTopics = this.getSelectTopics.bind(this);
   }
 
   componentDidMount() {
@@ -129,7 +128,7 @@ class App extends React.Component {
   addUpvoteAndUser(topic, userId) {
     topic.upvotes += 1;
     topic.upvoteUsers.push(userId);
-        console.log('topic......', topic);
+    // console.log('topic......', topic);
     return topic;
   }
 
@@ -142,7 +141,7 @@ class App extends React.Component {
   createNewFilteredTopicList(upvoteOrDownvote, newVoteTotal, userId, topicId) {
     // var fullTopicList = JSON.parse(JSON.stringify(store.getState().topicList.fullTopicList));
     // var viewedTopicList = JSON.parse(JSON.stringify(store.getState().topicList.viewedTopicList));
-    console.log('store...', store.getState());
+    // console.log('store...', store.getState());
     var newFilteredTopicList = [...store.getState().topicList.filteredTopicList];
     if (upvoteOrDownvote === 1) {
       for (var j = 0; j < newFilteredTopicList.length; j++) {
@@ -169,7 +168,6 @@ class App extends React.Component {
   }
 
   downVote (topicId) {
-
   }  
 
   topFunction() {
@@ -179,9 +177,7 @@ class App extends React.Component {
 
   render() {
     let username = this.props.username;
-    // console.log(this.props.user.password);
     let topic = store.getState().topic.topic;
-    // store.dispatch({type:'server/hello', data:'Hello!', user: username});
     return (
       <div className='mainapp'>
         <NavBar 
@@ -218,13 +214,8 @@ class App extends React.Component {
           <Route exact path='/' render={(props) => (
             <div>
               <Container>
-                <UtilsBar 
-                  // defaultFilter={this.state.filterBy} 
-                  // defaultSort={this.state.sortBy} 
-                  // onDropdownChange={this.getSelectTopics}
-                />
+                <UtilsBar />
                 <TopicList {...props} 
-                  // currentUser={this.state.currentUser}
                   upVote={this.upVote} 
                   onDetailedTopic={this.onDetailedTopic}
                   getAllTopicsInSubtoppit={this.getAllTopicsInSubtoppit.bind(this)}  
