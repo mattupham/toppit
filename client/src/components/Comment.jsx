@@ -30,8 +30,8 @@ class MyComment extends React.Component {
         // console.log('Got the comment!', comment);
         this.props.setCommentId(comment.data._id);
         
-        if (this.props.comments) {
-          let promises = this.props.comments.map((commentId) => {
+        if (this.props.comment) {
+          let promises = this.props.comment.comments.map((commentId) => {
             // console.log(comment);
             return http.get(`/api/comments/${commentId}`)
               .then((nested) => {
@@ -70,7 +70,7 @@ class MyComment extends React.Component {
     let comment = store.getState().comment;
     this.props.setShowReply(!comment.showReply);
   }
-  onReply() {
+  onReply(text) {
     let topicId = store.getState().topicList.selectedTopic._id;
     console.log(store.getState().comment);
     let parentIdToStore;
@@ -96,7 +96,7 @@ class MyComment extends React.Component {
     //     console.error(err);
     //   });
     let comment = {
-      text: store.getState().comment.commentText,
+      text: text,
       timeStamp: new Date(),
       authorId: store.getState().user.user.id,
       authorUsername: store.getState().user.user.username,
@@ -108,6 +108,7 @@ class MyComment extends React.Component {
     http.post(`/api/topic/${topicId}/${this.props.comment._id}`, comment)
       .then((data) => {
         console.log('Data', data);
+        this.props.addNestedToFront(comment);
         this.getAllComments();
         this.props.setShowReply(false);
       })
@@ -115,35 +116,58 @@ class MyComment extends React.Component {
         console.error(err);
       });
   }
-  nestComment(nested) {
-    console.log(nested);
-    let parentId;
-    for (var i = 0; i < nested.length; i++) {
-      // if ()
-      parentId = nested[i]._id;
-    }
-    let comment = {
-      text: store.getState().comment.commentText,
+  submitComment(commentText) {
+    var newComment = {
+      authorId: store.getState().topicList.selectedTopic.authorId,
+      topicId: this.props.topicId,
+      text: commentText,
       timeStamp: new Date(),
-      authorId: { _id: store.getState().user.user.id, username: store.getState().user.user.username },
-      authorUsername: store.getState().user.user.username,
-      parentId: this.props.comment._id,
-      comments: []
+      username: store.getState().user.user.username,
+      upvotes: 0
     };
-    console.log('Comment in component',comment);
-    let topicId = store.getState().topicList.selectedTopic._id;
-    http.post(`/api/topic/${topicId}/${this.props.comment._id}`, comment)
-      .then((data) => {
-        console.log('Data', data);
-        this.getAllComments();
-        this.props.setShowReply(false);
+    //http request to database to add comment to topic
+    // console.log(newComment);
+
+
+    http.post(`/api/topic/${this.props.topicId}`, newComment)
+      .then( (result) => {
+        console.log('success!', result);
+        this.props.addCommentToFront(newComment);
+        this.getAllTopicComments();
       })
-      .catch((err) => {
-        console.error(err);
+      .catch( (error) => {
+        console.log(error);
       });
-  }
+  } 
+  // nestComment(nested) {
+  //   console.log(nested);
+  //   let parentId;
+  //   for (var i = 0; i < nested.length; i++) {
+  //     // if ()
+  //     parentId = nested[i]._id;
+  //   }
+  //   let comment = {
+  //     text: store.getState().comment.commentText,
+  //     timeStamp: new Date(),
+  //     authorId: { _id: store.getState().user.user.id, username: store.getState().user.user.username },
+  //     authorUsername: store.getState().user.user.username,
+  //     parentId: this.props.comment._id,
+  //     comments: []
+  //   };
+  //   console.log('Comment in component',comment);
+  //   let topicId = store.getState().topicList.selectedTopic._id;
+  //   http.post(`/api/topic/${topicId}/${this.props.comment._id}`, comment)
+  //     .then((data) => {
+  //       console.log('Data', data);
+  //       this.getAllComments();
+  //       this.props.setShowReply(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }
   render() {
-    // console.log(this.props.comment);
+    console.log(this.props.comment);
     let comment = this.props.comment;
     // console.log(this.props.comments);
     let parent = store.getState().comment;
@@ -167,11 +191,11 @@ class MyComment extends React.Component {
           <Comment>
             <Comment.Avatar className='commentuser' src={defaultPhoto} />
             <Comment.Content>
-              <Comment.Author as='a'>{(comment.authorId.username) ? comment.authorId.username : comment.authorUsername}</Comment.Author>
+              <Comment.Author as='a'>{this.props.comment.authorId.username || this.props.comment.authorUsername}</Comment.Author>
               <Comment.Metadata>
-                <div>{moment(comment.timeStamp).fromNow()}</div>
+                <div>{moment(this.props.comment.timeStamp).fromNow()}</div>
               </Comment.Metadata>
-              <Comment.Text>{comment.text}</Comment.Text>
+              <Comment.Text>{this.props.comment.text}</Comment.Text>
               <Comment.Actions>
                 <Comment.Action onClick={this.toggleShowParentReply.bind(this)}>Reply</Comment.Action>
               </Comment.Actions>
@@ -183,12 +207,12 @@ class MyComment extends React.Component {
                   </Form>
               }
               {/* {
-                this.props.comment.comments && nested.map((child, index) => (
+                comment.comments && comment.comments.length > 0 && nested.map((child, index) => (
                   <MyComment comment={child} key={index} comments={child.comments} onClick={this.toggleShowNestedReply.bind(this)}/>
                 ))
               } */}
-              { comment.comments && comment.comments.length > 0 && <CommentList comments={comment.comments} /> }
-              {/* {
+              {/* { (comment.comments && comment.comments.length > 0) ? <CommentList comments={nested} /> : null } */}
+              {
                 this.props.comment.comments && this.props.comment.comments.length > 0 && nested.map((child, index) => {
                   console.log(child, index);
                   return (
@@ -218,7 +242,7 @@ class MyComment extends React.Component {
                     </Comment.Group>
                   );
                 })
-              } */}
+              }
               {
                 (store.getState().comment.showReply) &&
                 <Form reply className="replyTextArea">

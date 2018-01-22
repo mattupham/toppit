@@ -30,6 +30,10 @@ class TopicDetailed extends React.Component {
   }
 
   componentDidMount() {
+    this.getAllTopicComments();
+  }
+
+  getAllTopicComments() {
     http.get(`/api/topic/${this.props.topicId}`) 
       .then(({data}) => {
         this.props.setDetailedCommentList(data.commentId);
@@ -64,11 +68,13 @@ class TopicDetailed extends React.Component {
     };
     //http request to database to add comment to topic
     // console.log(newComment);
-    this.props.addCommentToFront(newComment);
+
 
     http.post(`/api/topic/${this.props.topicId}`, newComment)
       .then( (result) => {
         console.log('success!', result);
+        this.props.addCommentToFront(newComment);
+        this.getAllTopicComments();
       })
       .catch( (error) => {
         console.log(error);

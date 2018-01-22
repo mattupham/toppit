@@ -41,3 +41,10 @@ export const addNestedToFront = (nested) => {
     payload: nested
   };
 };
+export const setContainsObj = (containsObj) => {
+  console.log(containsObj, ' in actions');
+  return {
+    type: 'SET_CONTAINS_OBJ',
+    payload: containsObj
+  };
+};
