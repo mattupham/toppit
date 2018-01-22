@@ -7,7 +7,7 @@ export const addTopicToList = (value) => {
   };
 };
 export const setSubtoppitTopics = (topics) => {
-  console.log('firing off subtoppit list actions....')
+  // console.log('firing off subtoppit list actions....')
   return {
     type: 'SET_SUBTOPPIT_TOPICS',
     payload: topics
@@ -45,35 +45,35 @@ export const setDetailedTopic = (detailedTopic) => {
   };
 };
 export const addComment = (comment) => {
-  console.log(comment, ' in actions');
+  // console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT',
     payload: comment
   };
 };
 export const setDetailedCommentText = (commentText) => {
-  console.log(commentText, ' in actions');
+  // console.log(commentText, ' in actions');
   return {
     type: 'SET_COMMENT_TEXT',
     payload: commentText
   };
 };
 export const setDetailedCommentList = (commentList) => {
-  console.log(commentList, ' in actions');
+  // console.log(commentList, ' in actions');
   return {
     type: 'SET_COMMENT_LIST',
     payload: commentList
   };
 };
 export const setTopicComments = (comments) => {
-  console.log(comments, ' in actions');
+  // console.log(comments, ' in actions');
   return {
     type: 'SET_TOPIC_COMMENTS',
     payload: comments
   };
 };
 export const addCommentToFront = (comment) => {
-  console.log(comment, ' in actions');
+  // console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT_TO_FRONT',
     payload: comment

@@ -45,7 +45,7 @@ export default function reducer(state = {
       }
     }
     case 'SET_CONTAINS_OBJ': {
-      console.log('Setting contains obj!');
+      // console.log('Setting contains obj!');
       return {
         ...state,
         containsObj: action.payload

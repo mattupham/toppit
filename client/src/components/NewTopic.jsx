@@ -42,8 +42,8 @@ class NewTopic extends React.Component {
   }
 
   onEmotion(e, {value}) {
-    console.log('on emotion...', e)
-    console.log('value...', {value});
+    // console.log('on emotion...', e)
+    // console.log('value...', {value});
     this.props.setEmotion(value);
   }
 

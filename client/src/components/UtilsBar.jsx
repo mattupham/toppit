@@ -35,7 +35,7 @@ class UtilsBar extends React.Component {
     //determines how to sort list by sortBy value
     if (sortBy === 'upvotes') {
       newFilteredTopicList = this.sortTopicListByUpvotes(searchedTopicList);
-      console.log('SORTED BY UPVOTES...', newFilteredTopicList);
+      // console.log('SORTED BY UPVOTES...', newFilteredTopicList);
     } else if (sortBy === 'timeStamp') {
       newFilteredTopicList = this.sortTopicListByTimeStamp(searchedTopicList);
     }

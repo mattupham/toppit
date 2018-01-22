@@ -21,7 +21,7 @@ class UpvoteButton extends React.Component {
   }  
 
   handleClick() {
-    console.log('store right after click...', store.getState());
+    // console.log('store right after click...', store.getState());
     var changeInVotes = 1;
     if (this.props.currentUser && this.props.topic.upvoteUsers.includes(this.props.currentUser.id)) {
       changeInVotes = -1;
