@@ -237,7 +237,7 @@ class App extends React.Component {
               <TopicDetailed 
                 {...props} 
                 topicId={props.match.params.topicId} 
-                upvote={this.upVote}
+                upVote={this.upVote}
               />
             </Container>
           )}/>
