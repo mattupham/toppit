@@ -93,7 +93,7 @@ class Topic extends React.Component {
               <a onClick={this.renderTopicDetailedView}>
                 <Icon name='comments'/>
                 {/* {(store.getState().topicList.commentList.length === 1) ? 'comment' : 'comments' } */}
-                {this.props.topic.commentId.length} {(this.props.topic.commentId.length === 1) ? 'comment' : 'comments' }
+                {store.getState().comment.nestedCommentsCopy.length + this.props.topic.commentId.length} {(store.getState().comment.nestedCommentsCopy.length + this.props.topic.commentId.length === 1) ? 'comment' : 'comments' }
               </a>
               &nbsp;&nbsp;
               {this.props.topic.emotion ?
