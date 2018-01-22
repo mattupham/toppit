@@ -11,6 +11,7 @@ const db = require('../db');
 const passport = require('passport');
 const socketIo = require('socket.io');
 const http = require('http');
+const history = require('connect-history-api-fallback');
 
 app.use(morgan('tiny'));
 app.use(cookieParser());
@@ -78,6 +79,7 @@ app.use((req, res, next) => {
 
 /////////////////////// PRIVATE ENDPOINTS ///////////////////////////////
 
+app.use(history());
 app.use('/api', api);
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/topic/:topicId', express.static(path.join(__dirname, '../client/dist')));

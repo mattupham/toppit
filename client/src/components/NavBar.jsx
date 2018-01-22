@@ -22,6 +22,7 @@ export default class NavBar extends React.Component {
 
   onHome() {
     this.props.history.push('/');
+    document.querySelector(".dropdown .text").innerHTML = '';
     this.props.home();
   }
 
@@ -32,7 +33,11 @@ export default class NavBar extends React.Component {
 
   handleChatClick() {
     this.props.history.push('/chat');
+  }
 
+  selectSubtoppit(e, {value}) {
+    document.querySelector(".dropdown .text").innerHTML = '';
+    this.props.history.push('/t/' + {value}.value);
   }
 
   render() {
@@ -47,6 +52,15 @@ export default class NavBar extends React.Component {
       </span>
     );
 
+    let subtoppits = [
+      {value: 'introductions', text: 'introductions'},
+      {value: 'chatter', text: 'chatter'},
+      {value: 'legacyProject', text: 'legacyProject'}, 
+      {value: 'greenFieldProject', text: 'greenFieldProject'},
+      {value: 'cats', text: 'cats'},
+      {value: 'dogs', text: 'dogs'},
+    ];
+
     return (
       <Menu attached='top' className='nav'>
         <Menu.Item 
@@ -57,6 +71,10 @@ export default class NavBar extends React.Component {
         </Menu.Item>
         <Menu.Item>
           <Button primary onClick={this.handleChatClick.bind(this)}>Chat</Button>
+        </Menu.Item>
+        <Menu.Item id="subtoppitNavigationContainer">
+          <Dropdown placeholder='Select subtoppit' id="subtoppitNavigation" onChange={this.selectSubtoppit.bind(this)} fluid search selection options={subtoppits} />
+          {/*<Button id="legacyProjectSubtoppit" onClick={(e) => this.handleSubtoppitClick(e.target.id)}> Legacy Project </Button>*/}
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>

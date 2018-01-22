@@ -1,7 +1,6 @@
 const api = require('express').Router();
 const db = require('../db');
 
-
 // Get all topics
 api.get('/topics', (req, res) => {
 
@@ -25,6 +24,19 @@ api.get('/topics', (req, res) => {
       res.status(200).send(result);
     });
   }
+});
+
+api.get('/:subtoppit', (req, res) => {
+  console.log('server req', req.params.subtoppit);
+  db.getTopicsInSubtoppit(req.params.subtoppit, (error, result) => {
+    if (error) {
+      res.status(503).end();
+      return;
+    } else {
+      console.log('result..... in server', result);
+      res.status(200).send(result);
+    }
+  });
 });
 
 
