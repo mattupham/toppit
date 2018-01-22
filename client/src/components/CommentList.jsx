@@ -21,15 +21,6 @@ class CommentList extends React.Component {
     // console.log(this.props.comments);
     let comment = store.getState().comment;
     return (
-<<<<<<< HEAD
-      <Comment.Group>
-        <Header as="h3" dividing>Comments</Header>
-        {commentList.map( (comment, index) => (
-          <MyComment comment={comment} key={index} />
-        )
-        )}
-      </Comment.Group>
-=======
       <CommentGroup>
         {
           this.props.comments.map((comment, index) => (
@@ -37,7 +28,6 @@ class CommentList extends React.Component {
           ))
         }
       </CommentGroup>
->>>>>>> feat/redux
     );
   }
 }

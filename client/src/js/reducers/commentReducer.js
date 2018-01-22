@@ -3,12 +3,8 @@ export default function reducer(state = {
   commentText: '',
   showReply: false,
   nestedComments: [],
-<<<<<<< HEAD
-  nestedCommentsCopy: []
-=======
   nestedCommentsCopy: [],
   containsObj: false
->>>>>>> feat/redux
 }, action) {
   switch (action.type) {
     case 'SET_COMMENT_ID': {
