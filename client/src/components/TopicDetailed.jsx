@@ -87,7 +87,7 @@ class TopicDetailed extends React.Component {
     let detailedTopic = store.getState().topicList.detailedTopic;
 
     if (selectedTopic.authorId) {
-      name = (selectedTopic.authorId && (selectedTopic.authorId.fullName || selectedTopic.authorId.username) || '');
+      name = (selectedTopic.authorId && (selectedTopic.authorUsername || selectedTopic.authorId.username) || '');
       photoUrl = (selectedTopic.authorId && selectedTopic.authorId.photo) || (selectedTopic.authorId && defaultPhoto);
     } else {
       name = 'Anonymous';
