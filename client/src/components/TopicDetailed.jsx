@@ -87,7 +87,7 @@ class TopicDetailed extends React.Component {
     let detailedTopic = store.getState().topicList.detailedTopic;
 
     if (selectedTopic.authorId) {
-      name = (selectedTopic.authorId && (selectedTopic.authorId.fullName || selectedTopic.authorId.username) || '');
+      name = (selectedTopic.authorId && (selectedTopic.authorUsername || selectedTopic.authorId.username) || '');
       photoUrl = (selectedTopic.authorId && selectedTopic.authorId.photo) || (selectedTopic.authorId && defaultPhoto);
     } else {
       name = 'Anonymous';
@@ -119,7 +119,7 @@ class TopicDetailed extends React.Component {
                       // upvote={this.props.upvote} 
                       currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {selectedTopic.commentId.length + store.getState().comment.nestedCommentsCopy.length} {(selectedTopic.commentId.length === 1) ? 'comment' : 'comments'}
+                    {selectedTopic.commentId.length + store.getState().comment.nestedCommentsCopy.length} {(selectedTopic.commentId.length + store.getState().comment.nestedCommentsCopy.length === 1) ? 'comment' : 'comments'}
                     &nbsp;&nbsp;
                     {selectedTopic.emotion ?
                       <Button compact color="blue" content={selectedTopic.emotion}/> : ''}                
