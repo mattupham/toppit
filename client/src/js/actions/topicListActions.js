@@ -72,11 +72,12 @@ export const setTopicComments = (comments) => {
     payload: comments
   };
 };
-export const addCommentToFront = (topic) => {
-  console.log(topic, ' in actions');
+export const addCommentToFront = (comment) => {
+  console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT_TO_FRONT',
-    payload: topic
+    payload: comment
   };
 };
+
 
