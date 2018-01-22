@@ -53,7 +53,7 @@ class TopicList extends React.Component {
       </Container>
     );
   }  
-};
+}
 
 
 const mapStateToProps = (state) => ({
