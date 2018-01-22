@@ -33,19 +33,6 @@ const commentSchema = mongoose.Schema({
   upvotes:        Number
 });
 
-// const nestedCommentSchema = mongoose.Schema({
-//   _id:            mongoose.Schema.Types.ObjectId,
-//   text:           String,
-//   timeStamp:      Date,
-//   authorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-//   authorUsername: String,
-//   parentId:       mongoose.Schema.Types.ObjectId,
-//   comments:       [{ type: mongoose.Schema.Types.ObjectId, ref: 'NestedComment' }],
-//   topicId:        String,
-//   username:       String,
-//   upvotes:        Number
-// });
-
 const userSchema = mongoose.Schema({
   username:    String,
   password:    String,
@@ -210,45 +197,66 @@ const removeUpvote = (id, currentUser, callback) => {
   );
 };
 
+let getNestedComment = (commentId, callback) => {
+  console.log('Comment id', commentId);
+  Comment.findById(commentId).exec((err, comment) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      console.log('Got nested comment from db', comment);
+      callback(null, comment);
+    }
+  });
+};
+
+
 let replyToComment = (commentObj, topicId, commentId, callback) => {
   let id = mongoose.Types.ObjectId();
 
-  let comment = new Comment({
+  let commentModel = new Comment({
     _id:            id,
     text:           commentObj.text,
     timeStamp:      commentObj.timeStamp,
-    topicId:        commentObj.topicId,
+    topicId:        topicId,
     authorId:       commentObj.authorId,
     authorUsername: commentObj.authorUsername,
     parentId:       commentObj.parentId,
     comments:       commentObj.comments
   });
 
-  console.log(comment);
-
+  console.log(commentModel);
   Topic.findById(topicId).exec((err, topic) => {
     if (err) {
       console.log('Error getting topic', err);
     } else {
+      // console.log('Topic', topic);
+      Comment.update({ '_id': commentId }, {'$push': { 'comments': commentModel._id }}, (err, nested) => {
+        if (err) {
+          console.log('Could not update the commentId array', err);
+          callback(err, null);
+        } else {
+          console.log('Updated the commentId array!', nested);
+          callback(null, nested);
+        }
+      });
+    }
+  });
+};
+
+let getOneComment = (text, topicId, author, callback) => {
+  Topic.findOne({ _id: topicId }, (err, topic) => {
+    if (err) {
+      console.log('Could not find topic', err);
+    } else {
       console.log(topic);
-      // Comment.findOne({ _id: commentId }).exec((err, data) => {
-      //   if (err) {
-      //     console.log('Error getting comment', err);
-      //   } else {
-      //     console.log('Successfully got comment', data);
-      //   }
-      // });
-      Comment.findById(commentId).
-        populate({ path: 'comments', populate: { path: 'comments' }}).
-        exec((err, nested) => {
-          if (err) {
-            console.log('Error nesting comment', err);
-            callback(err, null);
-          } else {
-            console.log('Successfully nested comment!', nested);
-            callback(null, nested);
-          }
-        });
+      Comment.findOne({ text: text, username: author }, (err, comment) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          console.log('Got the comment!');
+          callback(null, comment);
+        }
+      });
     }
   });
 };
@@ -334,7 +342,5 @@ module.exports.findOrCreateUser = findOrCreateUser;
 module.exports.removeUpvote = removeUpvote;
 module.exports.replyToComment = replyToComment;
 module.exports.getTopicsInSubtoppit = getTopicsInSubtoppit;
-// module.exports.users = User;
-// module.exports.comments = Comment;
-// module.exports.lists = List;
-// module.exports.organizations = Organizatoin;
+module.exports.getOneComment = getOneComment;
+module.exports.getNestedComment = getNestedComment;

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setCommentText } from '../js/actions/topicActions';
-import { setDetailedTopic, addCommentToFront, setDetailedCommentList } from '../js/actions/topicListActions.js';
+import { setDetailedTopic, addCommentToFront, setDetailedCommentList, setTopicComments } from '../js/actions/topicListActions.js';
 
 const anonPhotos = [
   anonPhoto1,
@@ -30,12 +30,26 @@ class TopicDetailed extends React.Component {
   }
 
   componentDidMount() {
+    this.getAllTopicComments();
+  }
+
+  getAllTopicComments() {
     http.get(`/api/topic/${this.props.topicId}`) 
       .then(({data}) => {
         this.props.setDetailedCommentList(data.commentId);
       })
       .catch((err) => {
         console.log(err.message);
+      });
+
+    let topicId = store.getState().topicList.selectedTopic._id;
+    http.get(`/api/topic/${topicId}`)
+      .then((data) => {
+        console.log('This is the list of all comments', data);
+        this.props.setTopicComments(data.data.commentId);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 
@@ -54,11 +68,13 @@ class TopicDetailed extends React.Component {
     };
     //http request to database to add comment to topic
     // console.log(newComment);
-    this.props.addCommentToFront(newComment);
+
 
     http.post(`/api/topic/${this.props.topicId}`, newComment)
       .then( (result) => {
         console.log('success!', result);
+        this.props.addCommentToFront(newComment);
+        this.getAllTopicComments();
       })
       .catch( (error) => {
         console.log(error);
@@ -71,7 +87,7 @@ class TopicDetailed extends React.Component {
     let detailedTopic = store.getState().topicList.detailedTopic;
 
     if (selectedTopic.authorId) {
-      name = (selectedTopic.authorId && (selectedTopic.authorId.fullName || selectedTopic.authorId.username) || '');
+      name = (selectedTopic.authorId && (selectedTopic.authorUsername || selectedTopic.authorId.username) || '');
       photoUrl = (selectedTopic.authorId && selectedTopic.authorId.photo) || (selectedTopic.authorId && defaultPhoto);
     } else {
       name = 'Anonymous';
@@ -103,7 +119,7 @@ class TopicDetailed extends React.Component {
                       // upvote={this.props.upvote} 
                       currentUser={store.getState().user.user.id}/>            
                     <Icon name='comments' />
-                    {selectedTopic.commentId.length} {(selectedTopic.commentId.length === 1) ? 'comment' : 'comments'}
+                    {selectedTopic.commentId.length + store.getState().comment.nestedCommentsCopy.length} {(selectedTopic.commentId.length + store.getState().comment.nestedCommentsCopy.length === 1) ? 'comment' : 'comments'}
                     &nbsp;&nbsp;
                     {selectedTopic.emotion ?
                       <Button compact color="blue" content={selectedTopic.emotion}/> : ''}                
@@ -117,9 +133,10 @@ class TopicDetailed extends React.Component {
               <Grid.Column width={14}>
                 <div>
                   &nbsp;&nbsp;
+                  <Header as="h3" dividing>Comments</Header>
                   <CommentList
                     handleCommentSubmitClick={this.submitComment.bind(this)}
-                    comments={detailedTopic.commentId} 
+                    comments={store.getState().topicList.commentList} 
                   />
                 </div>
                 <Container className='newcommentcontainer' text>
@@ -148,12 +165,13 @@ const mapStateToProps = (state) => ({
   selectedTopic: state.topicList.selectedTopic,
   commentText: state.topic.commentText,
   comments: state.topic.comments,
-  commentId: state.topicList.selectedTopic.commentId
+  commentId: state.topicList.selectedTopic.commentId,
+  commentList: state.topicList.commentList
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
-    setDetailedTopic, setCommentText, addCommentToFront, setDetailedCommentList }, dispatch);
+    setDetailedTopic, setCommentText, addCommentToFront, setDetailedCommentList, setTopicComments }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopicDetailed);
