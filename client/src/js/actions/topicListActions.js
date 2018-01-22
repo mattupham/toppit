@@ -6,6 +6,13 @@ export const addTopicToList = (value) => {
     payload: value
   };
 };
+export const setSubtoppitTopics = (topics) => {
+  console.log('firing off subtoppit list actions....')
+  return {
+    type: 'SET_SUBTOPPIT_TOPICS',
+    payload: topics
+  }; 
+};
 export const addTopicToListFront = (value) => {
   return {
     type: 'ADD_TOPIC_TO_LIST_FRONT',
@@ -65,11 +72,12 @@ export const setTopicComments = (comments) => {
     payload: comments
   };
 };
-export const addCommentToFront = (topic) => {
-  console.log(topic, ' in actions');
+export const addCommentToFront = (comment) => {
+  console.log(comment, ' in actions');
   return {
     type: 'ADD_COMMENT_TO_FRONT',
-    payload: topic
+    payload: comment
   };
 };
+
 

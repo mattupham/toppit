@@ -10,6 +10,12 @@ div.loginpage {
   background-image: url(../images/bg.png);
   height: 100%;
 }
+
+#subtoppitNavigationContainer {
+  max-width: 20% !important;
+  width: 14% !important;
+}
+
 .ui.menu.nav {
   border-bottom: 1px solid #2185d0;
 }

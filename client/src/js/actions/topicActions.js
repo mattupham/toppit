@@ -33,6 +33,12 @@ export const setEmotion = (emotion) => {
     payload: emotion
   };
 };
+export const setSubtoppitToPostTo = (subtoppit) => {
+  return {
+    type: 'SET_SUBTOPPIT_TO_POST_TO',
+    payload: subtoppit
+  };
+};
 export const setAnon = (anon) => {
   console.log(anon, ' in actions');
   return {

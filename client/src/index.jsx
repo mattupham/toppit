@@ -6,13 +6,13 @@ import { Provider } from 'react-redux';
 import store from './js/store.js';
 import './styles/styles.css';
 // import { setUsername, setUserPassword, fetchUser } from '../js/actions/userActions';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, browserHistory} from 'react-router-dom';
 
 console.log('Rendering Main Page');
 
 ReactDOM.render((
   <Provider store={store}>
-    <Router>
+    <Router history={browserHistory}>
       <Switch>
         <Route exact path='/login' component={Login}/>
         <Route path='/' component={App}/>

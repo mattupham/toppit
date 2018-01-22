@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Image, Dimmer, Button, Segment, Container, Grid, Header, Icon} from 'semantic-ui-react';
+import {Form, Image, Dimmer, Button, Segment, Container, Grid, Header, Icon, Message } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import emojis from '../emojis';
 import anonPhoto1 from '../images/anonPhoto1.png';
@@ -9,7 +9,7 @@ import anonPhoto4 from '../images/anonPhoto4.png';
 import defaultPhoto from '../images/defaultPhoto.jpg';
 import { 
   displayNewTopic, setHeadline, setDescription,
-  setEmotion, setCommentText, setAnon, setUpvoteStateColor
+  setEmotion, setCommentText, setAnon, setUpvoteStateColor, setSubtoppitToPostTo
 } from '../js/actions/topicActions.js';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -42,6 +42,8 @@ class NewTopic extends React.Component {
   }
 
   onEmotion(e, {value}) {
+    console.log('on emotion...', e)
+    console.log('value...', {value});
     this.props.setEmotion(value);
   }
 
@@ -55,6 +57,30 @@ class NewTopic extends React.Component {
   }
 
   onSubmit(e, { value }) {
+    var errors = false;
+    if (document.querySelector('#subtoppitSelectionForPost .text').innerHTML === '') {
+      document.querySelector('.dimmer .form').classList.add('error');
+      document.querySelector('#subtoppitSelectionForPost').classList.add('error');
+      errors = true;
+    }
+    if (document.querySelector('#topicHeadline').value === '') {
+      document.querySelector('#topicHeadline').parentNode.parentNode.classList.add('error');
+      document.querySelector('.dimmer .form').classList.add('error');
+      errors = true;
+    }
+    if (document.querySelector('#topicDescription').value === '') {
+      document.querySelector('#topicDescription').parentNode.classList.add('error');
+      document.querySelector('.dimmer .form').classList.add('error');
+      errors = true;
+    }
+    if (errors) {
+      return;
+    }
+    // if (document.querySelector(".form .dropdown .text").innerHTML = '') {
+    //   console.log(document.querySelector(".form .dropdown .text"));
+    //   return;
+    // }
+
     let topic = store.getState().topic.topic;
     let user = store.getState().user.user;
 
@@ -63,6 +89,7 @@ class NewTopic extends React.Component {
       let topicObj = {
         headline: topic.headline,
         description: topic.description,
+        subtoppit: topic.subtoppit,
         emotion: topic.emotion,
         timeStamp: Date.now(),
         upvotes: 0
@@ -71,12 +98,18 @@ class NewTopic extends React.Component {
       topicObj.authorId = (!topic.anon) ? user.id : null;
       topicObj.authorUsername = (!topic.anon) ? user.username : 'Anonymous';
 
-      console.log(topicObj);
+      console.log('submitting...', topicObj);
       this.props.onNewTopic(topicObj);
     }
+    this.props.setSubtoppitToPostTo('');
     this.props.setAnon(false);
   }
   
+
+  onSubtoppitSelection(e, {value}) {
+    var subtoppit = {value}.value;
+    this.props.setSubtoppitToPostTo(subtoppit)
+  }
 
   render() {
     const anonText = 'Post Anonymously';
@@ -89,6 +122,14 @@ class NewTopic extends React.Component {
     } else {
       photoUrl = (this.props.currentUser && this.props.currentUser.photo) || defaultPhoto;
     }
+    this.subtoppits = [
+      {value: 'introductions', text: 'introductions'},
+      {value: 'chatter', text: 'chatter'},
+      {value: 'legacyProject', text: 'legacyProject'}, 
+      {value: 'greenFieldProject', text: 'greenFieldProject'},
+      {value: 'cats', text: 'cats'},
+      {value: 'dogs', text: 'dogs'},
+    ];
 
     return (
       <Dimmer.Dimmable as={Form} blurring dimmed={this.props.active}>
@@ -97,46 +138,35 @@ class NewTopic extends React.Component {
             <Grid columns={3}>
               <Grid.Row>
                 <Grid.Column width={2}>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <Header as='h2' icon>
-                    <Icon name='idea' />
-                    Share a new idea
-                    <Header.Subheader>
-                      Share an idea, inspiration or frustration and gather reactions from others
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width={2}>
-                  <Link to='/'>
-                    <Button circular icon='remove' onClick={this.props.closeNewTopic} />
-                  </Link>
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={2}>
                   <Image className='topicavatar' size='tiny' circular src={photoUrl} />
                 </Grid.Column>
                 <Grid.Column width={12}>
                   <Form onSubmit={this.onSubmit}>
+                    <Message error header='Missing field(s)' content='You have missing field(s)'/>
                     <Form.Input 
                       label='Topic Headline' 
                       name='headline' 
                       onChange={this.onHeadlineChange} 
-                      // value={topic.headline} 
+                      id="topicHeadline"
                       placeholder='Enter the headline of your topic' />
                     <Form.TextArea 
                       label='Short Description' 
                       name='description' 
                       onChange={this.onDescriptionChange} 
-                      // value={topic.description} 
+                      id="topicDescription"
                       placeholder='Tell us a little more about your idea' />
                     <Form.Group inline>
                       <Form.Select label="I'm feeling ..." name='emotion' onChange={this.onEmotion} options={emojis} placeholder='Emotion' />
+                      <Form.Select label="choose a subtoppit" id="subtoppitSelectionForPost" onChange={this.onSubtoppitSelection.bind(this)} options={this.subtoppits} /> 
                       <Form.Button type="submit">Submit</Form.Button>
                       <Form.Button type="submit" onClick={this.toggleAnonymous}>{anonText}</Form.Button>
                     </Form.Group>
                   </Form>
+                </Grid.Column>
+                <Grid.Column width={2}>
+                  <Link to='/'>
+                    <Button circular icon='remove' onClick={this.props.closeNewTopic} />
+                  </Link>
                 </Grid.Column>
                 <Grid.Column width={2}>
                 </Grid.Column>
@@ -156,13 +186,14 @@ const mapStateToProps = (state) => ({
   emotion: state.topic.emotion,
   anon: state.topic.anon,
   commentText: state.topic.commentText,
-  upvoteStateColor: state.topic.upvoteStateColor
+  upvoteStateColor: state.topic.upvoteStateColor,
+  subtoppit: state.topic.subtoppit
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
     displayNewTopic, setHeadline, setDescription,
-    setEmotion, setCommentText, setAnon, setUpvoteStateColor 
+    setEmotion, setCommentText, setAnon, setUpvoteStateColor, setSubtoppitToPostTo
   }, dispatch);
 };
 

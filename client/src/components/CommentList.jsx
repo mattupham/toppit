@@ -1,32 +1,27 @@
 import React from 'react';
 import MyComment from './Comment.jsx';
+import defaultPhoto from '../images/defaultPhoto.jpg';
 import {Button, Header, Comment, Container, Form} from 'semantic-ui-react';
 import store from '../js/store.js';
 import http from 'axios';
 import { setTopicComments } from '../js/actions/topicListActions.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// import { setNestedCommentsCopy } from '../js/actions/commentActions.js';
+import CommentGroup from 'semantic-ui-react/dist/commonjs/views/Comment/CommentGroup';
+
+import moment from 'moment';
+import { setReplyCommentText, setCommentId, setShowReply, setNestedComments, setNestedCommentsCopy, addNestedToFront, setContainsObj } from '../js/actions/commentActions.js';
 
 class CommentList extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    let topicId = store.getState().topicList.selectedTopic._id;
-    http.get(`/api/topic/${topicId}`)
-      .then((data) => {
-        console.log(data);
-        this.props.setTopicComments(data.data.commentId);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
   render() {
-    console.log(store.getState().topicList.commentList);
-    let commentList = store.getState().topicList.commentList;
-
+    // console.log(this.props.comments);
+    let comment = store.getState().comment;
     return (
+<<<<<<< HEAD
       <Comment.Group>
         <Header as="h3" dividing>Comments</Header>
         {commentList.map( (comment, index) => (
@@ -34,16 +29,27 @@ class CommentList extends React.Component {
         )
         )}
       </Comment.Group>
+=======
+      <CommentGroup>
+        {
+          this.props.comments.map((comment, index) => (
+            comment.comments && <MyComment key={index} comment={comment} comments={comment.comments} />
+          ))
+        }
+      </CommentGroup>
+>>>>>>> feat/redux
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  commentList: state.topicList.commentList
+  commentList: state.topicList.commentList,
+  nestedCommentsCopy: state.comment.nestedCommentsCopy,
+  containsObj: state.comment.containsObj
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setTopicComments }, dispatch);
+  return bindActionCreators({ setTopicComments, setNestedCommentsCopy, setContainsObj }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

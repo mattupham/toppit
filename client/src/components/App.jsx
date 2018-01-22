@@ -21,7 +21,7 @@ import { bindActionCreators } from 'redux';
 import store from '../js/store.js';
 import { setUserId } from '../js/actions/userActions.js';
 import { displayNewTopic } from '../js/actions/topicActions.js';
-import { addTopicToList, addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic } from '../js/actions/topicListActions.js';
+import { addTopicToList, addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic, setSubtoppitTopics } from '../js/actions/topicListActions.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -44,7 +44,6 @@ class App extends React.Component {
   }
 
   getAllTopics() {
-    //**need to set these in redux
     console.log('getting all topics');
     return http.get('/api/topics')
       .then(({ data }) => {
@@ -54,6 +53,16 @@ class App extends React.Component {
         data.forEach(topic => {
           this.props.addTopicToList(topic);
         });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  getAllTopicsInSubtoppit(subtoppit) {
+    return http.get('/api/' + subtoppit)
+      .then((data) => {
+        this.props.setSubtoppitTopics(data.data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -88,6 +97,7 @@ class App extends React.Component {
     http.post('/api/topic', topic)
       .then(({data}) => {
         //** need to rerender page
+        console.log('response from server after adding new topic...', data);
         this.props.addTopicToListFront(data);
         this.props.changeSearchedList(store.getState().topicList.fullTopicList);
         this.props.changeFilteredList(store.getState().topicList.fullTopicList);
@@ -158,10 +168,6 @@ class App extends React.Component {
     this.props.changeFilteredList(newFilteredTopicList);
   }
 
-
-
-
-
   downVote (topicId) {
 
   }  
@@ -176,7 +182,6 @@ class App extends React.Component {
     // console.log(this.props.user.password);
     let topic = store.getState().topic.topic;
     // store.dispatch({type:'server/hello', data:'Hello!', user: username});
-
     return (
       <div className='mainapp'>
         <NavBar 
@@ -197,6 +202,19 @@ class App extends React.Component {
           <Route path='/chat' render={(props) => (
             <Chat />
           )}/>
+          <Route path='/t/:subtoppit' render={(props) => (
+            <div>
+              <Container>
+                <UtilsBar />
+                <h1> Welcome to t/{props.match.params.subtoppit} </h1>
+                <TopicList {...props} 
+                  upVote={this.upVote} 
+                  onDetailedTopic={this.onDetailedTopic}
+                  getAllTopicsInSubtoppit={this.getAllTopicsInSubtoppit.bind(this)} 
+                />
+              </Container>
+            </div>
+          )}/>
           <Route exact path='/' render={(props) => (
             <div>
               <Container>
@@ -208,7 +226,8 @@ class App extends React.Component {
                 <TopicList {...props} 
                   // currentUser={this.state.currentUser}
                   upVote={this.upVote} 
-                  onDetailedTopic={this.onDetailedTopic} 
+                  onDetailedTopic={this.onDetailedTopic}
+                  getAllTopicsInSubtoppit={this.getAllTopicsInSubtoppit.bind(this)}  
                 />
               </Container>
             </div>
@@ -252,7 +271,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ displayNewTopic, setUserId, addTopicToList, 
-    addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic }, dispatch);
+    addTopicToListFront, changeSearchedList, changeFilteredList, setSelectedTopic, setSubtoppitTopics }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

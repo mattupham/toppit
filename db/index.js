@@ -8,6 +8,7 @@ var db = mongoose.createConnection(uri, options);
 
 const topicSchema = mongoose.Schema({
   _id:            mongoose.Schema.Types.ObjectId,
+  subtoppit:      String,
   headline:       String,
   description:    String,
   timeStamp:      Date,
@@ -79,6 +80,17 @@ let getTopics = (callback) => {
 
       callback(null, result);
     });
+};
+
+let getTopicsInSubtoppit = (subtoppit, callback) => {
+  console.log('in database...');
+  Topic.find({'subtoppit': subtoppit}, null, {sort: '-timeStamp'}).exec((err, topics) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, topics);
+    }
+  });
 };
 
 //query key should be either username or _id
@@ -427,6 +439,7 @@ module.exports.getUser = getUser;
 module.exports.findOrCreateUser = findOrCreateUser;
 module.exports.removeUpvote = removeUpvote;
 module.exports.replyToComment = replyToComment;
+module.exports.getTopicsInSubtoppit = getTopicsInSubtoppit;
 module.exports.getOneComment = getOneComment;
 module.exports.getNestedComment = getNestedComment;
 // module.exports.users = User;

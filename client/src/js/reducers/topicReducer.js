@@ -1,6 +1,7 @@
 export default function reducer(state = {
   topic: {
     username: '',
+    subtoppit: 'home',
     author: '',
     headline: '',
     description: '',
@@ -18,6 +19,12 @@ export default function reducer(state = {
       return {
         ...state,
         topic: { ...state.topic, username: action.payload }
+      }
+    }
+    case 'SET_SUBTOPPIT_TO_POST_TO': {
+      return {
+        ...state,
+        topic: { ...state.topic, subtoppit: action.payload }
       }
     }
     case 'SET_TOPIC_AUTHOR': {

@@ -3,7 +3,12 @@ export default function reducer(state = {
   commentText: '',
   showReply: false,
   nestedComments: [],
+<<<<<<< HEAD
   nestedCommentsCopy: []
+=======
+  nestedCommentsCopy: [],
+  containsObj: false
+>>>>>>> feat/redux
 }, action) {
   switch (action.type) {
     case 'SET_COMMENT_ID': {
@@ -41,6 +46,13 @@ export default function reducer(state = {
       return {
         ...state,
         nestedCommentsCopy: state.nestedCommentsCopy.concat(action.payload)
+      }
+    }
+    case 'SET_CONTAINS_OBJ': {
+      console.log('Setting contains obj!');
+      return {
+        ...state,
+        containsObj: action.payload
       }
     }
     default: {
